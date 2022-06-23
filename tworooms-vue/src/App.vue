@@ -8,7 +8,7 @@ import Card from "@/components/GameCard.vue";
   <header>
 
     <div class="wrapper">
-      <Card />
+      <Card visibility="full"/>
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
