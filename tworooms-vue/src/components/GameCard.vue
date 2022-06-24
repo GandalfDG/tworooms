@@ -23,6 +23,7 @@ const props = defineProps(["visibility"])
 
 <style>
 .gamecard {
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,10 +32,11 @@ const props = defineProps(["visibility"])
     height: 35em;
     max-width: 25em;
     box-shadow: 1px 2px 5px gray;
+    padding:1.1em;
 }
 
 .cardface {
-    margin: 1em;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
