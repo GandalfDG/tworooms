@@ -5,18 +5,16 @@ import Card from "@/components/GameCard.vue";
 </script>
 
 <template>
-  <header>
 
-    <div class="wrapper">
-      <Card visibility="full"/>
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
+  <div class="wrapper">
+    <Card visibility="full" />
+    <nav>
+      <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/about">About</RouterLink>
+    </nav>
+  </div>
 
-  <RouterView />
+  <!-- <RouterView /> -->
 </template>
 
 <style>
@@ -100,6 +98,8 @@ nav a:first-of-type {
     display: flex;
     place-items: flex-start;
     flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .logo {
