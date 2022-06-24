@@ -14,7 +14,7 @@ const props = defineProps(["visibility"])
 <template>
     <div class="gamecard">
         <div class="cardface">
-            <h1 class="cardtitle">{{card.title}}</h1>
+            <div class="vertcenter"> <h1 class="cardtitle">{{card.title.toUpperCase()}}</h1></div>
             <img class="cardimage" :src="card.image" />
             <h3 class="carddesc">{{card.description}}</h3>
         </div>
@@ -23,7 +23,6 @@ const props = defineProps(["visibility"])
 
 <style>
 .gamecard {
-    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -35,8 +34,7 @@ const props = defineProps(["visibility"])
 }
 
 .cardface {
-    width: 90%;
-    height: 90%;
+    margin: 1em;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -48,8 +46,15 @@ h1, h3 {
    color: white; 
 }
 
-.cardtitle {
+.vertcenter {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
     flex: 2;
+    justify-content: center;
+}
+
+.cardtitle {
 }
 
 .cardimage {
@@ -58,7 +63,7 @@ h1, h3 {
 }
 
 .carddesc {
-    width: 80%;
+    width: 90%;
     flex: 4;
     overflow: auto;
 }
