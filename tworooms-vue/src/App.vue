@@ -7,7 +7,9 @@ import Card from "@/components/GameCard.vue";
 <template>
 
   <div class="wrapper">
+    <h1 class="vertcenter">Two Rooms and a Boom</h1>
     <Card visibility="full" />
+    <h1 class="vertcenter">2:30</h1>
   </div>
 
 </template>
@@ -95,6 +97,7 @@ nav a:first-of-type {
     flex-wrap: wrap;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
   }
 
   .logo {

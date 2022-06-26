@@ -31,8 +31,8 @@ const props = defineProps(["visibility"])
     border-radius: 1.2em;
     height: 35em;
     max-width: 25em;
-    box-shadow: 1px 2px 5px gray;
-    padding:1.1em;
+    box-shadow: 0px 1px 4px gray;
+    padding:4%;
 }
 
 .cardface {
@@ -44,7 +44,7 @@ const props = defineProps(["visibility"])
     background-color: rgb(89, 89, 199)
 }
 
-h1, h3 {
+h1.cardtitle, h3 {
    color: white; 
 }
 
@@ -65,7 +65,7 @@ h1, h3 {
 }
 
 .carddesc {
-    width: 90%;
+    padding: 2%;
     flex: 4;
     overflow: auto;
 }
