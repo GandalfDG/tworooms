@@ -13,10 +13,10 @@ const props = defineProps(["visibility"])
 
 <template>
     <div class="gamecard">
-        <div class="cardface">
-            <div class="vertcenter"> <h1 class="cardtitle">{{card.title.toUpperCase()}}</h1></div>
-            <img class="cardimage" :src="card.image" />
-            <h3 class="carddesc">{{card.description}}</h3>
+        <div class="cardface" v-if="props.visibility==='full' || props.visibility==='color'">
+            <div class="vertcenter" v-if="props.visibility==='full'"> <h1 class="cardtitle">{{card.title.toUpperCase()}}</h1></div>
+            <img class="cardimage" v-if="props.visibility==='full'" :src="card.image" />
+            <h3 class="carddesc" v-if="props.visibility==='full'">{{card.description}}</h3>
         </div>
     </div>
 </template>
@@ -41,7 +41,8 @@ const props = defineProps(["visibility"])
     flex-direction: column;
     align-items: center;
     border-radius: .4em;
-    background-color: rgb(89, 89, 199)
+    background-color: rgb(89, 89, 199);
+    min-width: 98%;
 }
 
 h1.cardtitle, h3 {
