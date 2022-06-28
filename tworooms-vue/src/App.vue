@@ -10,7 +10,6 @@ import Timer from "./components/Timer.vue";
   <div class="wrapper">
     <Timer/>
     <Card visibility="full" />
-    <h1 class="vertcenter">2:30</h1>
   </div>
 
 </template>
