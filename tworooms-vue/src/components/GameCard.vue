@@ -1,11 +1,12 @@
 <script setup>
 import {reactive} from 'vue'
+import placeholderImage from '@/assets/placeholder.png'
 
 const card = reactive({
     title: "president",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi gravida quis arcu nec convallis. Nulla non odio nulla. Suspendisse auctor fermentum leo quis fermentum. Aenean non eros viverra, ultrices risus non, gravida augue. Mauris vehicula enim non commodo feugiat. Vestibulum odio lectus, ultricies sed ornare vel, tincidunt sit amet libero. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus vitae tincidunt est. Nunc vitae magna ullamcorper, eleifend augue non, convallis lorem. Aliquam fermentum libero eu auctor sagittis. Quisque ornare ullamcorper augue, at tristique sem cursus sit amet.",
     color: "blue",
-    image: "https://fakeimg.pl/480x360"
+    image: placeholderImage
 })
 
 const props = defineProps(["visibility"])
@@ -15,17 +16,16 @@ const props = defineProps(["visibility"])
     <div class="gamecard">
         <div class="cardface" v-if="props.visibility==='full' || props.visibility==='color'">
             <div class="vertcenter" v-if="props.visibility==='full'"> <h1 class="cardtitle">{{card.title.toUpperCase()}}</h1></div>
-            <img class="cardimage" v-if="props.visibility==='full'" :src="card.image" />
+            <div class="imagecontainer"><img class="cardimage" v-if="props.visibility==='full'" :src="card.image" /></div>
             <h3 class="carddesc" v-if="props.visibility==='full'">{{card.description}}</h3>
         </div>
     </div>
 </template>
 
 <style>
+
 .gamecard {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    box-sizing: border-box;
     border: 1px solid #c4c4c4;
     border-radius: 1.2em;
     height: 35em;
@@ -37,7 +37,6 @@ const props = defineProps(["visibility"])
 
 .cardface {
     height: 100%;
-    display: flex;
     flex-direction: column;
     align-items: center;
     border-radius: .4em;
@@ -45,27 +44,31 @@ const props = defineProps(["visibility"])
     min-width: 98%;
 }
 
-h1.cardtitle, h3 {
-   color: white; 
+h1.cardtitle,
+h3 {
+    color: white;
+    height: 10%;
 }
 
 .vertcenter {
-    display:flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 2;
     justify-content: center;
 }
 
+.imagecontainer {
+    height:40%;
+}
+
 .cardimage {
-    object-fit: cover;
-    width: 98%;
-    flex: 4;
+    width:100%;
+    height: 100%;
 }
 
 .carddesc {
     padding: 2%;
-    flex: 4;
+    height: 50%;
     overflow: auto;
 }
 </style>

@@ -43,3 +43,11 @@ watch(() => time.paused, () => {
 <template>
     <h1 class="timer">{{ timestring }}</h1>
 </template>
+
+<style>
+.timer {
+    font-family: monospace;
+    font-size: 5em;
+    flex: 1;
+}
+</style>
