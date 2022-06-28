@@ -2,12 +2,13 @@
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "@/components/HelloWorld.vue";
 import Card from "@/components/GameCard.vue";
+import Timer from "./components/Timer.vue";
 </script>
 
 <template>
 
   <div class="wrapper">
-    <h1 class="vertcenter">Two Rooms and a Boom</h1>
+    <Timer/>
     <Card visibility="full" />
     <h1 class="vertcenter">2:30</h1>
   </div>

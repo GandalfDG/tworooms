@@ -42,7 +42,7 @@ const props = defineProps(["visibility"])
     align-items: center;
     border-radius: .4em;
     background-color: hsl(240, 50%, 56%);
-    /* min-width: 98%; */
+    min-width: 98%;
 }
 
 h1.cardtitle, h3 {
@@ -59,7 +59,7 @@ h1.cardtitle, h3 {
 
 .cardimage {
     object-fit: cover;
-    /* width: 98%; */
+    width: 98%;
     flex: 4;
 }
 
