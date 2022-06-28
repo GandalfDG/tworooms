@@ -1,11 +1,11 @@
 <script setup>
-import { reactive, computed, watch, onMounted } from 'vue'
+import { reactive, computed, watch } from 'vue'
 
 const time = reactive({
     start_time: 0, //new Date().getTime(),
     duration: 60,
     ticks: 0,
-    paused: false
+    paused: true
 })
 
 const timestring = computed(() => {
@@ -21,10 +21,6 @@ const timestring = computed(() => {
 })
 
 var timer_interval
-
-// onMounted(() => {
-//     timer_interval = setInterval(() => { time.ticks++ }, 1000)
-// })
 
 // when we pause or unpause, set or clear an interval
 watch(() => time.paused, () => {
