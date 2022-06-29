@@ -12,12 +12,15 @@ function clickHandler(text) {
 
 <template>
 
-  <div class="wrapper">
-    <Timer/>
-    <Card visibility="full" />
-    <Button text="hello" @clicked="clickHandler("hello")"/>
-    <Button text="goodbye" />
-  </div>
+    <div class="wrapper">
+        <Timer />
+        <Card visibility="full" />
+        <div class="buttoncontainer">
+            <Button text="hello" @clicked="clickHandler('hello')" />
+            <Button text="goodbye" />
+        </div>
+
+    </div>
 
 </template>
 
@@ -29,6 +32,10 @@ function clickHandler(text) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.buttoncontainer {
+    display: flex;
 }
 
 
