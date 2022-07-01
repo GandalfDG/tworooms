@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LandingView from "../views/LandingView.vue";
-import CreateView from "../views/CreateView.vue"
 import JoinView from "../views/JoinView.vue"
 import LobbyView from "../views/LobbyView.vue"
 import GameView from "../views/GameView.vue"
@@ -14,17 +13,12 @@ const router = createRouter({
       component: LandingView,
     },
     {
-      path: "/create",
-      name: "create",
-      component: CreateView
-    },
-    {
       path: "/join/:id",
       name: "join",
       component: JoinView
     },
     {
-      path: "/lobby/:id",
+      path: "/lobby",
       name: "lobby",
       component: LobbyView
     },
