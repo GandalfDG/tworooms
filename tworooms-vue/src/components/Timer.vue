@@ -9,13 +9,18 @@ const time = reactive({
     paused: true
 })
 
-const update_rate_ms = 200
+const update_rate_ms = 100
+
+function update_time() {
+    let current_time = new Date().getTime()
+    time.seconds_remaining = time.duration - ((current_time - time.start_time) / 1000)
+}
+
+function time_elapsed() {
+    // when time is up, route to the round end or game end screens
+}
 
 const timestring = computed(() => {
-    // duration - current time - start time
-    if (time.start_time === 0) {
-        time.start_time = new Date().getTime()
-    }
     // format text nicely
     let minutes = (Math.floor(time.seconds_remaining / 60)).toString()
     let seconds = (Math.floor(time.seconds_remaining % 60)).toString()
@@ -24,15 +29,14 @@ const timestring = computed(() => {
     return "".concat(minutes, ":", padded_seconds)
 })
 
-function update_time() {
-    let current_time = new Date().getTime()
-    time.seconds_remaining = time.duration - ((current_time - time.start_time) / 1000)
-}
 
 var timer_interval
 
 // when we pause or unpause, set or clear an interval
 watch(() => time.paused, () => {
+    if (time.start_time === 0) {
+        time.start_time = new Date().getTime()
+    }
     if (!time.paused) {
         // set interval to tick
         timer_interval = setInterval(()=>{update_time()}, update_rate_ms)
