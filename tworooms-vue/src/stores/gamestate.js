@@ -9,7 +9,7 @@ const ax = axios.create({
 export const useGameState = defineStore('gamestate', {
     state: () => (
          {
-            playername: 'Joe Shmoe',
+            playername: '',
             ishost: false,
             roomcode: ''
         }
