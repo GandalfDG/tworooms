@@ -26,7 +26,10 @@
 
 	"customizations": {
 		"vscode": {
-			"extensions": ["Vue.volar"]
+			"extensions": [
+				"Vue.volar",
+				"ms-python.python"
+			]
 		}
 	}
 }
