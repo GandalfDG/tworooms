@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import axios from 'axios'
 
 const ax = axios.create({
-    baseURL: 'localhost:1337/',
-    timeout: 1000,
+    baseURL: 'http://127.0.0.1:1337/',
+    timeout: 10000,
 })
 
 export const useGameState = defineStore('gamestate', {
@@ -11,7 +11,7 @@ export const useGameState = defineStore('gamestate', {
          {
             playername: 'Joe Shmoe',
             ishost: false,
-            roomcode: 'ABCD'
+            roomcode: ''
         }
     ),
 
@@ -22,7 +22,7 @@ export const useGameState = defineStore('gamestate', {
             })
             this.roomcode = response.data.roomcode
         },
-        
+
         async joinRoom() {
             let response = await ax.post('join/', {
                 playername: this.playername,
