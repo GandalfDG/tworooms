@@ -13,9 +13,6 @@ const forminput = reactive({
 function create_game() {
     gamestate.ishost = true
     gamestate.playername = forminput.playername
-
-    // request a room
-
     router.push("/lobby")
 }
 
