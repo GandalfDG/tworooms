@@ -9,8 +9,10 @@ CORS(app)
 # this will be replaced with redis for "production"
 app.ctx.gamedata = {}
 
+
 @app.post("create/")
 async def create_room_handler(request):
-    return json({
-        "roomcode": "returned code"
-    })
+    return json(
+        {
+            "roomcode": request.json['playername']
+        })
