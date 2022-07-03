@@ -28,3 +28,15 @@ async def create_room_handler(request):
             "roomcode": request.json['playername']
         })
 
+@app.get("api/join/")
+async def join_room_handler(request):
+    roomcode = request.json['roomcoode']
+    playername = request.json['playername']
+
+    return json(
+        {
+            "roomcode": roomcode,
+            "playername": playername
+        }
+    )
+
