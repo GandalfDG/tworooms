@@ -1,12 +1,14 @@
 from sanic import Sanic
 from sanic.response import json, file
-from sanic_cors import CORS, cross_origin
+from sanic_cors import CORS
+from gamestate import *
 
 from os import path
 
 app = Sanic("tworooms")
 CORS(app)
 
+games: dict[str:GameRoom]  = {}
 
 # this will be replaced with redis for "production"
 app.ctx.gamedata = {}
@@ -23,8 +25,21 @@ app.add_route(get_app, "/")
 
 @app.post("api/create/")
 async def create_room_handler(request):
+    # create a game, generate a room code
     return json(
         {
             "roomcode": request.json['playername']
         })
+
+@app.get("api/join/")
+async def join_room_handler(request):
+    roomcode = request.json['roomcoode']
+    playername = request.json['playername']
+
+    return json(
+        {
+            "roomcode": roomcode,
+            "playername": playername
+        }
+    )
 
