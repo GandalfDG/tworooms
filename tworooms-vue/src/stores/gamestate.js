@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import axios from 'axios'
 
 const ax = axios.create({
-    baseURL: 'http://127.0.0.1:1337/',
+    baseURL: 'http://127.0.0.1:1337/api',
     timeout: 10000,
 })
 
