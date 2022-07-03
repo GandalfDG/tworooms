@@ -1,14 +1,16 @@
+from typing import Dict
 from sanic import Sanic
 from sanic.response import json, file
 from sanic_cors import CORS
 from gamestate import *
+import utils
 
 from os import path
 
 app = Sanic("tworooms")
 CORS(app)
 
-games: dict[str:GameRoom]  = {}
+games: Dict[str,GameRoom] = {}
 
 # this will be replaced with redis for "production"
 app.ctx.gamedata = {}
@@ -26,10 +28,16 @@ app.add_route(get_app, "/")
 @app.post("api/create/")
 async def create_room_handler(request):
     # create a game, generate a room code
+    roomcode = utils.generate_access_code()
+    while roomcode in games.keys():
+        roomcode = utils.generate_access_code
+
+    games[roomcode] = GameRoom(roomcode, request.json["playername"])
     return json(
         {
-            "roomcode": request.json['playername']
+            "roomcode": roomcode
         })
+
 
 @app.get("api/join/")
 async def join_room_handler(request):
@@ -42,4 +50,3 @@ async def join_room_handler(request):
             "playername": playername
         }
     )
-
