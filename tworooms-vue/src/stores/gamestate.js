@@ -11,7 +11,11 @@ export const useGameState = defineStore('gamestate', {
          {
             playername: '',
             ishost: false,
-            roomcode: ''
+            roomcode: '',
+
+            playerlist: [],
+            startroom: 0,
+            cardindex: 0
         }
     ),
 
@@ -21,6 +25,7 @@ export const useGameState = defineStore('gamestate', {
                 playername: this.playername
             })
             this.roomcode = response.data.roomcode
+            this.playerlist = response.data.playerlist
         },
 
         async joinRoom() {
@@ -28,6 +33,8 @@ export const useGameState = defineStore('gamestate', {
                 playername: this.playername,
                 roomcode: this.roomcode
             })
+            this.roomcode = response.data.roomcode
+            this.playerlist = response.data.playerlist
         }
     }
 })

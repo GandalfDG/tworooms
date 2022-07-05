@@ -33,20 +33,28 @@ async def create_room_handler(request):
         roomcode = utils.generate_access_code
 
     games[roomcode] = GameRoom(roomcode, request.json["playername"])
-    return json(
-        {
-            "roomcode": roomcode
-        })
-
-
-@app.get("api/join/")
-async def join_room_handler(request):
-    roomcode = request.json['roomcoode']
-    playername = request.json['playername']
-
+    current_game = games[roomcode]
     return json(
         {
             "roomcode": roomcode,
-            "playername": playername
+            "playerlist": [player.playername for player in current_game.players]
+        })
+
+
+@app.post("api/join/")
+async def join_room_handler(request):
+    roomcode = request.json['roomcode']
+    playername = request.json['playername']
+
+    current_game = games[roomcode]
+    current_game.players.append(Player(playername))
+    return json(
+        {
+            "roomcode": roomcode,
+            "playerlist": [player.playername for player in current_game.players]
         }
     )
+
+@app.websocket("ws/game/")
+async def game_ws_handler(request, ws):
+    pass
