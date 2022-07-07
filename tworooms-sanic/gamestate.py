@@ -1,9 +1,11 @@
+from sanic import Websocket
 
 class Player():
     def __init__(self, playername):
         self.playername: str = playername
         self.card = None
         self.session = None
+        self.socket: Websocket = None
 
 
 class GameRoom():
