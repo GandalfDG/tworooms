@@ -6,6 +6,8 @@ const ax = axios.create({
     timeout: 10000,
 })
 
+const websocket_url = 'ws://127.0.0.1:1337/ws/game'
+
 export const useGameState = defineStore('gamestate', {
     state: () => (
          {
@@ -15,7 +17,9 @@ export const useGameState = defineStore('gamestate', {
 
             playerlist: [],
             startroom: 0,
-            cardindex: 0
+            cardindex: 0,
+
+            socket: null
         }
     ),
 
@@ -35,6 +39,10 @@ export const useGameState = defineStore('gamestate', {
             })
             this.roomcode = response.data.roomcode
             this.playerlist = response.data.playerlist
+        },
+
+        async connectWebsocket() {
+            this.socket = new WebSocket(websocket_url)
         }
     }
 })

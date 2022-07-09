@@ -1,6 +1,6 @@
 from typing import Dict
-from sanic import Request, Websocket
-from sanic.response import json, file
+from sanic import Sanic, Request, Websocket
+from sanic.response import json as jsonresponse, file
 from sanic_cors import CORS
 import json
 
@@ -21,13 +21,16 @@ app.static("/assets", "/workspaces/tworooms/tworooms-vue/dist/assets")
 
 @app.middleware("request")
 async def player_room_middleware(request):
-    roomcode = request.json['roomcode']
-    playername = request.json['playername']
-    game = games[roomcode]
-    player = [player for player in game.players if player.playername == playername][0]
-    request.ctx.game = game
-    request.ctx.player = player
-
+    roomcode = request.json['roomcode'] if 'roomcode' in request.json.keys() else None
+    playername = request.json['playername'] if 'playername' in request.json.keys() else None
+    game = None
+    if roomcode:
+        game = games[roomcode] if roomcode in games.keys() else None
+        request.ctx.game = game
+    if playername and game:
+        playermatch = [player for player in game.players if player.playername == playername]
+        player = playermatch if len(playermatch) > 0 else None
+        request.ctx.player = player
 
 async def get_app(request, ext=None):
     return await file(location="/workspaces/tworooms/tworooms-vue/dist/index.html")
@@ -45,7 +48,7 @@ async def create_room_handler(request):
 
     games[roomcode] = GameRoom(roomcode, request.json["playername"])
     current_game = games[roomcode]
-    return json(
+    return jsonresponse(
         {
             "roomcode": roomcode,
             "playerlist": [player.playername for player in current_game.players]
@@ -59,7 +62,7 @@ async def join_room_handler(request):
 
     current_game = games[roomcode]
     current_game.players.append(Player(playername))
-    return json(
+    return jsonresponse(
         {
             "roomcode": roomcode,
             "playerlist": [player.playername for player in current_game.players]
