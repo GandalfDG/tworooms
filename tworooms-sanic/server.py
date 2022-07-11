@@ -79,5 +79,7 @@ async def game_ws_handler(request: Request, ws: Websocket):
         # if host handle host-specific messages
 
         # handle everything else
-        message = json.loads(await ws.recv())
+        message = await ws.recv()
+        print(message)
+        await ws.send("hello")
         

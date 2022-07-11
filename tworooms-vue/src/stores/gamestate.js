@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { wsMessageListener } from '../gamelogic'
 import axios from 'axios'
 
 const ax = axios.create({
@@ -30,6 +31,7 @@ export const useGameState = defineStore('gamestate', {
             })
             this.roomcode = response.data.roomcode
             this.playerlist = response.data.playerlist
+            this.connectWebsocket()
         },
 
         async joinRoom() {
@@ -42,7 +44,10 @@ export const useGameState = defineStore('gamestate', {
         },
 
         async connectWebsocket() {
-            this.socket = new WebSocket(websocket_url)
+            let socket = new WebSocket(websocket_url)
+            socket.addEventListener("message", wsMessageListener(message))
+            socket.send("hello")
+            this.socket = socket
         }
     }
 })
