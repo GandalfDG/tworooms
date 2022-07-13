@@ -54,7 +54,7 @@ async def create_room_handler(request):
     # create a game, generate a room code
     roomcode = utils.generate_access_code()
     while roomcode in games.keys():
-        roomcode = utils.generate_access_code
+        roomcode = utils.generate_access_code()
 
     playername = request.json["playername"]
     games[roomcode] = GameRoom(roomcode, playername)
@@ -65,9 +65,9 @@ async def create_room_handler(request):
             "playerlist": [player.playername for player in current_game.players]
         })
 
-    identifier = str(uuid().hex)
-    response.cookies['session'] = identifier
+    identifier = utils.set_user_cookie(response)
     users[identifier] = (roomcode, playername)
+
     return response
 
 
@@ -78,12 +78,17 @@ async def join_room_handler(request):
 
     current_game = games[roomcode]
     current_game.players.append(Player(playername))
-    return jsonresponse(
+    response = jsonresponse(
         {
             "roomcode": roomcode,
             "playerlist": [player.playername for player in current_game.players]
         }
     )
+    
+    identifier = utils.set_user_cookie(response)
+    users[identifier] = (roomcode, playername)
+    return response
+
 
 @app.websocket("ws/game/")
 async def game_ws_handler(request: Request, ws: Websocket):

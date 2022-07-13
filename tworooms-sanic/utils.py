@@ -1,3 +1,4 @@
+from uuid import uuid4 as uuid
 import random
 
 CODE_LENGTH = 4
@@ -31,3 +32,8 @@ def get_shuffled_card_indices(num_players, seed=None):
     indices = [i for i in range(num_players)]
     random.shuffle(indices)
     return indices
+
+def set_user_cookie(response)->str:
+    identifier = str(uuid().hex)
+    response.cookies['session'] = identifier
+    return identifier
