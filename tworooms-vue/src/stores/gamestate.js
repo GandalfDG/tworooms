@@ -31,7 +31,7 @@ export const useGameState = defineStore('gamestate', {
             })
             this.roomcode = response.data.roomcode
             this.playerlist = response.data.playerlist
-            this.connectWebsocket()
+            // this.connectWebsocket()
         },
 
         async joinRoom() {
@@ -43,11 +43,11 @@ export const useGameState = defineStore('gamestate', {
             this.playerlist = response.data.playerlist
         },
 
-        async connectWebsocket() {
-            let socket = new WebSocket(websocket_url)
-            socket.addEventListener("message", wsMessageListener())
-            socket.send("hello")
-            this.socket = socket
-        }
+        // async connectWebsocket() {
+        //     let socket = new WebSocket(websocket_url)
+        //     socket.addEventListener("message", wsMessageListener())
+        //     socket.send("hello")
+        //     this.socket = socket
+        // }
     }
 })

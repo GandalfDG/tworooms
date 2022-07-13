@@ -1,5 +1,5 @@
 from typing import Dict
-from sanic import Sanic, Request, Websocket
+from sanic import Sanic, Request, Websocket, text
 from sanic.response import json as jsonresponse, file
 from sanic_cors import CORS
 import json
@@ -14,7 +14,7 @@ app = Sanic("tworooms")
 CORS(app)
 
 games: Dict[str,GameRoom] = {}
-users: Dict[str, tuple[str, str]]
+users: Dict[str, tuple[str, str]] = {}
 
 # this will be replaced with redis for "production"
 app.ctx.gamedata = {}
@@ -41,6 +41,13 @@ async def get_app(request, ext=None):
 app.add_route(get_app, "/<ext>/")
 app.add_route(get_app, "/")
 
+@app.get("test/")
+async def test_handler(request):
+    response = text("hello")
+    response.cookies['testcookie'] = "testcookie"
+    response.cookies['testcookie']['domain'] = ".app.localhost:3001"
+
+    return response
 
 @app.post("api/create/")
 async def create_room_handler(request):
@@ -58,7 +65,7 @@ async def create_room_handler(request):
             "playerlist": [player.playername for player in current_game.players]
         })
 
-    identifier = uuid()
+    identifier = str(uuid().hex)
     response.cookies['session'] = identifier
     users[identifier] = (roomcode, playername)
     return response
