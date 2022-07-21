@@ -2,4 +2,4 @@ build:
   docker:
     web: Dockerfile
 run:
-  web: sanic server.app
+  web: cd /backend; sanic server.app
