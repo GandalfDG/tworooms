@@ -4,6 +4,7 @@ from sanic.response import json as jsonresponse, file
 from sanic_cors import CORS
 import json
 from uuid import uuid4 as uuid
+from os import environ
 
 from gamestate import *
 import utils
@@ -19,7 +20,7 @@ users: Dict[str, tuple[str, str]] = {}
 # this will be replaced with redis for "production"
 app.ctx.gamedata = {}
 
-app.static("/assets", "/workspaces/tworooms/tworooms-vue/dist/assets")
+app.static("/assets", "/frontend/dist/assets")
 
 @app.middleware("request")
 async def player_room_middleware(request):
@@ -93,14 +94,23 @@ async def join_room_handler(request):
 @app.websocket("ws/game/")
 async def game_ws_handler(request: Request, ws: Websocket):
     # associate this websocket with its game/player
-    game = request.ctx.game
-    player = request.ctx.player
+    session = request.cookies['session']
+
+    roomcode,playername = users[session]
+
+    game = games[roomcode]
+    player = game.players[playername]
+
 
     while True:
         # if host handle host-specific messages
-
+        if playername == game.host_playername:
+            pass
         # handle everything else
         message = await ws.recv()
         print(message)
         await ws.send("hello")
+
+
+app.run(port=environ["PORT"])
         
