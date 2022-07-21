@@ -37,7 +37,7 @@ async def player_room_middleware(request):
             request.ctx.player = player
 
 async def get_app(request, ext=None):
-    return await file(location="/workspaces/tworooms/tworooms-vue/dist/index.html")
+    return await file(location="/frontend/dist/index.html")
 
 app.add_route(get_app, "/<ext>/")
 app.add_route(get_app, "/")
