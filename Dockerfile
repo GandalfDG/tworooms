@@ -17,4 +17,4 @@ USER node
 
 ENV PORT=1337
 
-CMD ["python3", "-m", "sanic", "-v", "server.app"]
+CMD sanic -vp $PORT server.app

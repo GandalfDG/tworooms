@@ -111,6 +111,4 @@ async def game_ws_handler(request: Request, ws: Websocket):
         print(message)
         await ws.send("hello")
 
-
-app.run(port=environ["PORT"])
         
