@@ -17,4 +17,4 @@ USER node
 
 ENV PORT=1337
 
-CMD sanic -vp $PORT server.app
+CMD sanic -vp $PORT -H 0.0.0.0 server.app
