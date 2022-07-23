@@ -1,5 +1,6 @@
 from uuid import uuid4 as uuid
 import random
+from os import environ
 
 CODE_LENGTH = 4
 
