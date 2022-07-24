@@ -83,7 +83,7 @@ async def join_room_handler(request):
     response = jsonresponse(
         {
             "roomcode": roomcode,
-            "playerlist": [player.playername for player in current_game.players]
+            "playerlist": [playername for playername in current_game.players.keys()]
         }
     )
     
