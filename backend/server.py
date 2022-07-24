@@ -52,18 +52,19 @@ async def test_handler(request):
 
 @app.post("api/create/")
 async def create_room_handler(request):
-    # create a game, generate a room code
+    # generate a room code
     roomcode = utils.generate_access_code()
     while roomcode in games.keys():
         roomcode = utils.generate_access_code()
 
+    # create the game object and add the playername as the host
     playername = request.json["playername"]
     games[roomcode] = GameRoom(roomcode, playername)
     current_game = games[roomcode]
     response = jsonresponse(
         {
             "roomcode": roomcode,
-            "playerlist": [player.playername for player in current_game.players]
+            "playerlist": [playername for playername in current_game.players.keys()]
         })
 
     identifier = utils.set_user_cookie(response)
