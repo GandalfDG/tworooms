@@ -22,19 +22,18 @@ app.ctx.gamedata = {}
 
 app.static("/assets", "../frontend/dist/assets")
 
-@app.middleware("request")
-async def player_room_middleware(request):
-    if request.json:
-        roomcode = request.json['roomcode'] if 'roomcode' in request.json.keys() else None
-        playername = request.json['playername'] if 'playername' in request.json.keys() else None
-        game = None
-        if roomcode:
-            game = games[roomcode] if roomcode in games.keys() else None
-            request.ctx.game = game
-        if playername and game:
-            playermatch = [player for player in game.players if player.playername == playername]
-            player = playermatch if len(playermatch) > 0 else None
-            request.ctx.player = player
+# @app.middleware("request")
+# async def player_room_middleware(request):
+#     if request.json:
+#         roomcode = request.json['roomcode'] if 'roomcode' in request.json.keys() else None
+#         playername = request.json['playername'] if 'playername' in request.json.keys() else None
+#         game = None
+#         if roomcode:
+#             game = games[roomcode] if roomcode in games.keys() else None
+#             request.ctx.game = game
+#         if playername and game:
+#             player = game.players[playername]
+#             request.ctx.player = player
 
 async def get_app(request, ext=None):
     return await file(location="../frontend/dist/index.html")
@@ -79,7 +78,7 @@ async def join_room_handler(request):
     playername = request.json['playername']
 
     current_game = games[roomcode]
-    current_game.players.append(Player(playername))
+    current_game.players[playername] = Player(playername)
     response = jsonresponse(
         {
             "roomcode": roomcode,
