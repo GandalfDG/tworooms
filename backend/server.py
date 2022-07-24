@@ -20,7 +20,7 @@ users: Dict[str, tuple[str, str]] = {}
 # this will be replaced with redis for "production"
 app.ctx.gamedata = {}
 
-app.static("/assets", "/frontend/dist/assets")
+app.static("/assets", "../frontend/dist/assets")
 
 @app.middleware("request")
 async def player_room_middleware(request):
@@ -37,7 +37,7 @@ async def player_room_middleware(request):
             request.ctx.player = player
 
 async def get_app(request, ext=None):
-    return await file(location="/frontend/dist/index.html")
+    return await file(location="../frontend/dist/index.html")
 
 app.add_route(get_app, "/<ext>/")
 app.add_route(get_app, "/")
