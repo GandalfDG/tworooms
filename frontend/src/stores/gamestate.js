@@ -38,7 +38,7 @@ export const useGameState = defineStore('gamestate', {
             this.playerlist = response.data.playerlist
             this.session = response.data.session
             setSessionCookie(this.session)
-            // this.connectWebsocket()
+            this.connectWebsocket()
         },
 
         async joinRoom() {
@@ -50,14 +50,15 @@ export const useGameState = defineStore('gamestate', {
             this.playerlist = response.data.playerlist
             this.session = response.data.session
             setSessionCookie(this.session)
-            // this.connectWebsocket()
+            this.connectWebsocket()
         },
 
-        // async connectWebsocket() {
-        //     let socket = new WebSocket(websocket_url)
-        //     socket.addEventListener("message", wsMessageListener())
-        //     socket.send("hello")
-        //     this.socket = socket
-        // }
+        async connectWebsocket() {
+            let socket = new WebSocket(websocket_url)
+            socket.addEventListener("message", (event)=> {
+                console.log(event.data)
+            })
+            this.socket = socket
+        }
     }
 })

@@ -6,6 +6,7 @@ from sanic_cors import CORS
 from sanic.log import logger
 from uuid import uuid4 as uuid
 from os import environ
+import json
 
 from gamestate import *
 import utils
@@ -81,15 +82,18 @@ async def join_room_handler(request):
 
     current_game = games[roomcode]
     current_game.players[playername] = Player(playername)
-    response = jsonresponse(
-        {
+    playerlist = [playername for playername in current_game.players.keys()]
+    response_json =         {
             "roomcode": roomcode,
             "playerlist": [playername for playername in current_game.players.keys()]
         }
-    )
-    
-    identifier = utils.set_user_cookie(response)
+
+    identifier = utils.set_user_cookie()
+    response_json["session"] = identifier
     users[identifier] = (roomcode, playername)
+
+    response = jsonresponse(response_json)
+    utils.notify_all_players(current_game, json.dumps(playerlist))
     return response
 
 
@@ -107,6 +111,8 @@ async def game_ws_handler(request: Request, ws: Websocket):
     player.socket = ws
 
     while True:
-        ws.send("hello")
+        await ws.send("hello")
+        await asyncio.sleep(5)
+        pass
 
         

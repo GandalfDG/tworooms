@@ -1,6 +1,6 @@
-export function wsMessageListener(message) {
+export function wsMessageListener(event) {
     // big-ish case statement here for different messages
-    let msgdata = message.data
+    let msgdata = event.data
     console.log(msgdata)
 }
 
