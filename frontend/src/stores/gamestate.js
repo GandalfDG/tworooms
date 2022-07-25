@@ -56,7 +56,8 @@ export const useGameState = defineStore('gamestate', {
         async connectWebsocket() {
             let socket = new WebSocket(websocket_url)
             socket.addEventListener("message", (event)=> {
-                console.log(event.data)
+                console.warn("ws data = " + event.data)
+                this.playerlist = JSON.parse(event.data)["playerlist"]
             })
             this.socket = socket
         }

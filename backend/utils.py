@@ -47,6 +47,6 @@ def set_user_cookie() -> str:
 
 
 async def notify_all_players(game: GameRoom, message: str):
-    sockets = [player.socket for player in game.players.values()]
+    sockets = [player.socket for player in game.players.values() if player.socket]
     awaitables = [socket.send(message) for socket in sockets]
-    await gather(awaitables)
+    await gather(*awaitables)

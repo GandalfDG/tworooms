@@ -93,7 +93,8 @@ async def join_room_handler(request):
     users[identifier] = (roomcode, playername)
 
     response = jsonresponse(response_json)
-    utils.notify_all_players(current_game, json.dumps(playerlist))
+    await utils.notify_all_players(current_game, json.dumps({'playerlist': playerlist}))
+    logger.warning("notified players")
     return response
 
 
@@ -110,9 +111,7 @@ async def game_ws_handler(request: Request, ws: Websocket):
 
     player.socket = ws
 
+    logger.warning(playername)
     while True:
-        await ws.send("hello")
-        await asyncio.sleep(5)
-        pass
-
-        
+        data = await ws.recv()
+        logger.warning(data)
