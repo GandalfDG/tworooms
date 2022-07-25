@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
-import { wsMessageListener } from '../gamelogic'
+import { wsMessageListener, setSessionCookie } from '../gamelogic'
 import axios from 'axios'
 
 const ax = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
     timeout: 10000,
+    // withCredentials: true
 })
 
 console.log(import.meta.env.VITE_BACKEND_URL)
@@ -18,6 +19,7 @@ export const useGameState = defineStore('gamestate', {
             playername: '',
             ishost: false,
             roomcode: '',
+            session: '',
 
             playerlist: [],
             startroom: 0,
@@ -34,6 +36,8 @@ export const useGameState = defineStore('gamestate', {
             })
             this.roomcode = response.data.roomcode
             this.playerlist = response.data.playerlist
+            this.session = response.data.session
+            setSessionCookie(this.session)
             // this.connectWebsocket()
         },
 
@@ -44,6 +48,9 @@ export const useGameState = defineStore('gamestate', {
             })
             this.roomcode = response.data.roomcode
             this.playerlist = response.data.playerlist
+            this.session = response.data.session
+            setSessionCookie(this.session)
+            // this.connectWebsocket()
         },
 
         // async connectWebsocket() {

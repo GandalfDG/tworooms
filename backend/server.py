@@ -1,8 +1,9 @@
+import asyncio
 from typing import Dict
 from sanic import Sanic, Request, Websocket, text
 from sanic.response import json as jsonresponse, file
 from sanic_cors import CORS
-import json
+from sanic.log import logger
 from uuid import uuid4 as uuid
 from os import environ
 
@@ -45,8 +46,7 @@ app.add_route(get_app, "/")
 async def test_handler(request):
     response = text("hello")
     response.cookies['testcookie'] = "testcookie"
-    response.cookies['testcookie']['domain'] = ".app.localhost:3001"
-
+    response.cookies['testcookie']['domain'] = ".127.0.0.1"
     return response
 
 @app.post("api/create/")
@@ -60,14 +60,16 @@ async def create_room_handler(request):
     playername = request.json["playername"]
     games[roomcode] = GameRoom(roomcode, playername)
     current_game = games[roomcode]
-    response = jsonresponse(
-        {
+    response_json =         {
             "roomcode": roomcode,
             "playerlist": [playername for playername in current_game.players.keys()]
-        })
+        }
 
-    identifier = utils.set_user_cookie(response)
+    identifier = utils.set_user_cookie()
+    response_json["session"] = identifier
     users[identifier] = (roomcode, playername)
+
+    response = jsonresponse(response_json)
 
     return response
 
@@ -94,21 +96,17 @@ async def join_room_handler(request):
 @app.websocket("ws/game/")
 async def game_ws_handler(request: Request, ws: Websocket):
     # associate this websocket with its game/player
-    session = request.cookies['session']
+    logger.warning(request.cookies)
+    session = request.cookies.get('session')
 
     roomcode,playername = users[session]
 
     game = games[roomcode]
     player = game.players[playername]
 
+    player.socket = ws
 
     while True:
-        # if host handle host-specific messages
-        if playername == game.host_playername:
-            pass
-        # handle everything else
-        message = await ws.recv()
-        print(message)
-        await ws.send("hello")
+        ws.send("hello")
 
         

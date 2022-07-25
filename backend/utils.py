@@ -1,12 +1,14 @@
 from uuid import uuid4 as uuid
 import random
-from os import environ
+from gamestate import GameRoom
+from asyncio import gather
 
 CODE_LENGTH = 4
 
+
 def generate_access_code() -> str:
     code = ''
-    possible = 'abcdefghjkmnpqrstuvwxyz23456789'
+    possible = 'abcdefghjkmnpqrstuvwxyz'
 
     for _ in range(CODE_LENGTH):
         code += random.choice(possible)
@@ -34,7 +36,17 @@ def get_shuffled_card_indices(num_players, seed=None):
     random.shuffle(indices)
     return indices
 
-def set_user_cookie(response)->str:
+
+def set_user_cookie() -> str:
     identifier = str(uuid().hex)
-    response.cookies['session'] = identifier
+    # response.cookies['session']['domain'] = ".127.0.0.1"
+    # response.cookies['session']['samesite'] = "none"
+
+    # response.cookies['session']['samesite'] = 'strict'
     return identifier
+
+
+async def notify_all_players(game: GameRoom, message: str):
+    sockets = [player.socket for player in game.players.values()]
+    awaitables = [socket.send(message) for socket in sockets]
+    await gather(awaitables)

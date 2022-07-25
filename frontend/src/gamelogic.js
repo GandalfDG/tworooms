@@ -3,3 +3,7 @@ export function wsMessageListener(message) {
     let msgdata = message.data
     console.log(msgdata)
 }
+
+export function setSessionCookie(session) {
+    document.cookie = "session=" + session + ";samesite=none;secure=true"
+}
