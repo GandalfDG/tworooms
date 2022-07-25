@@ -5,5 +5,5 @@ export function wsMessageListener(event) {
 }
 
 export function setSessionCookie(session) {
-    document.cookie = "session=" + session + ";samesite=none;secure=true"
+    document.cookie = "session=" + session + ";samesite=none;secure=true;domain=" + import.meta.env.VITE_DOMAIN
 }
