@@ -15,14 +15,6 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
     },
   }
 
-
-  if (command === 'serve') {
-    configuration.backend_url = "localhost:1337/"
-  }
-  else {
-    configuration.backend_url = "http://www.tworooms.online/"
-  }
-
   return configuration
 })
 
