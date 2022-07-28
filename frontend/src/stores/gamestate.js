@@ -3,14 +3,14 @@ import { wsMessageListener, setSessionCookie } from '../gamelogic'
 import axios from 'axios'
 
 const ax = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL,
+    baseURL: 'http://' + import.meta.env.VITE_BACKEND_HOST + "/api",
     timeout: 10000,
     // withCredentials: true
 })
 
 console.log(import.meta.env.VITE_BACKEND_URL)
 
-const websocket_url = 'ws://127.0.0.1:1337/ws/game'
+const websocket_url = 'ws://' + import.meta.env.VITE_BACKEND_HOST + '/ws/game'
 
 
 export const useGameState = defineStore('gamestate', {
