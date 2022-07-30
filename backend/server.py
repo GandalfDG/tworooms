@@ -22,7 +22,8 @@ users: Dict[str, tuple[str, str]] = {}
 # this will be replaced with redis for "production"
 app.ctx.gamedata = {}
 
-app.static("/", "../frontend/dist/")
+app.static("/assets", "../frontend/dist/assets")
+app.static("/favicon.ico", "../frontend/dist/favicon.ico")
 
 # @app.middleware("request")
 # async def player_room_middleware(request):
