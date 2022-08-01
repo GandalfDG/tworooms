@@ -13,6 +13,10 @@ onMounted(() => {
     }
 })
 
+function cutoffLobby() {
+    await gamestate.sendLobbyCutoffMessage();
+}
+
 
 </script>
 

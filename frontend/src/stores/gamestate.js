@@ -25,6 +25,8 @@ export const useGameState = defineStore('gamestate', {
             startroom: 0,
             cardindex: 0,
 
+            playerdata: {},
+
             socket: null
         }
     ),
@@ -60,6 +62,10 @@ export const useGameState = defineStore('gamestate', {
                 this.playerlist = JSON.parse(event.data)["playerlist"]
             })
             this.socket = socket
+        },
+
+        async sendLobbyCutoffMessage() {
+            this.socket.send("lobbycutoff");
         }
     }
 })

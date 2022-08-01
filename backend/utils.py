@@ -2,6 +2,7 @@ from uuid import uuid4 as uuid
 import random
 from gamestate import GameRoom
 from asyncio import gather
+from json import dumps
 
 CODE_LENGTH = 4
 
@@ -49,4 +50,17 @@ def set_user_cookie() -> str:
 async def notify_all_players(game: GameRoom, message: str):
     sockets = [player.socket for player in game.players.values() if player.socket]
     awaitables = [socket.send(message) for socket in sockets]
+    await gather(*awaitables)
+
+async def send_all_playerdata(game: GameRoom, message: str):
+    sockets = [player.socket for player in game.players.values() if player.socket]
+    playerdata = [{
+        "card": player.card,
+        "start_room": player.start_room
+    } for player in game.players.values() if player.socket]
+
+    awaitables = []
+    for socket, data in zip(sockets, playerdata):
+        awaitables.append(socket.send(dumps(data)))
+
     await gather(*awaitables)
