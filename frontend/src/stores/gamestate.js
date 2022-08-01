@@ -22,8 +22,6 @@ export const useGameState = defineStore('gamestate', {
             session: '',
 
             playerlist: [],
-            startroom: 0,
-            cardindex: 0,
 
             playerdata: {},
 
