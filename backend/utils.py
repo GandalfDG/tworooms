@@ -1,11 +1,11 @@
 from uuid import uuid4 as uuid
 import random
-from gamestate import GameRoom
 from asyncio import gather
 from json import dumps
 
 CODE_LENGTH = 4
 
+random.seed()
 
 def generate_access_code() -> str:
     code = ''
@@ -17,22 +17,21 @@ def generate_access_code() -> str:
     return code.upper()
 
 
-def get_shuffled_rooms(num_players, seed=None):
+def shuffle_players(players: list) -> tuple[list, list]:
     """
     Generate and shuffle a list of length num_players split between room 1 and 2
     """
-    random.seed(seed)
-    room_list = ([1] * int(num_players/2)) + \
-        ([2] * (num_players - int(num_players/2)))
-    random.shuffle(room_list)
-    return room_list
+    playercopy = players.copy()
+    random.shuffle(playercopy)
+    room_lists = (playercopy[:int(len(playercopy)/2)],
+                  playercopy[int(len(playercopy)/2):])
+    return room_lists
 
 
 def get_shuffled_card_indices(num_players, seed=None):
     """
     Generate and shuffle a list of card indices
     """
-    random.seed(seed)
     indices = [i for i in range(num_players)]
     random.shuffle(indices)
     return indices
@@ -47,12 +46,12 @@ def set_user_cookie() -> str:
     return identifier
 
 
-async def notify_all_players(game: GameRoom, message: str):
+async def notify_all_players(game, message: str):
     sockets = [player.socket for player in game.players.values() if player.socket]
     awaitables = [socket.send(message) for socket in sockets]
     await gather(*awaitables)
 
-async def send_all_playerdata(game: GameRoom, message: str):
+async def send_all_playerdata(game, message: str):
     sockets = [player.socket for player in game.players.values() if player.socket]
     playerdata = [{
         "card": player.card,
