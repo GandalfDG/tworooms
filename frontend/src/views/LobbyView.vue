@@ -1,6 +1,8 @@
 <script setup>
 import { useGameState } from '@/stores/gamestate'
+import router from '@/router'
 import { onMounted } from 'vue';
+import {wsEvent} from '@/gamelogic'
 
 const gamestate = useGameState()
 
@@ -13,8 +15,10 @@ onMounted(() => {
     }
 })
 
-function cutoffLobby() {
+async function cutoffLobby() {
     await gamestate.sendLobbyCutoffMessage();
+    // wait for the response to fill in the player data object
+    window.addEventListener("wsmessage", ()=>{router.push('pregame')});
 }
 
 
@@ -26,4 +30,5 @@ function cutoffLobby() {
     <ul>
         <li v-for="player in gamestate.playerlist">{{player}}</li>
     </ul>
+    <button @click="cutoffLobby()">cutoff</button>
 </template>

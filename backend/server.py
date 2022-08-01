@@ -116,4 +116,4 @@ async def game_ws_handler(request: Request, ws: Websocket):
     while True:
         data = await ws.recv()
         if data == "lobbycutoff":
-            utils.send_all_playerdata()
+            await utils.send_all_playerdata(game, None)
