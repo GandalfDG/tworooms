@@ -10,9 +10,3 @@ export function wsMessageListener(event) {
     // emit an event so that we know the message came in
     window.dispatchEvent(wsEvent);
 }
-
-export function setSessionCookie(session) {
-    let cookie_str = "session=" + session + ";samesite=lax;"
-    console.log(cookie_str)
-    document.cookie = cookie_str
-}

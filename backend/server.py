@@ -102,8 +102,9 @@ async def join_room_handler(request):
 @app.websocket("ws/game/")
 async def game_ws_handler(request: Request, ws: Websocket):
     # associate this websocket with its game/player
-    logger.warning(request.cookies)
-    session = request.cookies.get('session')
+    data = await ws.recv()
+    logger.warning(data)
+    session = data['session']
 
     roomcode,playername = users[session]
 

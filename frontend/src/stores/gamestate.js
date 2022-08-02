@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { wsMessageListener, setSessionCookie } from '../gamelogic'
+import { wsMessageListener } from '../gamelogic'
 import axios from 'axios'
 
 export function getBackendUrl() {
@@ -39,7 +39,6 @@ export const useGameState = defineStore('gamestate', {
             this.roomcode = response.data.roomcode
             this.playerlist = response.data.playerlist
             this.session = response.data.session
-            setSessionCookie(this.session)
             this.connectWebsocket()
         },
 
@@ -51,14 +50,18 @@ export const useGameState = defineStore('gamestate', {
             this.roomcode = response.data.roomcode
             this.playerlist = response.data.playerlist
             this.session = response.data.session
-            setSessionCookie(this.session)
             this.connectWebsocket()
         },
 
         async connectWebsocket() {
-            let socket = new WebSocket(websocket_url)
-            socket.addEventListener("message", wsMessageListener)
-            this.socket = socket
+            let ws = new WebSocket(websocket_url)
+            ws.addEventListener("message", wsMessageListener)
+            ws.addEventListener("open", ()=>{
+                ws.send(JSON.stringify({
+                    session: this.session
+                }))
+            })
+            this.socket = ws
         },
 
         async sendLobbyCutoffMessage() {
