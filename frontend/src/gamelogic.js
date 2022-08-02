@@ -1,4 +1,4 @@
-import { useGameState } from "./stores/gamestate";
+import { useGameState } from "@/stores/gamestate";
 export const wsEvent = new Event('wsmessage');
 
 export function wsMessageListener(event) {
@@ -12,5 +12,7 @@ export function wsMessageListener(event) {
 }
 
 export function setSessionCookie(session) {
-    document.cookie = "session=" + session + ";samesite=lax;domain=" + import.meta.env.VITE_DOMAIN
+    let cookie_str = "session=" + session + ";samesite=lax;"
+    console.log(cookie_str)
+    document.cookie = cookie_str
 }

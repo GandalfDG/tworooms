@@ -2,16 +2,13 @@ import { defineStore } from 'pinia'
 import { wsMessageListener, setSessionCookie } from '../gamelogic'
 import axios from 'axios'
 
-const ax = axios.create({
-    baseURL: 'http://' + import.meta.env.VITE_BACKEND_HOST + "/api",
-    timeout: 10000,
-    // withCredentials: true
-})
+export function getBackendUrl() {
+    let env_var = import.meta.env.VITE_BACKEND_HOST;
+    console.log(env_var.length > 0 ? env_var : window.location.host)
+    return env_var.length > 0 ? env_var : window.location.host;
+}
 
-console.log(import.meta.env.VITE_BACKEND_URL)
-
-const websocket_url = 'ws://' + import.meta.env.VITE_BACKEND_HOST + '/ws/game'
-
+const websocket_url = 'ws://' + getBackendUrl() + '/ws/game'
 
 export const useGameState = defineStore('gamestate', {
     state: () => (
@@ -25,13 +22,18 @@ export const useGameState = defineStore('gamestate', {
 
             playerdata: {},
 
-            socket: null
+            socket: null,
+            ax: axios.create({
+                baseURL: "http://" + getBackendUrl() + "/api",
+                timeout: 10000,
+                // withCredentials: true
+            })
         }
     ),
 
     actions: {
         async createRoom() {
-            let response = await ax.post('create/', {
+            let response = await this.ax.post('create/', {
                 playername: this.playername
             })
             this.roomcode = response.data.roomcode
@@ -42,7 +44,7 @@ export const useGameState = defineStore('gamestate', {
         },
 
         async joinRoom() {
-            let response = await ax.post('join/', {
+            let response = await this.ax.post('join/', {
                 playername: this.playername,
                 roomcode: this.roomcode
             })

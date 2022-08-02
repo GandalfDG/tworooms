@@ -31,4 +31,5 @@ async function cutoffLobby() {
         <li v-for="player in gamestate.playerlist">{{player}}</li>
     </ul>
     <button @click="cutoffLobby()">cutoff</button>
+    <button v-if="gamestate.ishost" @click="">Start Game</button>
 </template>
