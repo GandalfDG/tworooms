@@ -10,16 +10,18 @@ const forminput = reactive({
     roomcode: ""
 })
 
-function create_game() {
+async function create_game() {
     gamestate.ishost = true
     gamestate.playername = forminput.playername
+    await gamestate.createRoom()
     router.push("/lobby")
 }
 
-function join_game() {
+async function join_game() {
     gamestate.ishost = false
     gamestate.playername = forminput.playername
     gamestate.roomcode = forminput.roomcode
+    await gamestate.joinRoom()
     router.push("/lobby")
 }
 </script>

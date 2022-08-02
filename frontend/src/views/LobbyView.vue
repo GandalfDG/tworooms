@@ -4,15 +4,6 @@ import { onMounted } from 'vue';
 
 const gamestate = useGameState()
 
-onMounted(() => {
-    if(gamestate.ishost) {
-        gamestate.createRoom()
-    }
-    else {
-        gamestate.joinRoom()
-    }
-})
-
 
 </script>
 
@@ -22,4 +13,5 @@ onMounted(() => {
     <ul>
         <li v-for="player in gamestate.playerlist">{{player}}</li>
     </ul>
+    <button v-if="gamestate.ishost" @click="">Start Game</button>
 </template>
