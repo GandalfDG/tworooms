@@ -102,7 +102,7 @@ async def join_room_handler(request):
 @app.websocket("ws/game/")
 async def game_ws_handler(request: Request, ws: Websocket):
     # associate this websocket with its game/player
-    data = await ws.recv()
+    data = json.loads(await ws.recv())
     logger.warning(data)
     session = data['session']
 
@@ -117,5 +117,6 @@ async def game_ws_handler(request: Request, ws: Websocket):
     while True:
         data = await ws.recv()
         if data == "lobbycutoff":
+            logger.warning("cutoff")
             game.place_players()
             await utils.send_all_playerdata(game, None)
