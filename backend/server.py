@@ -22,7 +22,7 @@ users: Dict[str, tuple[str, str]] = {}
 # this will be replaced with redis for "production"
 app.ctx.gamedata = {}
 
-app.static("/assets", "../frontend/dist/assets")
+app.static("/assets", path.abspath("../frontend/dist/assets/"))
 app.static("/favicon.ico", "../frontend/dist/favicon.ico")
 
 # @app.middleware("request")
@@ -41,17 +41,17 @@ app.static("/favicon.ico", "../frontend/dist/favicon.ico")
 async def get_app(request, ext=None):
     return await file(location="../frontend/dist/index.html")
 
-app.add_route(get_app, "/<ext>/")
+app.add_route(get_app, "/<ext>")
 app.add_route(get_app, "/")
 
-@app.get("test/")
+@app.get("/test")
 async def test_handler(request):
     response = text("hello")
     response.cookies['testcookie'] = "testcookie"
     response.cookies['testcookie']['domain'] = ".127.0.0.1"
     return response
 
-@app.post("api/create/")
+@app.post("/api/create")
 async def create_room_handler(request):
     # generate a room code
     roomcode = utils.generate_access_code()
@@ -76,7 +76,7 @@ async def create_room_handler(request):
     return response
 
 
-@app.post("api/join/")
+@app.post("/api/join")
 async def join_room_handler(request):
     roomcode = request.json['roomcode']
     playername = request.json['playername']
@@ -99,7 +99,7 @@ async def join_room_handler(request):
     return response
 
 
-@app.websocket("ws/game/")
+@app.websocket("/ws/game")
 async def game_ws_handler(request: Request, ws: Websocket):
     # associate this websocket with its game/player
     data = json.loads(await ws.recv())
