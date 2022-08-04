@@ -21,6 +21,7 @@ export const useGameState = defineStore('gamestate', {
             playerlist: [],
 
             playerdata: {},
+            roommates: [],
 
             socket: null,
             ax: axios.create({

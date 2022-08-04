@@ -54,12 +54,13 @@ async def notify_all_players(game, message: str):
 async def send_all_playerdata(game, message: str):
     sockets = [player.socket for player in game.players.values() if player.socket]
     playerdata = [{
-        "card": player.card,
-        "start_room": player.start_room
+        "playerdata": {
+            "card": player.card,
+            "start_room": player.start_room
+        },
+        "roommates": [roommate.playername for roommate in game.rooms[player.start_room] if roommate.playername != player.playername]
     } for player in game.players.values() if player.socket]
 
-    awaitables = []
-    for socket, data in zip(sockets, playerdata):
-        awaitables.append(socket.send(dumps(data)))
+    awaitables = [socket.send(dumps(data)) for socket, data in zip(sockets, playerdata)]
 
     await gather(*awaitables)

@@ -18,7 +18,7 @@ onMounted(() => {
 async function cutoffLobby() {
     await gamestate.sendLobbyCutoffMessage();
     // wait for the response to fill in the player data object
-    window.addEventListener("wsmessage", ()=>{router.push('pregame')});
+    window.addEventListener("wsmessage", ()=>{router.push('pregame')}, {once: true});
 }
 
 
@@ -30,6 +30,5 @@ async function cutoffLobby() {
     <ul>
         <li v-for="player in gamestate.playerlist">{{player}}</li>
     </ul>
-    <button @click="cutoffLobby()">cutoff</button>
-    <button v-if="gamestate.ishost" @click="">Start Game</button>
+    <button v-if="gamestate.ishost" @click="cutoffLobby()">Start Game</button>
 </template>

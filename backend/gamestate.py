@@ -20,7 +20,7 @@ class GameRoom():
     def place_players(self):
         self.rooms = utils.shuffle_players(list(self.players.values()))
         for player in self.rooms[0]:
-            player.start_room = "A"
+            player.start_room = 0
 
         for player in self.rooms[1]:
-            player.start_room = "B"
+            player.start_room = 1
