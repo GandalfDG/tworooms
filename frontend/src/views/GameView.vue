@@ -1,18 +1,22 @@
 <script setup>
+import {ref} from 'vue'
 import Card from "@/components/GameCard.vue";
 import Timer from "@/components/Timer.vue";
 
-function clickHandler(text) {
-    console.log(text)
-}
+import {useGameState} from "@/stores/gamestate"
+
+const gamestate = useGameState()
+
+const visibility = ref('none')
 
 </script>
 
 <template>
     <Timer />
-    <Card visibility="full" />
+    <Card v-model:visibility="visibility" />
     <div class="buttoncontainer">
-        <button @click="clickHandler('hello')">hi</button>
-        <button />
+        <button @click="visibility='color'">Color Reveal</button>
+        <button @click="visibility='full'">Full Reveal</button>
+        <button @click="visibility='none'">Hide Card</button>
     </div>
 </template>

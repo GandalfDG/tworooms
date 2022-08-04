@@ -14,10 +14,10 @@ const props = defineProps(["visibility"])
 
 <template>
     <div class="gamecard">
-        <div class="cardface" v-if="props.visibility==='full' || props.visibility==='color'">
-            <div class="vertcenter" v-if="props.visibility==='full'"> <h1 class="cardtitle">{{card.title.toUpperCase()}}</h1></div>
-            <div class="imagecontainer"><img class="cardimage" v-if="props.visibility==='full'" :src="card.image" /></div>
-            <h3 class="carddesc" v-if="props.visibility==='full'">{{card.description}}</h3>
+        <div class="cardface" v-show="props.visibility==='full' || props.visibility==='color'">
+            <div class="vertcenter" v-show="props.visibility==='full'"> <h1 class="cardtitle">{{card.title.toUpperCase()}}</h1></div>
+            <div class="imagecontainer"><img class="cardimage" v-show="props.visibility==='full'" :src="card.image" /></div>
+            <h3 class="carddesc" v-show="props.visibility==='full'">{{card.description}}</h3>
         </div>
     </div>
 </template>
