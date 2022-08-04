@@ -28,13 +28,16 @@ def shuffle_players(players: list) -> tuple[list, list]:
     return room_lists
 
 
-def get_shuffled_card_indices(num_players, seed=None):
+def deal_player_cards(players: list):
     """
     Generate and shuffle a list of card indices
     """
-    indices = [i for i in range(num_players)]
+    indices = list(range(len(players)))
     random.shuffle(indices)
-    return indices
+
+    for player, index in zip(players, indices):
+        player.card = index
+
 
 
 def set_user_cookie() -> str:
