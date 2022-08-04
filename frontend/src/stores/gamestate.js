@@ -40,7 +40,7 @@ export const useGameState = defineStore('gamestate', {
             this.roomcode = response.data.roomcode
             this.playerlist = response.data.playerlist
             this.session = response.data.session
-            await this.connectWebsocket()
+            this.connectWebsocket()
         },
 
         async joinRoom() {
@@ -51,7 +51,7 @@ export const useGameState = defineStore('gamestate', {
             this.roomcode = response.data.roomcode
             this.playerlist = response.data.playerlist
             this.session = response.data.session
-            await this.connectWebsocket()
+            this.connectWebsocket()
         },
 
         async connectWebsocket() {
