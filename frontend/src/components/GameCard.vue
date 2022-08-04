@@ -4,7 +4,7 @@ import placeholderImage from '@/assets/placeholder.png'
 
 const card = reactive({
     title: "president",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi gravida quis arcu nec convallis. Nulla non odio nulla. Suspendisse auctor fermentum leo quis fermentum. Aenean non eros viverra, ultrices risus non, gravida augue. Mauris vehicula enim non commodo feugiat. Vestibulum odio lectus, ultricies sed ornare vel, tincidunt sit amet libero. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus vitae tincidunt est. Nunc vitae magna ullamcorper, eleifend augue non, convallis lorem. Aliquam fermentum libero eu auctor sagittis. Quisque ornare ullamcorper augue, at tristique sem cursus sit amet.",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi gravida quis arcu nec convallis. Nulla non odio nulla. Suspendisse auctor fermentum leo quis fermentum. Aenean non eros viverra, ultrices risus non, gravida augue. Mauris vehicula enim non commodo feugiat. Vestibulum odio lectus, ultricies sed ornare vel, tincidunt sit amet libero. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
     color: "blue",
     image: placeholderImage
 })

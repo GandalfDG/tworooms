@@ -2,6 +2,7 @@
 import router from '../router';
 import {reactive} from 'vue'
 import {useGameState} from '@/stores/gamestate'
+import {onMounted} from 'vue'
 
 const gamestate = useGameState()
 
@@ -10,10 +11,15 @@ const forminput = reactive({
     roomcode: ""
 })
 
+onMounted(()=>{
+    gamestate.$reset()
+})
+
 async function create_game() {
     gamestate.ishost = true
     gamestate.playername = forminput.playername
     await gamestate.createRoom()
+    console.log("awaited")
     router.push("/lobby")
 }
 

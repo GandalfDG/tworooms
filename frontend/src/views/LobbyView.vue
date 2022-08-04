@@ -6,15 +6,6 @@ import {wsEvent} from '@/gamelogic'
 
 const gamestate = useGameState()
 
-onMounted(() => {
-    if(gamestate.ishost) {
-        gamestate.createRoom()
-    }
-    else {
-        gamestate.joinRoom()
-    }
-})
-
 async function cutoffLobby() {
     await gamestate.sendLobbyCutoffMessage();
     // wait for the response to fill in the player data object

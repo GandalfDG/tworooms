@@ -40,7 +40,7 @@ export const useGameState = defineStore('gamestate', {
             this.roomcode = response.data.roomcode
             this.playerlist = response.data.playerlist
             this.session = response.data.session
-            this.connectWebsocket()
+            await this.connectWebsocket()
         },
 
         async joinRoom() {
@@ -51,18 +51,23 @@ export const useGameState = defineStore('gamestate', {
             this.roomcode = response.data.roomcode
             this.playerlist = response.data.playerlist
             this.session = response.data.session
-            this.connectWebsocket()
+            await this.connectWebsocket()
         },
 
         async connectWebsocket() {
-            let ws = new WebSocket(websocket_url)
-            ws.addEventListener("message", wsMessageListener)
-            ws.addEventListener("open", ()=>{
-                ws.send(JSON.stringify({
-                    session: this.session
-                }))
+            let connect_promise = new Promise((resolve, reject) => {
+                let ws = new WebSocket(websocket_url)
+                ws.addEventListener("open", () => {
+                    ws.send(JSON.stringify({
+                        session: this.session
+                    }))
+                    console.log("websocket connected")
+                    resolve()
+                }, {once:true})
+                ws.addEventListener("message", wsMessageListener)
+                this.socket = ws
             })
-            this.socket = ws
+            return connect_promise
         },
 
         async sendLobbyCutoffMessage() {
