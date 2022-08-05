@@ -15,7 +15,13 @@ export function wsMessageListener(event) {
 
     if (msgdata['playerdata']) {
         gamestate.playerdata = msgdata['playerdata']
-        router.push('pregame')
+        if(msgdata['message'] === 'startgame') {
+            router.push('game')
+        }
+        else {
+            router.push('pregame')
+        }
+            
     }
 
     if (msgdata['roommates']) {

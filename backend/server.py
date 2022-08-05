@@ -124,4 +124,4 @@ async def game_ws_handler(request: Request, ws: Websocket):
         elif data == "startgame":
             logger.warning("start game")
             utils.deal_player_cards(game.players.values())
-            await utils.send_all_playerdata(game, None)
+            await utils.send_all_playerdata(game, "startgame")

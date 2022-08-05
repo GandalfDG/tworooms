@@ -61,7 +61,8 @@ async def send_all_playerdata(game, message: str):
             "card": player.card,
             "start_room": player.start_room
         },
-        "roommates": [roommate.playername for roommate in game.rooms[player.start_room] if roommate.playername != player.playername]
+        "roommates": [roommate.playername for roommate in game.rooms[player.start_room] if roommate.playername != player.playername],
+        "message": message
     } for player in game.players.values() if player.socket]
 
     awaitables = [socket.send(dumps(data)) for socket, data in zip(sockets, playerdata)]

@@ -11,7 +11,7 @@ async function startGame() {
 </script>
 
 <template>
-<h1>Make your way to {{gamestate.playerdata.start_room}} to receive your assignment</h1>
+<h1>Make your way to {{gamestate.playerdata.start_room}} to receive your assignment along with</h1>
 <ul>
     <li v-for="player in gamestate.roommates">{{player}}</li>
 </ul>
