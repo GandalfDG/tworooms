@@ -1,6 +1,6 @@
 <script setup>
-import {reactive} from 'vue'
-import placeholderImage from '@/assets/placeholder.png'
+import { reactive, computed } from 'vue'
+import placeholderImage from '@/assets/cardimages/blue_team.png'
 
 const card = reactive({
     title: "president",
@@ -10,29 +10,49 @@ const card = reactive({
 })
 
 const props = defineProps(["visibility"])
+
+const cardColor = computed(() => {
+    let bgcolor = "#ffffff";
+    switch (card.color) {
+        case "blue":
+            bgcolor = "#3e4ea9";
+            break;
+        case "red":
+            bgcolor = "#4f1519";
+            break;
+        case "grey":
+            bgcolor = "#5b5f5f";
+            break;
+    }
+    return bgcolor;
+})
+
 </script>
 
 <template>
     <div class="gamecard">
-        <div class="cardface" v-show="props.visibility==='full' || props.visibility==='color'">
-            <div class="vertcenter" v-show="props.visibility==='full'"> <h1 class="cardtitle">{{card.title.toUpperCase()}}</h1></div>
-            <div class="imagecontainer"><img class="cardimage" v-show="props.visibility==='full'" :src="card.image" /></div>
-            <h3 class="carddesc" v-show="props.visibility==='full'">{{card.description}}</h3>
+        <div class="cardface" :style="{ backgroundColor: cardColor }"
+            v-show="props.visibility === 'full' || props.visibility === 'color'">
+            <div class="vertcenter" v-show="props.visibility === 'full'">
+                <h1 class="cardtitle">{{ card.title.toUpperCase() }}</h1>
+            </div>
+            <div class="imagecontainer"><img class="cardimage" v-show="props.visibility === 'full'" :src="card.image" />
+            </div>
+            <h3 class="carddesc" v-show="props.visibility === 'full'">{{ card.description }}</h3>
         </div>
     </div>
 </template>
 
 <style>
-
 .gamecard {
     box-sizing: border-box;
     border: 1px solid #c4c4c4;
     border-radius: 1.2em;
     height: 35em;
     max-width: 25em;
-    width:25em;
+    width: 25em;
     box-shadow: 0px 1px 4px gray;
-    padding:1em;
+    padding: 1em;
 }
 
 .cardface {
@@ -40,7 +60,7 @@ const props = defineProps(["visibility"])
     flex-direction: column;
     align-items: center;
     border-radius: .4em;
-    background-color: hsl(240, 50%, 56%);
+    background-color: #3e4ea9;
     min-width: 98%;
 }
 
@@ -58,11 +78,11 @@ h3 {
 }
 
 .imagecontainer {
-    height:40%;
+    height: 40%;
 }
 
 .cardimage {
-    width:100%;
+    width: 100%;
     height: 100%;
 }
 
