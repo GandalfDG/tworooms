@@ -26,6 +26,9 @@ export const useGameState = defineStore('gamestate', {
             playerdata: {},
             roommates: [],
 
+            cardset: "basic",
+            card: {},
+
             socket: null,
             ax: axios.create({
                 baseURL: "http://" + getBackendUrl() + "/api",
@@ -73,8 +76,13 @@ export const useGameState = defineStore('gamestate', {
             return connect_promise
         },
 
-        async sendLobbyCutoffMessage() {
-            this.socket.send("lobbycutoff");
+        async sendLobbyCutoffMessage(cardset) {
+            this.socket.send(JSON.stringify({
+                message: "lobbycutoff",
+                data: {
+                    cardset: cardset
+                }
+            }));
         }
     }
 })
