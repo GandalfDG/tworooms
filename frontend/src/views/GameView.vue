@@ -12,8 +12,9 @@ const visibility = ref('none')
 </script>
 
 <template>
-    <Timer />
-    <Card v-model:visibility="visibility" />
+    <h2>The room leader must select {{hostages}} hostage{{hostages>1?'s':''}} in</h2>
+    <Timer/>
+    <Card v-model:visibility="visibility"/>
     <div class="buttoncontainer">
         <button @click="visibility='color'">Color Reveal</button>
         <button @click="visibility='full'">Full Reveal</button>
