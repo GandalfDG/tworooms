@@ -9,9 +9,7 @@ COPY frontend /frontend
 
 WORKDIR /frontend
 
-RUN npm i 
-# && npm run build
-
+RUN npm i && npm run css-build && npm run build
 
 WORKDIR /backend
 USER node
