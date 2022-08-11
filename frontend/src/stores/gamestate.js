@@ -28,6 +28,7 @@ export const useGameState = defineStore('gamestate', {
 
             cardset: "basic",
             card: {},
+            deck: [],
 
             socket: null,
             ax: axios.create({
@@ -82,6 +83,13 @@ export const useGameState = defineStore('gamestate', {
                 data: {
                     cardset: cardset
                 }
+            }));
+        },
+
+        async sendStartGameMessage() {
+            this.socket.send(JSON.stringify({
+                message: "startgame",
+                data: {}
             }));
         }
     }

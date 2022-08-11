@@ -16,6 +16,7 @@ class GameRoom():
         self.joinable: bool = True
         self.players: dict[str, Player] = {host_playername: Player(host_playername)}
         self.rooms: tuple[list[Player], list[Player]] = ([],[])
+        self.cardset: str = "basic"
 
     def place_players(self):
         self.rooms = utils.shuffle_players(list(self.players.values()))

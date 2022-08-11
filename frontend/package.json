@@ -7,7 +7,7 @@
     "build": "vite build",
     "preview": "vite preview --port 4173",
     "test:unit": "vitest --dom",
-    "css-build": "node-sass --omit-source-map-url src/assets/bulma_overrides.scss src/assets/style.css"
+    "css-build": "node-sass --omit-source-map-url src/assets/bulma_overrides.scss src/assets/bulma_style.css"
   },
   "dependencies": {
     "axios": "^0.27.2",

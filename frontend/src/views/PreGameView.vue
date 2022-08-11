@@ -5,7 +5,7 @@ import { useGameState } from '@/stores/gamestate.js';
 const gamestate = useGameState();
 
 async function startGame() {
-    await gamestate.socket.send("startgame")
+    await gamestate.sendStartGameMessage();
 }
 
 </script>

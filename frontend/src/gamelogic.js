@@ -19,9 +19,19 @@ export function wsMessageListener(event) {
         gamestate.playerdata = msgdata['playerdata']
         if(msgdata['message'] === 'startgame') {
             router.push('game')
+            let cardset = msgdata["gamedata"]["cardset"];
+            let num_players = msgdata["gamedata"]["num_players"];
+            gamestate.cardset = cardset;
+            let deck = inflateCardset(cardset, num_players);
+            let card_idx = gamestate['playerdata']['card'];
+            gamestate.deck = deck;
+            gamestate.card = {
+                name: deck[card_idx],
+                data: cardmap[deck[card_idx]]
+            };
         }
         else {
-            router.push('pregame')
+            router.push('pregame');
         }
             
     }
