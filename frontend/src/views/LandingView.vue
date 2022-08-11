@@ -20,7 +20,7 @@ async function create_game() {
 async function join_game() {
     gamestate.ishost = false
     gamestate.playername = forminput.playername
-    gamestate.roomcode = forminput.roomcode
+    gamestate.roomcode = forminput.roomcode.toUpperCase()
     await gamestate.joinRoom()
     router.push("/lobby")
 }

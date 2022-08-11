@@ -7,6 +7,8 @@ import {useGameState} from "@/stores/gamestate"
 
 const gamestate = useGameState()
 
+let cardidx = gamestate.playerdata.card;
+
 const visibility = ref('none')
 
 </script>
