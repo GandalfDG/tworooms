@@ -1,4 +1,4 @@
-export default cardmap = {
+export default {
     president: {
         color: "blue",
         image: "president",

@@ -21,5 +21,9 @@ async function cutoffLobby() {
     <ul>
         <li v-for="player in gamestate.playerlist">{{player}}</li>
     </ul>
+    <h2>Select a card set</h2>
+    <select>
+        <option v-for="cardset in ['simple', 'cool', 'crazy']">{{cardset}}</option>
+    </select>
     <button v-if="gamestate.ishost" @click="cutoffLobby()">Start Game</button>
 </template>
