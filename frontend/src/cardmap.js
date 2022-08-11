@@ -2,7 +2,7 @@ export default cardmap = {
     president: {
         color: "blue",
         image: "president",
-        description: "lipsum",
-        summary: ""
+        description: "lorem ipsum",
+        summary: "lipsum"
     }
 }
