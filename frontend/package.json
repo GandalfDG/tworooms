@@ -6,10 +6,13 @@
     "stackdev": "vite & cd ../tworooms-sanic; sanic --dev -p 1337 server.app",
     "build": "vite build",
     "preview": "vite preview --port 4173",
-    "test:unit": "vitest --dom"
+    "test:unit": "vitest --dom",
+    "css-build": "node-sass --omit-source-map-url src/assets/bulma_overrides.scss src/assets/style.css"
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "bulma": "^0.9.4",
+    "node-sass": "^7.0.1",
     "pinia": "^2.0.14",
     "vue": "^3.2.36",
     "vue-router": "^4.0.15"

@@ -29,7 +29,8 @@
 			"extensions": [
 				"Vue.volar",
 				"ms-python.python",
-				"ZixuanChen.vitest-explorer"
+				"ZixuanChen.vitest-explorer",
+				"syler.sass-indented"
 			]
 		}
 	}

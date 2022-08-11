@@ -29,7 +29,7 @@ async function join_game() {
 <template>
     <label for="name">Your Name:</label>
     <input v-model="forminput.playername">
-    <button @click="create_game()">host game</button>
+    <button class="button" @click="create_game()">host game</button>
     <p>or</p>
     <!-- form input for room code -->
     <label for="roomcode">Room Code:</label>
