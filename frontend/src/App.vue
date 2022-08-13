@@ -5,9 +5,11 @@ import { RouterLink, RouterView } from "vue-router";
 
 <template>
 
-    <div class="columns is-centered has-text-centered">
-        <div class="column">
-            <RouterView></RouterView>
+    <div class="container is-fluid">
+        <div class="columns has-text-centered">
+            <div class="column">
+                <RouterView></RouterView>
+            </div>
         </div>
     </div>
 
