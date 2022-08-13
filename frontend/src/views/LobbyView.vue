@@ -1,35 +1,54 @@
 <script setup>
 import { useGameState } from '@/stores/gamestate'
 import router from '@/router'
-import { onMounted } from 'vue';
-import {wsEvent} from '@/gamelogic'
+import { ref } from 'vue';
+import { wsEvent } from '@/gamelogic'
 import cardsets from '@/cardsets'
 import cardmap from '@/cardmap'
 
 const gamestate = useGameState()
 
+const waiting_for_server = ref(false)
+
 async function cutoffLobby() {
+    waiting_for_server.value = true
     await gamestate.sendLobbyCutoffMessage();
     // wait for the response to fill in the player data object
-    window.addEventListener("wsmessage", ()=> {
-        router.push('pregame'); 
+    window.addEventListener("wsmessage", () => {
+        router.push('pregame');
         // TODO send selected cardset to the server, receive cardset from websocket
         // gamestate.card = cardmap[gamestate.deck[gamestate.playerdata.card]]
-    }, {once: true});
+    }, { once: true });
 }
 
 
 </script>
 
 <template>
-    <h1>Room Code: {{gamestate.roomcode}}</h1>
-    <h2>Players</h2>
-    <ul>
-        <li v-for="player in gamestate.playerlist">{{player}}</li>
-    </ul>
-    <h2>Select a card set</h2>
-    <select v-model="gamestate.cardset">
-        <option v-for="cardset in Object.keys(cardsets)">{{cardset}}</option>
-    </select>
-    <button v-if="gamestate.ishost" @click="cutoffLobby()">Start Game</button>
+    <div class="block">
+        <h1 class="title">Room Code: <span class="has-text-weight-bold">{{ gamestate.roomcode }}</span></h1>
+    </div>
+
+    <div class="block">
+        <h2 class="title is-4 is-underlined">Players</h2>
+        <ul>
+            <li v-for="player in gamestate.playerlist">{{ player }}</li>
+        </ul>
+    </div>
+    <div class="block" v-if="gamestate.ishost">
+        <div class="field">
+            <label class="label">select a card set to play with</label>
+            <div class="select">
+                 <select v-model="gamestate.cardset">
+                    <option v-for="cardset in Object.keys(cardsets)">{{ cardset }}</option>
+                 </select>
+            </div>
+        </div>
+        <div class="field">
+            <p class="control">
+                <button class="button is-link is-large" v-bind:class="{'is-loading':waiting_for_server}" @click="cutoffLobby()">Start Game</button>
+            </p>
+        </div>
+    </div>
+    
 </template>
