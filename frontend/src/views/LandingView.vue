@@ -6,6 +6,7 @@ import { useGameState } from '@/stores/gamestate'
 const gamestate = useGameState()
 
 const toggle_selection = ref("join")
+const waiting_for_server = ref(false)
 
 const forminput = reactive({
     playername: "",
@@ -13,6 +14,7 @@ const forminput = reactive({
 })
 
 async function create_game() {
+    waiting_for_server.value = true
     gamestate.ishost = true
     gamestate.playername = forminput.playername
     await gamestate.createRoom()
@@ -20,6 +22,7 @@ async function create_game() {
 }
 
 async function join_game() {
+    waiting_for_server.value = true
     gamestate.ishost = false
     gamestate.playername = forminput.playername
     gamestate.roomcode = forminput.roomcode.toUpperCase()
@@ -49,12 +52,12 @@ async function join_game() {
         <div class="field">
             <label class="label">Room Code</label>
             <p class="control">
-                <input class="input" type="text" placeholder="XXXX" v-model="forminput.roomcode" v-bind:disabled="toggle_selection!=='join'">
+                <input class="input is-uppercase" type="text" placeholder="XXXX" v-model="forminput.roomcode" v-bind:disabled="toggle_selection!=='join'">
             </p>
         </div>
         <div class="field">
             <p class="control">
-                <button class="button is-link is-large" @click="toggle_selection==='host'?create_game():join_game()">Let's Play!</button>
+                <button class="button is-link is-large" v-bind:class="{'is-loading':waiting_for_server}" @click="toggle_selection==='host'?create_game():join_game()">Let's Play!</button>
             </p>
         </div>
     </div>
