@@ -58,10 +58,12 @@ const rightPlayerColumn = computed(() => {
         </div>
     </div>
     <div class="level">
-        <div class="level-item has-text-centered">
+        <div class="level-item">
+            <p class="pr-3 has-text-grey-light has-text-weight-light">Waiting for players to join</p>
             <div class="bulma-loader-mixin"></div>
         </div>
     </div>
+    <hr>
     <div class="block" v-if="gamestate.ishost">
         <h2 class="title is-4 is-underlined">Game Options</h2>
         <div class="field">

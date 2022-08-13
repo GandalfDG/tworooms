@@ -2,7 +2,7 @@
   "name": "tworooms-vue",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "stackdev": "vite & cd ../tworooms-sanic; sanic --dev -p 1337 server.app",
     "build": "vite build",
     "preview": "vite preview --port 4173",

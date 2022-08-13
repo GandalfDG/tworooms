@@ -32,8 +32,13 @@ async function join_game() {
 </script>
 
 <template>
-    <div class="block">
-        <div class="tabs is-large is-toggle is-centered">
+    <div class="section">
+        <div class="block">
+            <h1 class="title">Welcome to <span class="is-italic is-bold">tworooms.online</span></h1>
+        </div>
+    </div>
+    <div class="box">
+        <div class="tabs is-large is-boxed is-centered">
             <ul>
                 <li v-bind:class="{ 'is-active': toggle_selection === 'host' }" @click="toggle_selection = 'host'">
                     <a>Host</a>
@@ -50,15 +55,27 @@ async function join_game() {
             </p>
         </div>
         <div class="field">
-            <label class="label">Room Code</label>
+            <label class="label" v-bind:class="{'has-text-grey-lighter':toggle_selection==='host'}">Room Code</label>
             <p class="control">
-                <input class="input is-uppercase" type="text" placeholder="XXXX" v-model="forminput.roomcode" v-bind:disabled="toggle_selection!=='join'">
+                <input class="input is-uppercase" type="text" placeholder="XXXX" v-model="forminput.roomcode"
+                    v-bind:disabled="toggle_selection !== 'join'">
             </p>
         </div>
         <div class="field">
             <p class="control">
-                <button class="button is-link is-large" v-bind:class="{'is-loading':waiting_for_server}" @click="toggle_selection==='host'?create_game():join_game()">Let's Play!</button>
+                <button class="button is-link is-large" v-bind:class="{ 'is-loading': waiting_for_server }"
+                    @click="toggle_selection === 'host' ? create_game() : join_game()">Let's Play!</button>
             </p>
         </div>
     </div>
+
+    <footer class="footer">
+        <p>A web implementation of <a href="https://www.tuesdayknightgames.com/tworoomsandaboom/"><span
+                    class="is-italic">Two Rooms and a Boom</span> by Tuesday Knight Games</a></p>
+        <hr>
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License"
+                style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This
+        work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+            Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+    </footer>
 </template>
