@@ -1,9 +1,11 @@
 <script setup>
 import router from '../router';
-import {reactive} from 'vue'
-import {useGameState} from '@/stores/gamestate'
+import { reactive, ref } from 'vue'
+import { useGameState } from '@/stores/gamestate'
 
 const gamestate = useGameState()
+
+const toggle_selection = ref("join")
 
 const forminput = reactive({
     playername: "",
@@ -27,12 +29,33 @@ async function join_game() {
 </script>
 
 <template>
-    <label for="name">Your Name:</label>
-    <input v-model="forminput.playername">
-    <button class="button" @click="create_game()">host game</button>
-    <p>or</p>
-    <!-- form input for room code -->
-    <label for="roomcode">Room Code:</label>
-    <input v-model="forminput.roomcode">
-    <button @click="join_game()">join game</button>
+    <div class="block">
+        <div class="tabs is-large is-toggle is-centered">
+            <ul>
+                <li v-bind:class="{ 'is-active': toggle_selection === 'host' }" @click="toggle_selection = 'host'">
+                    <a>Host</a>
+                </li>
+                <li v-bind:class="{ 'is-active': toggle_selection === 'join' }" @click="toggle_selection = 'join'">
+                    <a>Join</a>
+                </li>
+            </ul>
+        </div>
+        <div class="field">
+            <label class="label">Your Name</label>
+            <p class="control">
+                <input class="input" type="text" placeholder="John Doe" v-model="forminput.playername">
+            </p>
+        </div>
+        <div class="field">
+            <label class="label">Room Code</label>
+            <p class="control">
+                <input class="input" type="text" placeholder="XXXX" v-model="forminput.roomcode" v-bind:disabled="toggle_selection!=='join'">
+            </p>
+        </div>
+        <div class="field">
+            <p class="control">
+                <button class="button is-link is-large" @click="toggle_selection==='host'?create_game():join_game()">Let's Play!</button>
+            </p>
+        </div>
+    </div>
 </template>

@@ -5,25 +5,14 @@ import { RouterLink, RouterView } from "vue-router";
 
 <template>
 
-    <div class="wrapper">
-        <RouterView></RouterView>
+    <div class="columns is-centered has-text-centered">
+        <div class="column">
+            <RouterView></RouterView>
+        </div>
     </div>
 
 </template>
 
 <style>
 @import "@/assets/bulma_style.css";
-
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.buttoncontainer {
-    display: flex;
-}
-
-
 </style>
