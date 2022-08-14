@@ -48,18 +48,21 @@ async function join_game() {
                 </li>
             </ul>
         </div>
-        <div class="field">
-            <label class="label">Your Name</label>
-            <p class="control">
-                <input class="input" type="text" placeholder="John Doe" v-model="forminput.playername">
-            </p>
-        </div>
-        <div class="field">
-            <label class="label" v-bind:class="{'has-text-grey-lighter':toggle_selection==='host'}">Room Code</label>
-            <p class="control">
-                <input class="input is-uppercase" type="text" placeholder="XXXX" v-model="forminput.roomcode"
-                    v-bind:disabled="toggle_selection !== 'join'">
-            </p>
+        <div class="block">
+            <div class="field">
+                <label class="label">Your Name</label>
+                <p class="control">
+                    <input class="input" type="text" placeholder="John Doe" v-model="forminput.playername">
+                </p>
+            </div>
+            <div class="field">
+                <label class="label" v-bind:class="{ 'has-text-grey-lighter': toggle_selection === 'host' }">Room
+                    Code</label>
+                <p class="control">
+                    <input class="input is-uppercase" type="text" placeholder="XXXX" v-model="forminput.roomcode"
+                        v-bind:disabled="toggle_selection !== 'join'">
+                </p>
+            </div>
         </div>
         <div class="field">
             <p class="control">
@@ -69,13 +72,16 @@ async function join_game() {
         </div>
     </div>
 
-    <footer class="footer">
-        <p>A web implementation of <a href="https://www.tuesdayknightgames.com/tworoomsandaboom/"><span
-                    class="is-italic">Two Rooms and a Boom</span> by Tuesday Knight Games</a></p>
-        <hr>
-        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License"
-                style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This
-        work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
-            Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
-    </footer>
+    <div class="section px-0">
+        <footer class="footer">
+            <p>A web implementation of <a href="https://www.tuesdayknightgames.com/tworoomsandaboom/"><span
+                        class="is-italic">Two Rooms and a Boom</span> by Tuesday Knight Games</a></p>
+            <hr>
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img
+                    alt="Creative Commons License" style="border-width:0"
+                    src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This
+            work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+                Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+        </footer>
+    </div>
 </template>

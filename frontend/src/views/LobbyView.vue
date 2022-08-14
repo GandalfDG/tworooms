@@ -42,6 +42,7 @@ const rightPlayerColumn = computed(() => {
         <h1 class="title is-2">Room Code: <span class="has-text-weight-bold">{{ gamestate.roomcode }}</span></h1>
     </div>
 
+    <!-- Player List -->
     <div class="block">
         <h2 class="title is-4 is-underlined">Players</h2>
         <div class="columns is-mobile">
@@ -63,11 +64,25 @@ const rightPlayerColumn = computed(() => {
             <div class="bulma-loader-mixin"></div>
         </div>
     </div>
+
     <hr>
+
+    <!-- Game Options -->
     <div class="block" v-if="gamestate.ishost">
         <h2 class="title is-4 is-underlined">Game Options</h2>
         <div class="field">
-            <label class="label">select a card set to play with</label>
+            <label class="label">Select number of rounds to play</label>
+            <label class="radio">
+                <input type="radio" name="rounds" value="3" v-model="gamestate.num_rounds">
+                3 Rounds
+            </label>
+            <label class="radio">
+                <input type="radio" name="rounds" value="5" v-model="gamestate.num_rounds">
+                5 Rounds
+            </label>
+        </div>
+        <div class="field">
+            <label class="label">Select a card set to play with</label>
             <div class="select">
                 <select v-model="gamestate.cardset">
                     <option v-for="cardset in Object.keys(cardsets)">{{ cardset }}</option>

@@ -26,6 +26,7 @@ export const useGameState = defineStore('gamestate', {
             playerdata: {},
             roommates: [],
 
+            num_rounds: "3",
             cardset: "basic",
             card: {},
             deck: [],
