@@ -7,7 +7,7 @@ import { RouterLink, RouterView } from "vue-router";
 
     <div class="container is-fluid">
         <div class="columns has-text-centered">
-            <div class="column is-4 is-offset-4">
+            <div class="column is-4 is-offset-4" style="height:100vh">
                 <RouterView></RouterView>
             </div>
         </div>

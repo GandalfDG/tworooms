@@ -38,63 +38,74 @@ const rightPlayerColumn = computed(() => {
 </script>
 
 <template>
-    <div class="block">
-        <h1 class="title is-2">Room Code: <span class="has-text-weight-bold">{{ gamestate.roomcode }}</span></h1>
-    </div>
+    <div class="is-flex is-flex-direction-column" style="height:100vh">
+        <div class="block">
+            <h1 class="title is-3">Room Code: <span class="has-text-weight-bold">{{ gamestate.roomcode }}</span></h1>
+        </div>
 
-    <!-- Player List -->
-    <div class="block">
-        <h2 class="title is-4 is-underlined">Players</h2>
-        <div class="columns is-mobile">
-            <div class="column">
-                <ul class="has-text-centered">
-                    <li v-for="player in leftPlayerColumn">{{player}}</li>
-                </ul>
+        <!-- Player List -->
+        <div class="block is-flex-shrink-1" style="overflow:auto">
+            <h2 class="title is-4 is-underlined">Players</h2>
+            <div class="columns is-mobile">
+                <div class="column">
+                    <ul class="has-text-centered">
+                        <li v-for="player in leftPlayerColumn">{{ player }}</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <ul class="has-text-centered">
+                        <li v-for="player in rightPlayerColumn">{{ player }}</li>
+                    </ul>
+                </div>
             </div>
-            <div class="column">
-                <ul class="has-text-centered">
-                    <li v-for="player in rightPlayerColumn">{{player}}</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="level">
-        <div class="level-item">
-            <p class="pr-3 has-text-grey-light has-text-weight-light">Waiting for players to join</p>
-            <div class="bulma-loader-mixin"></div>
-        </div>
-    </div>
-
-    <hr>
-
-    <!-- Game Options -->
-    <div class="block" v-if="gamestate.ishost">
-        <h2 class="title is-4 is-underlined">Game Options</h2>
-        <div class="field">
-            <label class="label">Select number of rounds to play</label>
-            <label class="radio">
-                <input type="radio" name="rounds" value="3" v-model="gamestate.num_rounds">
-                3 Rounds
-            </label>
-            <label class="radio">
-                <input type="radio" name="rounds" value="5" v-model="gamestate.num_rounds">
-                5 Rounds
-            </label>
-        </div>
-        <div class="field">
-            <label class="label">Select a card set to play with</label>
-            <div class="select">
-                <select v-model="gamestate.cardset">
-                    <option v-for="cardset in Object.keys(cardsets)">{{ cardset }}</option>
-                </select>
+            <div class="level">
+                <div class="level-item">
+                    <p class="pr-3 has-text-grey-light has-text-weight-light">Waiting for players to join</p>
+                    <div class="bulma-loader-mixin"></div>
+                </div>
             </div>
         </div>
-        <div class="field">
-            <p class="control">
-                <button class="button is-link is-large" v-bind:class="{'is-loading':waiting_for_server}"
-                    @click="cutoffLobby()">Start Game</button>
-            </p>
+
+        <hr v-if="gamestate.ishost">
+
+        <!-- Game Options -->
+        <div class="block box" v-if="gamestate.ishost">
+            <h2 class="title is-4 is-underlined">Game Options</h2>
+            <div class="field">
+                <label class="label">Select number of rounds to play</label>
+                <label class="radio">
+                    <input type="radio" name="rounds" value="3" v-model="gamestate.num_rounds">
+                    3 Rounds
+                </label>
+                <label class="radio">
+                    <input type="radio" name="rounds" value="5" v-model="gamestate.num_rounds">
+                    5 Rounds <span class="has-text-weight-light">(10+ Players)</span>
+                </label>
+            </div>
+            <div class="field">
+                <label class="label">Select a card set to play with</label>
+                <div class="columns is-mobile is-gapless is-vcentered">
+                    <div class="column">
+                        <div class="select is-medium">
+                            <select v-model="gamestate.cardset">
+                                <option v-for="cardset in Object.keys(cardsets)">
+                                    {{ cardset }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="column has-text-weight-light">
+                        <p class="has-text-left">{{ cardsets[gamestate.cardset].description }}</p>
+                    </div>
+                </div>
+                <div class="field">
+                    <p class="control">
+                        <button class="button is-link is-large" v-bind:class="{ 'is-loading': waiting_for_server }"
+                            @click="cutoffLobby()">Start Game</button>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
-
 </template>
