@@ -44,29 +44,23 @@ const rightPlayerColumn = computed(() => {
         </div>
 
         <!-- Player List -->
-        <div class="block is-flex-shrink-1" style="overflow:auto">
-            <h2 class="title is-4 is-underlined">Players</h2>
-            <div class="columns is-mobile">
-                <div class="column">
-                    <ul class="has-text-centered">
-                        <li v-for="player in leftPlayerColumn">{{ player }}</li>
-                    </ul>
-                </div>
-                <div class="column">
-                    <ul class="has-text-centered">
-                        <li v-for="player in rightPlayerColumn">{{ player }}</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="level">
-                <div class="level-item">
-                    <p class="pr-3 has-text-grey-light has-text-weight-light">Waiting for players to join</p>
-                    <div class="bulma-loader-mixin"></div>
-                </div>
+        <h2 class="title is-4 is-underlined">Players</h2>
+        <div class="is-flex-shrink-1" style="overflow:auto">
+            <div class="is-flex is-flex-direction-row is-justify-content-space-around">
+                <ul class="has-text-left">
+                    <li v-for="player in leftPlayerColumn">{{ player }}</li>
+                </ul>
+                <ul class="has-text-left">
+                    <li v-for="player in rightPlayerColumn">{{ player }}</li>
+                </ul>
             </div>
         </div>
-
-        <hr v-if="gamestate.ishost">
+        <div class="level">
+            <div class="level-item">
+                <p class="pr-3 has-text-grey-light has-text-weight-light">Waiting for players to join</p>
+                <div class="bulma-loader-mixin"></div>
+            </div>
+        </div>
 
         <!-- Game Options -->
         <div class="block box" v-if="gamestate.ishost">
