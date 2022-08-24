@@ -5,6 +5,7 @@ import { ref, computed } from 'vue';
 import { wsEvent } from '@/gamelogic'
 import cardsets from '@/cardsets'
 import cardmap from '@/cardmap'
+import ColumnList from '../components/ColumnList.vue';
 
 
 const gamestate = useGameState()
@@ -22,18 +23,6 @@ async function cutoffLobby() {
     }, { once: true });
 }
 
-const leftPlayerColumn = computed(() => {
-    return gamestate.playerlist.filter((element, index) => {
-        return index % 2 === 0;
-    })
-})
-
-const rightPlayerColumn = computed(() => {
-    return gamestate.playerlist.filter((element, index) => {
-        return index % 2 !== 0;
-    })
-})
-
 
 </script>
 
@@ -46,14 +35,7 @@ const rightPlayerColumn = computed(() => {
         <!-- Player List -->
         <h2 class="title is-4 is-underlined">Players</h2>
         <div class="is-flex-shrink-1" style="overflow:auto">
-            <div class="is-flex is-flex-direction-row is-justify-content-space-around">
-                <ul class="has-text-left">
-                    <li v-for="player in leftPlayerColumn">{{ player }}</li>
-                </ul>
-                <ul class="has-text-left">
-                    <li v-for="player in rightPlayerColumn">{{ player }}</li>
-                </ul>
-            </div>
+            <ColumnList :list="gamestate.playerlist" :columns="2"></ColumnList>
         </div>
         <div class="level">
             <div class="level-item">

@@ -4,7 +4,7 @@ import placeholderImage from '@/assets/cardimages/blue_team.png'
 
 const card = reactive({
     title: "president",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi gravida quis arcu nec convallis. Nulla non odio nulla. Suspendisse auctor fermentum leo quis fermentum. Aenean non eros viverra, ultrices risus non, gravida augue. Mauris vehicula enim non commodo feugiat. Vestibulum odio lectus, ultricies sed ornare vel, tincidunt sit amet libero. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi gravida quis arcu nec convallis. Nulla non odio nulla. Suspendisse auctor fermentum leo quis fermentum. ",
     color: "blue",
     image: placeholderImage
 })
@@ -30,15 +30,17 @@ const cardColor = computed(() => {
 </script>
 
 <template>
-    <div class="gamecard">
+    <div class="gamecard box">
         <div class="cardface" :style="{ backgroundColor: cardColor }"
             v-show="props.visibility === 'full' || props.visibility === 'color'">
             <div class="vertcenter" v-show="props.visibility === 'full'">
-                <h1 class="cardtitle">{{ card.title.toUpperCase() }}</h1>
+                <h1 class="cardtitle title">{{ card.title.toUpperCase() }}</h1>
             </div>
-            <div class="imagecontainer"><img class="cardimage" v-show="props.visibility === 'full'" :src="card.image" />
+            <div class="imagecontainer">
+                <figure class="image is-1by2"><img class="cardimage image" v-show="props.visibility === 'full'"
+                        :src="card.image" /></figure>
             </div>
-            <h3 class="carddesc" v-show="props.visibility === 'full'">{{ card.description }}</h3>
+            <h3 class="carddesc has-text-left" v-show="props.visibility === 'full'">{{ card.description }}</h3>
         </div>
     </div>
 </template>
@@ -46,28 +48,24 @@ const cardColor = computed(() => {
 <style>
 .gamecard {
     box-sizing: border-box;
-    border: 1px solid #c4c4c4;
-    border-radius: 1.2em;
     height: 35em;
-    max-width: 25em;
-    width: 25em;
-    box-shadow: 0px 1px 4px gray;
-    padding: 1em;
 }
 
 .cardface {
     height: 100%;
     flex-direction: column;
     align-items: center;
-    border-radius: .4em;
     background-color: #3e4ea9;
     min-width: 98%;
 }
 
-h1.cardtitle,
-h3 {
+.cardtitle,
+.carddesc {
     color: white;
-    height: 10%;
+}
+
+.cardtitle {
+    rotate: 90deg;
 }
 
 .vertcenter {
@@ -79,16 +77,10 @@ h3 {
 
 .imagecontainer {
     height: 40%;
-}
-
-.cardimage {
-    width: 100%;
-    height: 100%;
+    width: 60%;
 }
 
 .carddesc {
-    padding: 2%;
-    height: 50%;
     overflow: auto;
 }
 </style>

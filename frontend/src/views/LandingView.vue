@@ -40,11 +40,11 @@ async function join_game() {
     <div class="box">
         <div class="tabs is-large is-boxed is-centered">
             <ul>
-                <li v-bind:class="{ 'is-active': toggle_selection === 'host' }" @click="toggle_selection = 'host'">
-                    <a>Host</a>
-                </li>
                 <li v-bind:class="{ 'is-active': toggle_selection === 'join' }" @click="toggle_selection = 'join'">
                     <a>Join</a>
+                </li>
+                <li v-bind:class="{ 'is-active': toggle_selection === 'host' }" @click="toggle_selection = 'host'">
+                    <a>Host</a>
                 </li>
             </ul>
         </div>
