@@ -28,13 +28,13 @@ async function cutoffLobby() {
 
 <template>
     <div class="is-flex is-flex-direction-column" style="height:100vh">
-        <div class="block">
+        <div class="block mt-5">
             <h1 class="title is-3">Room Code: <span class="has-text-weight-bold">{{ gamestate.roomcode }}</span></h1>
         </div>
 
         <!-- Player List -->
         <h2 class="title is-4 is-underlined">Players</h2>
-        <div class="is-flex-shrink-1" style="overflow:auto">
+        <div class="is-flex-shrink-1 is-flex-grow-1" style="overflow:auto">
             <ColumnList :list="gamestate.playerlist" :columns="2"></ColumnList>
         </div>
         <div class="level">
@@ -45,7 +45,7 @@ async function cutoffLobby() {
         </div>
 
         <!-- Game Options -->
-        <div class="block box" v-if="gamestate.ishost">
+        <div class="block box mb-5" v-if="gamestate.ishost">
             <h2 class="title is-4 is-underlined">Game Options</h2>
             <div class="field">
                 <label class="label">Select number of rounds to play</label>
