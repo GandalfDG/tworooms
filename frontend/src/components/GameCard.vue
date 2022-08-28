@@ -1,19 +1,18 @@
 <script setup>
 import { reactive, computed } from 'vue'
+import { getBackendUrl } from '../stores/gamestate';
+import cardmap from '@/cardmap'
 import placeholderImage from '@/assets/cardimages/blue_team.png'
 
-const card = reactive({
-    title: "president",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi gravida quis arcu nec convallis. Nulla non odio nulla. Suspendisse auctor fermentum leo quis fermentum. ",
-    color: "blue",
-    image: placeholderImage
+
+const props = defineProps({
+    visibility: String,
+    cardname: String
 })
 
-const props = defineProps(["visibility"])
-
-const cardColor = computed(() => {
+function cardColorCode(color) {
     let bgcolor = "#ffffff";
-    switch (card.color) {
+    switch (color) {
         case "blue":
             bgcolor = "#3e4ea9";
             break;
@@ -25,22 +24,30 @@ const cardColor = computed(() => {
             break;
     }
     return bgcolor;
+}
+
+const cardProperties = computed(() => {
+    let carddata = cardmap[props.cardname];
+    carddata.cardname = props.cardname;
+    carddata.colorcode = cardColorCode(carddata.color);
+    carddata.imageurl = new URL(`/assets/cardimages/${carddata.image}.png`, `http://${getBackendUrl()}`);
+    return carddata;
 })
 
 </script>
 
 <template>
     <div class="gamecard box">
-        <div class="cardface" :style="{ backgroundColor: cardColor }"
+        <div class="cardface" :style="{ backgroundColor: cardProperties.colorcode }"
             v-show="props.visibility === 'full' || props.visibility === 'color'">
             <div class="vertcenter" v-show="props.visibility === 'full'">
-                <h1 class="cardtitle title">{{ card.title.toUpperCase() }}</h1>
+                <h1 class="cardtitle title">{{ cardProperties.cardname.toUpperCase() }}</h1>
             </div>
             <div class="imagecontainer">
                 <figure class="image is-1by2"><img class="cardimage image" v-show="props.visibility === 'full'"
-                        :src="card.image" /></figure>
+                        :src="cardProperties.imageurl" /></figure>
             </div>
-            <h3 class="carddesc has-text-left" v-show="props.visibility === 'full'">{{ card.description }}</h3>
+            <h3 class="carddesc has-text-left" v-show="props.visibility === 'full'">{{ cardProperties.description }}</h3>
         </div>
     </div>
 </template>
