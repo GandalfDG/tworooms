@@ -2,7 +2,7 @@
 import { reactive, computed } from 'vue'
 import { getBackendUrl } from '../stores/gamestate';
 import cardmap from '@/cardmap'
-import placeholderImage from '@/assets/cardimages/blue_team.png'
+import placeholderImage from '/cardimages/blue_team.png'
 
 
 const props = defineProps({
@@ -30,7 +30,7 @@ const cardProperties = computed(() => {
     let carddata = cardmap[props.cardname];
     carddata.cardname = props.cardname;
     carddata.colorcode = cardColorCode(carddata.color);
-    carddata.imageurl = new URL(`/assets/cardimages/${carddata.image}.png`, `http://${getBackendUrl()}`);
+    carddata.imageurl = new URL(`/cardimages/${carddata.image}.png`, `http://${getBackendUrl()}`);
     return carddata;
 })
 

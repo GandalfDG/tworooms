@@ -23,6 +23,7 @@ users: Dict[str, tuple[str, str]] = {}
 app.ctx.gamedata = {}
 
 app.static("/assets", path.abspath("../frontend/dist/assets/"))
+app.static("/cardimages", path.abspath("../frontend/dist/cardimages/"))
 app.static("/favicon.png", "../frontend/dist/favicon.png")
 
 # @app.middleware("request")
