@@ -36,16 +36,16 @@ async function cutoffLobby() {
         <h2 class="title is-4 is-underlined">Players</h2>
         <div class="is-flex-shrink-1 is-flex-grow-1" style="overflow:auto">
             <ColumnList :list="gamestate.playerlist" :columns="2"></ColumnList>
-        </div>
-        <div class="level">
-            <div class="level-item">
-                <p class="pr-3 has-text-grey-light has-text-weight-light">Waiting for players to join</p>
-                <div class="bulma-loader-mixin"></div>
+            <div class="level mt-3">
+                <div class="level-item">
+                    <p class="pr-3 has-text-grey-light has-text-weight-light">Waiting for players to join</p>
+                    <div class="bulma-loader-mixin"></div>
+                </div>
             </div>
         </div>
 
         <!-- Game Options -->
-        <div class="block box mb-5" v-if="gamestate.ishost">
+        <div class="block box mb-6" v-if="gamestate.ishost">
             <h2 class="title is-4 is-underlined">Game Options</h2>
             <div class="field">
                 <label class="label">Select number of rounds to play</label>
