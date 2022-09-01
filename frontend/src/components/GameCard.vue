@@ -41,25 +41,16 @@ const cardProperties = computed(() => {
         <div class="cardface" :style="{ backgroundColor: cardProperties.colorcode }"
             v-show="props.visibility === 'full' || props.visibility === 'color'">
             <div class="cardgrid">
-                <!-- <div class="imagecontainer"> -->
-                    <img class="cardimage" v-show="props.visibility === 'full'" :src="cardProperties.imageurl" />
-                <!-- </div> -->
-                <div class="rotated">
+
+                <img class="cardimage" v-show="props.visibility === 'full'" :src="cardProperties.imageurl" />
+
+                <div class="rotated mt-3 mr-3">
                     <h1 class="cardtitle title has-text-left is-size-1">{{ cardProperties.cardname.toUpperCase() }}</h1>
-                    <p class="has-text-left carddesc">summary text</p>
+                    <p class="has-text-left carddesc mt-1">{{cardProperties.summary}}</p>
                 </div>
-                <h3 class="carddesc has-text-left" v-show="props.visibility === 'full'">{{ cardProperties.description }}
+                <h3 class="carddesc has-text-left mx-2 mt-2" v-show="props.visibility === 'full'">{{ cardProperties.description }}
                 </h3>
             </div>
-            <!-- <div class="vertcenter" v-show="props.visibility === 'full'">
-                <h1 class="cardtitle title">{{ cardProperties.cardname.toUpperCase() }}</h1>
-            </div>
-            <div class="imagecontainer">
-                <figure class="image is-1by2"><img class="cardimage image" v-show="props.visibility === 'full'"
-                        :src="cardProperties.imageurl" /></figure>
-            </div>
-            <h3 class="carddesc has-text-left" v-show="props.visibility === 'full'">{{ cardProperties.description }}
-            </h3> -->
         </div>
     </div>
 </template>
@@ -95,6 +86,10 @@ const cardProperties = computed(() => {
 .cardtitle,
 .carddesc {
     color: white;
+}
+
+.carddesc {
+    grid-column: 1/3;
 }
 
 .rotated {

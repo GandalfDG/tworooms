@@ -2,8 +2,8 @@ export default {
     president: {
         color: "blue",
         image: "president",
-        description: "lorem ipsum",
-        summary: "lipsum"
+        description: "You are a primary character. Blue Team wins if you do not gain the \"dead\" condition.",
+        summary: "avoid the bomber"
     },
     bomber: {
         color: "red",
