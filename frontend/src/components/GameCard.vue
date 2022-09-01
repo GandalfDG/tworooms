@@ -41,9 +41,10 @@ const cardProperties = computed(() => {
         <div class="cardface" :style="{ backgroundColor: cardProperties.colorcode }"
             v-show="props.visibility === 'full' || props.visibility === 'color'">
             <div class="cardgrid">
-                <figure class="image is-1by2"><img class="cardimage image" v-show="props.visibility === 'full'"
-                        :src="cardProperties.imageurl" /></figure>
-                <div class="rotated pt-3 pr-3">
+                <!-- <div class="imagecontainer"> -->
+                    <img class="cardimage" v-show="props.visibility === 'full'" :src="cardProperties.imageurl" />
+                <!-- </div> -->
+                <div class="rotated">
                     <h1 class="cardtitle title has-text-left is-size-1">{{ cardProperties.cardname.toUpperCase() }}</h1>
                     <p class="has-text-left carddesc">summary text</p>
                 </div>
@@ -79,8 +80,16 @@ const cardProperties = computed(() => {
 
 .cardgrid {
     display: grid;
+    height: 100%;
     grid-template-columns: 2fr 1fr;
-    grid-template-rows: 4fr 1fr;
+    grid-template-rows: 3fr 1fr;
+}
+
+.cardimage {
+    width: 100%;
+    height: 100%;
+    object-position: left top;
+    object-fit: contain;
 }
 
 .cardtitle,
@@ -100,8 +109,8 @@ const cardProperties = computed(() => {
 }
 
 .imagecontainer {
-    height: 40%;
-    width: 60%;
+    height: 100%;
+    width: 100%;
 }
 
 .carddesc {
