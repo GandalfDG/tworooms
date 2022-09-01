@@ -43,9 +43,9 @@ const cardProperties = computed(() => {
             <div class="cardgrid">
                 <figure class="image is-1by2"><img class="cardimage image" v-show="props.visibility === 'full'"
                         :src="cardProperties.imageurl" /></figure>
-                <div class="rotated">
+                <div class="rotated pt-3 pr-3">
                     <h1 class="cardtitle title has-text-left is-size-1">{{ cardProperties.cardname.toUpperCase() }}</h1>
-                    <p class="has-text-left">summary text</p>
+                    <p class="has-text-left carddesc">summary text</p>
                 </div>
                 <h3 class="carddesc has-text-left" v-show="props.visibility === 'full'">{{ cardProperties.description }}
                 </h3>
