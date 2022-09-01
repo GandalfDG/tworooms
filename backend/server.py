@@ -23,7 +23,8 @@ users: Dict[str, tuple[str, str]] = {}
 app.ctx.gamedata = {}
 
 app.static("/assets", path.abspath("../frontend/dist/assets/"))
-app.static("/favicon.ico", "../frontend/dist/favicon.ico")
+app.static("/cardimages", path.abspath("../frontend/dist/cardimages/"))
+app.static("/favicon.png", "../frontend/dist/favicon.png")
 
 # @app.middleware("request")
 # async def player_room_middleware(request):
@@ -116,12 +117,16 @@ async def game_ws_handler(request: Request, ws: Websocket):
     logger.warning(playername)
     while True:
         data = await ws.recv()
-        if data == "lobbycutoff":
-            logger.warning("cutoff")
-            game.place_players()
-            await utils.send_all_playerdata(game, None)
-        
-        elif data == "startgame":
-            logger.warning("start game")
-            utils.deal_player_cards(game.players.values())
-            await utils.send_all_playerdata(game, "startgame")
+        try:
+            msgobj = json.loads(data)
+            if msgobj["message"] == "lobbycutoff":
+                logger.warning("cutoff")
+                game.place_players()
+                await utils.send_game_data_to_players(game, None)
+            
+            elif msgobj["message"] == "startgame":
+                logger.warning("start game")
+                utils.deal_player_cards(game.players.values())
+                await utils.send_game_data_to_players(game, "startgame")
+        except json.JSONDecodeError as er:
+            logger.error(er)

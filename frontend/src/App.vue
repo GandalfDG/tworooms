@@ -5,25 +5,16 @@ import { RouterLink, RouterView } from "vue-router";
 
 <template>
 
-    <div class="wrapper">
-        <RouterView></RouterView>
+    <div class="container is-fluid">
+        <div class="columns has-text-centered">
+            <div class="column is-4 is-offset-4" style="height:100vh">
+                <RouterView></RouterView>
+            </div>
+        </div>
     </div>
 
 </template>
 
 <style>
-@import "@/assets/base.css";
-
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.buttoncontainer {
-    display: flex;
-}
-
-
+@import "@/assets/bulma_style.css";
 </style>

@@ -4,8 +4,11 @@ import axios from 'axios'
 
 export function getBackendUrl() {
     let env_var = import.meta.env.VITE_BACKEND_HOST;
-    console.log(env_var.length > 0 ? env_var : window.location.host)
-    return env_var.length > 0 ? env_var : window.location.host;
+    if(env_var) {
+        console.log(env_var.length > 0 ? env_var : window.location.host)
+        return env_var.length > 0 ? env_var : window.location.host;
+    }
+    return window.location.host;
 }
 
 const websocket_url = 'ws://' + getBackendUrl() + '/ws/game'
@@ -22,6 +25,11 @@ export const useGameState = defineStore('gamestate', {
 
             playerdata: {},
             roommates: [],
+
+            num_rounds: "3",
+            cardset: "basic",
+            card: {},
+            deck: [],
 
             socket: null,
             ax: axios.create({
@@ -70,8 +78,20 @@ export const useGameState = defineStore('gamestate', {
             return connect_promise
         },
 
-        async sendLobbyCutoffMessage() {
-            this.socket.send("lobbycutoff");
+        async sendLobbyCutoffMessage(cardset) {
+            this.socket.send(JSON.stringify({
+                message: "lobbycutoff",
+                data: {
+                    cardset: cardset
+                }
+            }));
+        },
+
+        async sendStartGameMessage() {
+            this.socket.send(JSON.stringify({
+                message: "startgame",
+                data: {}
+            }));
         }
     }
 })

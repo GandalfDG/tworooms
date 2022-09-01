@@ -28,7 +28,9 @@
 		"vscode": {
 			"extensions": [
 				"Vue.volar",
-				"ms-python.python"
+				"ms-python.python",
+				"ZixuanChen.vitest-explorer",
+				"syler.sass-indented"
 			]
 		}
 	}

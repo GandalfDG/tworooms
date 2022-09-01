@@ -1,19 +1,18 @@
 <script setup>
 import { reactive, computed } from 'vue'
-import placeholderImage from '@/assets/cardimages/blue_team.png'
+import { getBackendUrl } from '../stores/gamestate';
+import cardmap from '@/cardmap'
+import placeholderImage from '/cardimages/blue_team.png'
 
-const card = reactive({
-    title: "president",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi gravida quis arcu nec convallis. Nulla non odio nulla. Suspendisse auctor fermentum leo quis fermentum. Aenean non eros viverra, ultrices risus non, gravida augue. Mauris vehicula enim non commodo feugiat. Vestibulum odio lectus, ultricies sed ornare vel, tincidunt sit amet libero. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-    color: "blue",
-    image: placeholderImage
+
+const props = defineProps({
+    visibility: String,
+    cardname: String
 })
 
-const props = defineProps(["visibility"])
-
-const cardColor = computed(() => {
+function cardColorCode(color) {
     let bgcolor = "#ffffff";
-    switch (card.color) {
+    switch (color) {
         case "blue":
             bgcolor = "#3e4ea9";
             break;
@@ -25,20 +24,33 @@ const cardColor = computed(() => {
             break;
     }
     return bgcolor;
+}
+
+const cardProperties = computed(() => {
+    let carddata = cardmap[props.cardname];
+    carddata.cardname = props.cardname;
+    carddata.colorcode = cardColorCode(carddata.color);
+    carddata.imageurl = new URL(`/cardimages/${carddata.image}.png`, `http://${getBackendUrl()}`);
+    return carddata;
 })
 
 </script>
 
 <template>
-    <div class="gamecard">
-        <div class="cardface" :style="{ backgroundColor: cardColor }"
+    <div class="gamecard box">
+        <div class="cardface" :style="{ backgroundColor: cardProperties.colorcode }"
             v-show="props.visibility === 'full' || props.visibility === 'color'">
-            <div class="vertcenter" v-show="props.visibility === 'full'">
-                <h1 class="cardtitle">{{ card.title.toUpperCase() }}</h1>
+            <div class="cardgrid">
+
+                <img class="cardimage" v-show="props.visibility === 'full'" :src="cardProperties.imageurl" />
+
+                <div class="rotated mt-3 mr-3">
+                    <h1 class="cardtitle title has-text-left is-size-1">{{ cardProperties.cardname.toUpperCase() }}</h1>
+                    <p class="has-text-left carddesc mt-1">{{cardProperties.summary}}</p>
+                </div>
+                <h3 class="carddesc has-text-left mx-2 mt-2" v-show="props.visibility === 'full'">{{ cardProperties.description }}
+                </h3>
             </div>
-            <div class="imagecontainer"><img class="cardimage" v-show="props.visibility === 'full'" :src="card.image" />
-            </div>
-            <h3 class="carddesc" v-show="props.visibility === 'full'">{{ card.description }}</h3>
         </div>
     </div>
 </template>
@@ -46,28 +58,42 @@ const cardColor = computed(() => {
 <style>
 .gamecard {
     box-sizing: border-box;
-    border: 1px solid #c4c4c4;
-    border-radius: 1.2em;
     height: 35em;
-    max-width: 25em;
-    width: 25em;
-    box-shadow: 0px 1px 4px gray;
-    padding: 1em;
 }
 
 .cardface {
     height: 100%;
     flex-direction: column;
     align-items: center;
-    border-radius: .4em;
     background-color: #3e4ea9;
     min-width: 98%;
 }
 
-h1.cardtitle,
-h3 {
+.cardgrid {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 3fr 1fr;
+}
+
+.cardimage {
+    width: 100%;
+    height: 100%;
+    object-position: left top;
+    object-fit: contain;
+}
+
+.cardtitle,
+.carddesc {
     color: white;
-    height: 10%;
+}
+
+.carddesc {
+    grid-column: 1/3;
+}
+
+.rotated {
+    writing-mode: vertical-rl;
 }
 
 .vertcenter {
@@ -78,17 +104,11 @@ h3 {
 }
 
 .imagecontainer {
-    height: 40%;
-}
-
-.cardimage {
-    width: 100%;
     height: 100%;
+    width: 100%;
 }
 
 .carddesc {
-    padding: 2%;
-    height: 50%;
     overflow: auto;
 }
 </style>

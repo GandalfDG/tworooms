@@ -2,14 +2,18 @@
   "name": "tworooms-vue",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "stackdev": "vite & cd ../tworooms-sanic; sanic --dev -p 1337 server.app",
     "build": "vite build",
     "preview": "vite preview --port 4173",
-    "test:unit": "vitest --environment jsdom"
+    "test:unit": "vitest --dom",
+    "css-build": "node-sass --omit-source-map-url src/assets/bulma_overrides.scss src/assets/bulma_style.css",
+    "css-watch": "npm run css-build -- --watch"
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "bulma": "^0.9.4",
+    "node-sass": "^7.0.1",
     "pinia": "^2.0.14",
     "vue": "^3.2.36",
     "vue-router": "^4.0.15"
@@ -20,10 +24,11 @@
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/test-utils": "^2.0.0",
     "cypress": "^10.3.1",
+    "happy-dom": "^6.0.4",
     "jsdom": "^19.0.0",
     "prettier": "^2.5.1",
     "start-server-and-test": "^1.14.0",
     "vite": "^2.9.9",
-    "vitest": "^0.13.0"
+    "vitest": "^0.21.1"
   }
 }

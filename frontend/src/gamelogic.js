@@ -1,5 +1,7 @@
 import { useGameState } from "@/stores/gamestate";
 import router from '@/router'
+import cardmap from '@/cardmap'
+import cardsets from '@/cardsets'
 
 export const wsEvent = new Event('wsmessage');
 
@@ -17,9 +19,19 @@ export function wsMessageListener(event) {
         gamestate.playerdata = msgdata['playerdata']
         if(msgdata['message'] === 'startgame') {
             router.push('game')
+            let cardset = msgdata["gamedata"]["cardset"];
+            let num_players = msgdata["gamedata"]["num_players"];
+            gamestate.cardset = cardset;
+            let deck = inflateCardset(cardset, num_players);
+            let card_idx = gamestate['playerdata']['card'];
+            gamestate.deck = deck;
+            gamestate.card = {
+                name: deck[card_idx],
+                data: cardmap[deck[card_idx]]
+            };
         }
         else {
-            router.push('pregame')
+            router.push('pregame');
         }
             
     }
@@ -30,4 +42,19 @@ export function wsMessageListener(event) {
 
     // emit an event so that we know the message came in
     window.dispatchEvent(wsEvent);
+}
+
+export function inflateCardset(cardset, num_players) {
+    let inflated = ["president", "bomber"];
+    let set = cardsets[cardset];
+    inflated = inflated.concat(set.core)
+    if (num_players % 2 !== 0) {
+        inflated.push(set['extra']);
+    }
+    while (inflated.length < num_players) {
+        inflated.push("blue_team");
+        inflated.push("red_team");
+    }
+
+    return inflated;
 }
