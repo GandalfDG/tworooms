@@ -40,14 +40,25 @@ const cardProperties = computed(() => {
     <div class="gamecard box">
         <div class="cardface" :style="{ backgroundColor: cardProperties.colorcode }"
             v-show="props.visibility === 'full' || props.visibility === 'color'">
-            <div class="vertcenter" v-show="props.visibility === 'full'">
+            <div class="cardgrid">
+                <figure class="image is-1by2"><img class="cardimage image" v-show="props.visibility === 'full'"
+                        :src="cardProperties.imageurl" /></figure>
+                <div class="rotated">
+                    <h1 class="cardtitle title has-text-left is-size-1">{{ cardProperties.cardname.toUpperCase() }}</h1>
+                    <p class="has-text-left">summary text</p>
+                </div>
+                <h3 class="carddesc has-text-left" v-show="props.visibility === 'full'">{{ cardProperties.description }}
+                </h3>
+            </div>
+            <!-- <div class="vertcenter" v-show="props.visibility === 'full'">
                 <h1 class="cardtitle title">{{ cardProperties.cardname.toUpperCase() }}</h1>
             </div>
             <div class="imagecontainer">
                 <figure class="image is-1by2"><img class="cardimage image" v-show="props.visibility === 'full'"
                         :src="cardProperties.imageurl" /></figure>
             </div>
-            <h3 class="carddesc has-text-left" v-show="props.visibility === 'full'">{{ cardProperties.description }}</h3>
+            <h3 class="carddesc has-text-left" v-show="props.visibility === 'full'">{{ cardProperties.description }}
+            </h3> -->
         </div>
     </div>
 </template>
@@ -66,13 +77,19 @@ const cardProperties = computed(() => {
     min-width: 98%;
 }
 
+.cardgrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 4fr 1fr;
+}
+
 .cardtitle,
 .carddesc {
     color: white;
 }
 
-.cardtitle {
-    rotate: 90deg;
+.rotated {
+    writing-mode: vertical-rl;
 }
 
 .vertcenter {
