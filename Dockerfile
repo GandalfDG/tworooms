@@ -13,15 +13,15 @@ WORKDIR /frontend
 
 RUN npm i && npm run css-build && npm run build
 
-WORKDIR /backend
-USER node
-
 
 FROM python as serve
 RUN pip3 install sanic sanic-cors
 
 COPY --from=build /frontend/dist /frontend/dist
 COPY --from=build /backend /backend
+
+
+WORKDIR /backend
 
 ENV PORT=1337
 
