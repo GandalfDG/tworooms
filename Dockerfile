@@ -20,7 +20,7 @@ USER node
 FROM python as serve
 RUN pip3 install sanic sanic-cors
 
-COPY --from=build /fontend/dist /frontend/dist
+COPY --from=build /frontend/dist /frontend/dist
 COPY --from=build /backend /backend
 
 ENV PORT=1337
