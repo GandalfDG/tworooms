@@ -40,7 +40,7 @@ const cardProperties = computed(() => {
     <div class="gamecard box">
         <div class="cardface" :style="{ backgroundColor: cardProperties.colorcode }"
             v-show="props.visibility === 'full' || props.visibility === 'color'">
-            <div class="cardgrid">
+            <div class="cardgrid" v-show="props.visibility === 'full'">
 
                 <img class="cardimage" v-show="props.visibility === 'full'" :src="cardProperties.imageurl" />
 
