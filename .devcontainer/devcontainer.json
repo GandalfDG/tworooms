@@ -33,5 +33,6 @@
 				"syler.sass-indented"
 			]
 		}
-	}
+	},
+    "build": {"target": "dev"}
 }
