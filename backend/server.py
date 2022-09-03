@@ -7,6 +7,7 @@ from sanic.log import logger
 from uuid import uuid4 as uuid
 from os import environ
 import json
+import datetime
 
 from gamestate import *
 import utils
@@ -128,5 +129,10 @@ async def game_ws_handler(request: Request, ws: Websocket):
                 logger.warning("start game")
                 utils.deal_player_cards(game.players.values())
                 await utils.send_game_data_to_players(game, "startgame")
+
+            elif msgobj["message"] == "startround":
+                logger.info("starting round")
+                await utils.send_game_data_to_players(game, "startround")
+
         except json.JSONDecodeError as er:
             logger.error(er)

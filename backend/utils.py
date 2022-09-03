@@ -2,6 +2,7 @@ from uuid import uuid4 as uuid
 import random
 from asyncio import gather
 from json import dumps
+import datetime
 
 CODE_LENGTH = 4
 
@@ -59,7 +60,8 @@ async def send_game_data_to_players(game, message: str):
     playerdata = [{
         "gamedata": {
             "cardset": game.cardset,
-            "num_players": len(game.players)
+            "num_players": len(game.players),
+            "timestamp": datetime.datetime.now(datetime.timezone.utc).timestamp() 
         },
         "playerdata": {
             "card": player.card,
