@@ -28,7 +28,7 @@ function cardColorCode(color) {
 
 const cardProperties = computed(() => {
     let carddata = cardmap[props.cardname];
-    carddata.cardname = props.cardname;
+    carddata.cardname = props.cardname.replace("_", " ");
     carddata.colorcode = cardColorCode(carddata.color);
     carddata.imageurl = new URL(`/cardimages/${carddata.image}.png`, `http://${getBackendUrl()}`);
     return carddata;
@@ -58,7 +58,8 @@ const cardProperties = computed(() => {
 <style>
 .gamecard {
     box-sizing: border-box;
-    height: 35em;
+    width: 100%;
+    aspect-ratio: 5/7;
 }
 
 .cardface {
@@ -66,7 +67,6 @@ const cardProperties = computed(() => {
     flex-direction: column;
     align-items: center;
     background-color: #3e4ea9;
-    min-width: 98%;
 }
 
 .cardgrid {
