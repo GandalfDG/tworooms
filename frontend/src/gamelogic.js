@@ -5,6 +5,39 @@ import cardsets from '@/cardsets'
 
 export const wsEvent = new Event('wsmessage');
 
+const round_grid = [
+    {
+        min_players: 6,
+        max_players: 10,
+        max_rounds: 3,
+        hostages: [1, 1, 1]
+    },
+    {
+        min_players: 11,
+        max_players: 13,
+        max_rounds: 5,
+        hostages: [2, 2, 1, 1, 1]
+    },
+    {
+        min_players: 14,
+        max_players: 17,
+        max_rounds: 5,
+        hostages: [3, 2, 2, 1, 1]
+    },
+    {
+        min_players: 18,
+        max_players: 21,
+        max_rounds: 5,
+        hostages: [4, 3, 2, 1, 1]
+    },
+    {
+        min_players: 22,
+        max_players: Number.POSITIVE_INFINITY,
+        max_rounds: 5,
+        hostages: [2, 2, 1, 1, 1]
+    },
+]
+
 export function wsMessageListener(event) {
     // big-ish case statement here for different messages
     let gamestate = useGameState();
