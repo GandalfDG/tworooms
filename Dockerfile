@@ -8,6 +8,7 @@ USER node
 
 
 FROM dev as build
+USER node
 COPY backend /backend
 COPY frontend /frontend
 
