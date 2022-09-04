@@ -2,25 +2,36 @@
 import { reactive, computed, watch } from 'vue'
 import { START_LOCATION } from 'vue-router';
 
+const update_rate_ms = 100;
+
 const props = defineProps({
     duration: Number,
     paused: Boolean
-})
+});
+
+const emit = defineEmits(["timeElapsed"]);
 
 const time = reactive({
     start_time: 0, //new Date().getTime(),
     seconds_remaining: 0,
-})
+    running: false
+});
 
-const update_rate_ms = 100
 
 function update_time() {
-    let current_time = new Date().getTime()
-    time.seconds_remaining = props.duration - ((current_time - time.start_time) / 1000)
+    let current_time = new Date().getTime();
+    time.seconds_remaining = props.duration - ((current_time - time.start_time) / 1000);
+    if(time.seconds_remaining <= 0) {
+        time.seconds_remaining = 0;
+        time_elapsed();
+    }
 }
 
 function time_elapsed() {
-    // when time is up, route to the round end or game end screens
+    // emit an event to notify the parent component of the time elapsing
+    emit("timeElapsed");
+    clearInterval(timer_interval);
+    console.log("timer elapsed");
 }
 
 const timestring = computed(() => {

@@ -10,7 +10,7 @@ const visibility = ref("full")
 
 //Timer
 
-const duration = ref(60)
+const duration = ref(10)
 const paused = ref(true)
 
 </script>
