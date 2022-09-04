@@ -4,6 +4,8 @@ from asyncio import gather
 from json import dumps
 import datetime
 
+from gamestate import GameRoom
+
 CODE_LENGTH = 4
 
 random.seed()
@@ -16,18 +18,6 @@ def generate_access_code() -> str:
         code += random.choice(possible)
 
     return code.upper()
-
-
-def shuffle_players(players: list) -> tuple[list, list]:
-    """
-    Generate and shuffle a list of length num_players split between room 1 and 2
-    """
-    playercopy = players.copy()
-    random.shuffle(playercopy)
-    room_lists = (playercopy[:int(len(playercopy)/2)],
-                  playercopy[int(len(playercopy)/2):])
-    return room_lists
-
 
 def deal_player_cards(players: list):
     """
@@ -50,17 +40,18 @@ def set_user_cookie() -> str:
     return identifier
 
 
-async def notify_all_players(game, message: str):
+async def notify_all_players(game: GameRoom, message: str):
     sockets = [player.socket for player in game.players.values() if player.socket]
     awaitables = [socket.send(message) for socket in sockets]
     await gather(*awaitables)
 
-async def send_game_data_to_players(game, message: str):
+async def send_game_data_to_players(game: GameRoom, message: str):
     sockets = [player.socket for player in game.players.values() if player.socket]
     playerdata = [{
         "gamedata": {
             "cardset": game.cardset,
             "num_players": len(game.players),
+            "num_rounds": game.num_rounds,
             "timestamp": datetime.datetime.now(datetime.timezone.utc).timestamp() 
         },
         "playerdata": {

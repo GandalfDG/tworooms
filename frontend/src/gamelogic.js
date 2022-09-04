@@ -65,6 +65,7 @@ export function wsMessageListener(event) {
         }
         else {
             router.push('pregame');
+            gamestate.num_rounds = msgdata["gamedata"]["num_rounds"];
         }
             
     }

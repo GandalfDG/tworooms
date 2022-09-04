@@ -123,6 +123,7 @@ async def game_ws_handler(request: Request, ws: Websocket):
             if msgobj["message"] == "lobbycutoff":
                 logger.warning("cutoff")
                 game.place_players()
+                game.num_rounds = int(msgobj["data"]["rounds"])
                 await utils.send_game_data_to_players(game, None)
             
             elif msgobj["message"] == "startgame":

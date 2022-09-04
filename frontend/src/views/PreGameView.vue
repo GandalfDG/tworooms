@@ -17,7 +17,7 @@ async function startGame() {
     <ul>
         <li v-for="player in gamestate.roommates">{{ player }}</li>
     </ul>
-    <div class="field">
+    <div class="field" v-if="gamestate.ishost">
         <p class="control">
             <button class="button is-link is-large" @click="startGame()">Start Game</button>
         </p>

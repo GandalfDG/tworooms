@@ -82,7 +82,8 @@ export const useGameState = defineStore('gamestate', {
             this.socket.send(JSON.stringify({
                 message: "lobbycutoff",
                 data: {
-                    cardset: cardset
+                    cardset: cardset,
+                    rounds: this.num_rounds
                 }
             }));
         },
@@ -90,7 +91,8 @@ export const useGameState = defineStore('gamestate', {
         async sendStartGameMessage() {
             this.socket.send(JSON.stringify({
                 message: "startgame",
-                data: {}
+                data: {
+                }
             }));
         }
     }
