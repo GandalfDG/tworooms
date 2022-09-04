@@ -18,7 +18,7 @@ RUN chown -R node /frontend /backend
 USER node
 WORKDIR /frontend
 
-RUN npm i && npm run css-build && npm run build
+RUN npm i && npm run test:unit && npm run css-build && npm run build
 
 
 FROM python as serve

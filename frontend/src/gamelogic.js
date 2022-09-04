@@ -10,7 +10,7 @@ const round_grid = [
         min_players: 6,
         max_players: 10,
         max_rounds: 3,
-        hostages: [1, 1, 1]
+        hostages: [0, 0, 1, 1, 1]
     },
     {
         min_players: 11,
@@ -34,9 +34,30 @@ const round_grid = [
         min_players: 22,
         max_players: Number.POSITIVE_INFINITY,
         max_rounds: 5,
-        hostages: [2, 2, 1, 1, 1]
+        hostages: [5, 4, 3, 2, 1]
     },
 ]
+
+export function getRoundDuration(current_round, num_rounds) {
+    const duration_array = [5,4,3,2,1];
+    let duration = 0;
+    if(num_rounds === 3) {
+        current_round += 2;
+    }
+
+    duration = duration_array[current_round - 1] * 60; //timer duration in seconds
+    return duration;
+}
+
+export function getRoundHostages(current_round, num_rounds, num_players) {
+    let game_rules = round_grid.filter((item) => {
+        return (num_players >= item.min_players && num_players <= item.max_players);
+    })[0];
+    if(num_rounds === 3) {
+        current_round += 2;
+    }
+    return game_rules.hostages[current_round - 1];
+}
 
 export function wsMessageListener(event) {
     // big-ish case statement here for different messages
