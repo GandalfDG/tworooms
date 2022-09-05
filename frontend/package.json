@@ -6,7 +6,7 @@
     "stackdev": "vite & cd ../tworooms-sanic; sanic --dev -p 1337 server.app",
     "build": "vite build",
     "preview": "vite preview --port 4173",
-    "test:unit": "vitest --dom",
+    "test:unit": "vitest run --dom",
     "css-build": "node-sass --omit-source-map-url src/assets/bulma_overrides.scss src/assets/bulma_style.css",
     "css-watch": "npm run css-build -- --watch"
   },
