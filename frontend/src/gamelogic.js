@@ -7,7 +7,8 @@ export const wsEvent = new Event('wsmessage');
 
 const round_grid = [
     {
-        min_players: 6,
+        // min_players: 6,
+        min_players: 1,
         max_players: 10,
         max_rounds: 3,
         hostages: [0, 0, 1, 1, 1]

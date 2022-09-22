@@ -31,6 +31,7 @@ export const useGameState = defineStore('gamestate', {
             card: {},
             deck: [],
 
+            current_round: "1",
             socket: null,
             ax: axios.create({
                 baseURL: "http://" + getBackendUrl() + "/api",

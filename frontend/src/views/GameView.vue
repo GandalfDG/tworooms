@@ -1,13 +1,16 @@
 <script setup>
-import {ref} from 'vue'
+import {ref, computed} from 'vue'
 import Card from "@/components/GameCard.vue";
 import Timer from "@/components/Timer.vue";
 
+import { getRoundHostages } from '@/gamelogic';
 import {useGameState} from "@/stores/gamestate"
 
 const gamestate = useGameState()
 
-let cardidx = gamestate.playerdata.card;
+const hostages = computed(()=>{
+    return getRoundHostages(gamestate.current_round, gamestate.num_rounds, gamestate.playerlist.length)
+})
 
 const visibility = ref('none')
 
