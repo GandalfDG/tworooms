@@ -26,12 +26,13 @@ export const useGameState = defineStore('gamestate', {
             playerdata: {},
             roommates: [],
 
-            num_rounds: "3",
+            num_rounds: 3,
             cardset: "basic",
             card: {},
             deck: [],
 
-            current_round: "1",
+            current_round: 1,
+            start_timestamp: 0,
             socket: null,
             ax: axios.create({
                 baseURL: "http://" + getBackendUrl() + "/api",

@@ -5,6 +5,8 @@ import Timer from "@/components/Timer.vue";
 
 import { getRoundHostages } from '@/gamelogic';
 import {useGameState} from "@/stores/gamestate"
+import { getRoundDuration } from '@/gamelogic';
+import router from '@/router';
 
 const gamestate = useGameState()
 
@@ -12,13 +14,21 @@ const hostages = computed(()=>{
     return getRoundHostages(gamestate.current_round, gamestate.num_rounds, gamestate.playerlist.length)
 })
 
+const round_duration = computed(()=>{
+    return getRoundDuration(gamestate.current_round, gamestate.num_rounds);
+})
+
 const visibility = ref('none')
+
+function round_ended() {
+    router.push()
+}
 
 </script>
 
 <template>
     <h2>The room leader must select {{hostages}} hostage{{hostages>1?'s':''}} in</h2>
-    <Timer/>
+    <Timer :duration=round_duration :paused=false :start-timestamp=gamestate.start_timestamp @time-elapsed=round_ended() />
     <Card v-model:visibility="visibility" v-model:cardname="gamestate.card.name"/>
     <div class="buttoncontainer">
         <button @click="visibility='color'">Color Reveal</button>

@@ -57,7 +57,7 @@ export function getRoundHostages(current_round, num_rounds, num_players) {
     if(num_rounds === 3) {
         current_round += 2;
     }
-    return game_rules.hostages[current_round - 1];
+    return game_rules ? game_rules.hostages[current_round - 1] : round_grid[0].hostages[current_round - 1];
 }
 
 export function wsMessageListener(event) {
@@ -84,6 +84,8 @@ export function wsMessageListener(event) {
                 name: deck[card_idx],
                 data: cardmap[deck[card_idx]]
             };
+            gamestate.current_round = 1; 
+            gamestate.start_timestamp = msgdata["gamedata"]["timestamp"]
         }
         else {
             router.push('pregame');

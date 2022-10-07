@@ -1,20 +1,25 @@
 <script setup>
-import { reactive, computed, watch } from 'vue'
+import { reactive, computed, watch, onMounted } from 'vue'
 import { START_LOCATION } from 'vue-router';
 
 const update_rate_ms = 100;
 
 const props = defineProps({
     duration: Number,
-    paused: Boolean
+    paused: Boolean,
+    startTimestamp: Number
 });
 
 const emit = defineEmits(["timeElapsed"]);
 
 const time = reactive({
-    start_time: 0, //new Date().getTime(),
-    seconds_remaining: 0,
-    running: false
+    start_time: new Date(props.startTimestamp).getTime(), //new Date().getTime(),
+    seconds_remaining: props.duration,
+    running: true
+});
+
+onMounted(()=>{
+    timer_interval = setInterval(() => { update_time() }, update_rate_ms);
 });
 
 

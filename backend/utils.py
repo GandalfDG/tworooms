@@ -52,7 +52,7 @@ async def send_game_data_to_players(game: GameRoom, message: str):
             "cardset": game.cardset,
             "num_players": len(game.players),
             "num_rounds": game.num_rounds,
-            "timestamp": datetime.datetime.now(datetime.timezone.utc).timestamp() 
+            "timestamp": datetime.datetime.now(datetime.timezone.utc).timestamp() * 1000 # javascript expect milliseconds 
         },
         "playerdata": {
             "card": player.card,
