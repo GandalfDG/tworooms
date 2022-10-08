@@ -130,9 +130,9 @@ async def game_ws_handler(request: Request, ws: Websocket):
                 utils.deal_player_cards(game.players.values())
                 await utils.send_game_data_to_players(game, "startgame")
 
-            elif msgobj["message"] == "startround":
-                logger.info("starting round")
-                await utils.send_game_data_to_players(game, "startround")
+            elif msgobj["message"] == "nextround":
+                logger.info("next round")
+                await utils.send_game_data_to_players(game, "nextround")
 
         except json.JSONDecodeError as er:
             logger.error(er)

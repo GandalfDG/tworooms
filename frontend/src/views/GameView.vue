@@ -21,14 +21,14 @@ const round_duration = computed(()=>{
 const visibility = ref('none')
 
 function round_ended() {
-    router.push()
+    router.push('betweenround');
 }
 
 </script>
 
 <template>
     <h2>The room leader must select {{hostages}} hostage{{hostages>1?'s':''}} in</h2>
-    <Timer :duration=round_duration :paused=false :start-timestamp=gamestate.start_timestamp @time-elapsed=round_ended() />
+    <Timer :duration=round_duration :paused=false :start-timestamp=gamestate.start_timestamp @time-elapsed="round_ended()" />
     <Card v-model:visibility="visibility" v-model:cardname="gamestate.card.name"/>
     <div class="buttoncontainer">
         <button @click="visibility='color'">Color Reveal</button>

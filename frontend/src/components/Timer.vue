@@ -1,8 +1,10 @@
 <script setup>
 import { reactive, computed, watch, onMounted } from 'vue'
 import { START_LOCATION } from 'vue-router';
+import { useGameState } from '../stores/gamestate';
 
 const update_rate_ms = 100;
+const gamestate = useGameState();
 
 const props = defineProps({
     duration: Number,
@@ -26,6 +28,9 @@ onMounted(()=>{
 function update_time() {
     let current_time = new Date().getTime();
     time.seconds_remaining = props.duration - ((current_time - time.start_time) / 1000);
+    if(gamestate.debug.timer_debug) {
+        time.seconds_remaining = 0;
+    }
     if(time.seconds_remaining <= 0) {
         time.seconds_remaining = 0;
         time_elapsed();

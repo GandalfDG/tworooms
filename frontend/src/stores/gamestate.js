@@ -38,7 +38,12 @@ export const useGameState = defineStore('gamestate', {
                 baseURL: "http://" + getBackendUrl() + "/api",
                 timeout: 10000,
                 // withCredentials: true
-            })
+            }),
+
+
+            debug: {
+                timer_debug: false
+            }
         }
     ),
 
@@ -95,6 +100,13 @@ export const useGameState = defineStore('gamestate', {
                 message: "startgame",
                 data: {
                 }
+            }));
+        },
+
+        async startNextRound() {
+            this.socket.send(JSON.stringify({
+                message: "nextround",
+                data: {}
             }));
         }
     }

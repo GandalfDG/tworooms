@@ -8,7 +8,7 @@ let hostages = getRoundHostages(gamestate.current_round, gamestate.num_rounds,
     gamestate.playerlist.length)
 
 function nextRound() {
-    
+    gamestate.startNextRound();
 }
 
 </script>
