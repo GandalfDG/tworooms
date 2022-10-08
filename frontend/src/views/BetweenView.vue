@@ -7,6 +7,10 @@ const gamestate = useGameState();
 let hostages = getRoundHostages(gamestate.current_round, gamestate.num_rounds,
     gamestate.playerlist.length)
 
+function nextRound() {
+    
+}
+
 </script>
 
 <template>
@@ -16,10 +20,10 @@ let hostages = getRoundHostages(gamestate.current_round, gamestate.num_rounds,
     </div>
     <!-- <ul>
         <li v-for="player in gamestate.roommates">{{ player }}</li>
-    </ul>
+    </ul> -->
     <div class="field" v-if="gamestate.ishost">
         <p class="control">
-            <button class="button is-link is-large" @click="startGame()">Start Game</button>
+            <button class="button is-link is-large" @click="nextRound()">Next Round</button>
         </p>
-    </div> -->
+    </div>
 </template>

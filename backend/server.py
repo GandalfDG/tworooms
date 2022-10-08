@@ -23,9 +23,9 @@ users: Dict[str, tuple[str, str]] = {}
 # this will be replaced with redis for "production"
 app.ctx.gamedata = {}
 
-app.static("/assets", path.abspath("../frontend/dist/assets/"))
-app.static("/cardimages", path.abspath("../frontend/dist/cardimages/"))
-app.static("/favicon.png", "../frontend/dist/favicon.png")
+app.static("/assets", path.abspath("../frontend/dist/assets/"), name="assets")
+app.static("/cardimages", path.abspath("../frontend/dist/cardimages/"), name="cardimages")
+app.static("/favicon.png", "../frontend/dist/favicon.png", name="favicon")
 
 # @app.middleware("request")
 # async def player_room_middleware(request):
@@ -43,7 +43,6 @@ app.static("/favicon.png", "../frontend/dist/favicon.png")
 async def get_app(request, ext=None):
     return await file(location="../frontend/dist/index.html")
 
-app.add_route(get_app, "/<ext>")
 app.add_route(get_app, "/")
 
 @app.get("/test")
