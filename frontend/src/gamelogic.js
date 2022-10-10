@@ -85,11 +85,12 @@ export function wsMessageListener(event) {
                 data: cardmap[deck[card_idx]]
             };
             gamestate.current_round = 1; 
-            gamestate.start_timestamp = msgdata["gamedata"]["timestamp"]
+            gamestate.start_timestamp = msgdata["gamedata"]["timestamp"];
         }
         else if (msgdata['message'] === 'nextround') {
             router.push('game');
             gamestate.current_round++;
+            gamestate.start_timestamp = msgdata["gamedata"]["timestamp"];
         }
         else {
             router.push('pregame');

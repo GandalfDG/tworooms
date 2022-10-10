@@ -21,7 +21,12 @@ const round_duration = computed(()=>{
 const visibility = ref('none')
 
 function round_ended() {
-    router.push('betweenround');
+    if(gamestate.current_round === gamestate.num_rounds) {
+        router.push('gameover');
+    }
+    else {
+        router.push('betweenround');
+    }
 }
 
 </script>
