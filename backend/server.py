@@ -14,17 +14,25 @@ import utils
 
 from os import path
 
-app = Sanic("tworooms")
-CORS(app)
+CORS_ORIGINS = [r"https?://(?:www\.)?tworooms.online"]
 
-games: Dict[str,GameRoom] = {}
+app = Sanic("tworooms")
+print(app.debug)
+if True:
+    CORS_ORIGINS.extend([r"https?://localhost:\d*", r"https?://127.0.0.1:\d*"])
+
+print(CORS_ORIGINS)
+CORS(app, origins=CORS_ORIGINS)
+
+games: Dict[str, GameRoom] = {}
 users: Dict[str, tuple[str, str]] = {}
 
 # this will be replaced with redis for "production"
 app.ctx.gamedata = {}
 
 app.static("/assets", path.abspath("../frontend/dist/assets/"), name="assets")
-app.static("/cardimages", path.abspath("../frontend/dist/cardimages/"), name="cardimages")
+app.static("/cardimages",
+           path.abspath("../frontend/dist/cardimages/"), name="cardimages")
 app.static("/favicon.png", "../frontend/dist/favicon.png", name="favicon")
 
 # @app.middleware("request")
@@ -40,10 +48,12 @@ app.static("/favicon.png", "../frontend/dist/favicon.png", name="favicon")
 #             player = game.players[playername]
 #             request.ctx.player = player
 
+
 async def get_app(request, ext=None):
     return await file(location="../frontend/dist/index.html")
 
 app.add_route(get_app, "/")
+
 
 @app.get("/test")
 async def test_handler(request):
@@ -51,6 +61,7 @@ async def test_handler(request):
     response.cookies['testcookie'] = "testcookie"
     response.cookies['testcookie']['domain'] = ".127.0.0.1"
     return response
+
 
 @app.post("/api/create")
 async def create_room_handler(request):
@@ -63,10 +74,10 @@ async def create_room_handler(request):
     playername = request.json["playername"]
     games[roomcode] = GameRoom(roomcode, playername)
     current_game = games[roomcode]
-    response_json =         {
-            "roomcode": roomcode,
-            "playerlist": [playername for playername in current_game.players.keys()]
-        }
+    response_json = {
+        "roomcode": roomcode,
+        "playerlist": [playername for playername in current_game.players.keys()]
+    }
 
     identifier = utils.set_user_cookie()
     response_json["session"] = identifier
@@ -85,10 +96,10 @@ async def join_room_handler(request):
     current_game = games[roomcode]
     current_game.players[playername] = Player(playername)
     playerlist = [playername for playername in current_game.players.keys()]
-    response_json =         {
-            "roomcode": roomcode,
-            "playerlist": [playername for playername in current_game.players.keys()]
-        }
+    response_json = {
+        "roomcode": roomcode,
+        "playerlist": [playername for playername in current_game.players.keys()]
+    }
 
     identifier = utils.set_user_cookie()
     response_json["session"] = identifier
@@ -107,7 +118,7 @@ async def game_ws_handler(request: Request, ws: Websocket):
     logger.warning(data)
     session = data['session']
 
-    roomcode,playername = users[session]
+    roomcode, playername = users[session]
 
     game = games[roomcode]
     player = game.players[playername]
@@ -118,33 +129,34 @@ async def game_ws_handler(request: Request, ws: Websocket):
     while True:
         data = await ws.recv()
         try:
+            timestamp = datetime.datetime.now(datetime.timezone.utc).timestamp() * 1000 # javascript expect milliseconds 
             msgobj = json.loads(data)
             if msgobj["message"] == "lobbycutoff":
                 logger.warning("cutoff")
                 game.place_players()
                 game.num_rounds = int(msgobj["data"]["rounds"])
                 await utils.send_game_data_to_players(game, None)
-            
+
             elif msgobj["message"] == "startgame":
                 logger.warning("start game")
                 utils.deal_player_cards(game.players.values())
-                await utils.send_game_data_to_players(game, "startgame")
+                await utils.send_game_data_to_players(game, "startgame", timestamp)
 
             elif msgobj["message"] == "nextround":
                 logger.info("next round")
-                await utils.send_game_data_to_players(game, "nextround")
+                await utils.send_game_data_to_players(game, "nextround", timestamp)
 
             elif msgobj["message"] == "resetgame":
                 logger.info("game over, resetting")
-                await utils.send_game_data_to_players(game, "resetgame")
-                
+                await utils.send_game_data_to_players(game, "resetgame", timestamp)
+
                 # purge the users and games dictionaries of the ending games
-                game_user_keys = [key for key, value in users.items() if value[0] == game.roomcode]
+                game_user_keys = [
+                    key for key, value in users.items() if value[0] == game.roomcode]
                 for key in game_user_keys:
                     users.pop(key, None)
 
                 games.pop(game, None)
-
 
         except json.JSONDecodeError as er:
             logger.error(er)
