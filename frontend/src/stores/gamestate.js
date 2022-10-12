@@ -108,6 +108,15 @@ export const useGameState = defineStore('gamestate', {
                 message: "nextround",
                 data: {}
             }));
+        },
+
+        async resetGame() {
+            this.socket.send(JSON.stringify({
+                message: "resetgame",
+                data: {}
+            }));
+            this.socket.close();
+            
         }
     }
 })
