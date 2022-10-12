@@ -30,7 +30,8 @@
 				"Vue.volar",
 				"ms-python.python",
 				"ZixuanChen.vitest-explorer",
-				"syler.sass-indented"
+				"syler.sass-indented",
+                "dbaeumer.vscode-eslint"
 			]
 		}
 	},

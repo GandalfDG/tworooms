@@ -1,54 +1,52 @@
 <script setup>
-import { reactive, computed } from 'vue'
-import { getBackendUrl } from '../stores/gamestate';
+import { computed } from 'vue'
+import { getBackendUrl } from '../stores/gamestate'
 import cardmap from '@/cardmap'
-import placeholderImage from '/cardimages/blue_team.png'
-
 
 const props = defineProps({
-    visibility: String,
-    cardname: String
+  visibility: String,
+  cardname: String
 })
 
-function cardColorCode(color) {
-    let bgcolor = "#ffffff";
-    switch (color) {
-        case "blue":
-            bgcolor = "#3e4ea9";
-            break;
-        case "red":
-            bgcolor = "#4f1519";
-            break;
-        case "grey":
-            bgcolor = "#5b5f5f";
-            break;
-    }
-    return bgcolor;
+function cardColorCode (color) {
+  let bgcolor = '#ffffff'
+  switch (color) {
+    case 'blue':
+      bgcolor = '#3e4ea9'
+      break
+    case 'red':
+      bgcolor = '#4f1519'
+      break
+    case 'grey':
+      bgcolor = '#5b5f5f'
+      break
+  }
+  return bgcolor
 }
 
-function imageBgColor(color) {
-    let imgcolor = "#ffffff";
-    switch (color) {
-        case "blue":
-            imgcolor = "#719EDA";
-            break;
-        case "red":
-            imgcolor = "#ED1C2A";
-            break;
-        case "grey":
-            imgcolor = "#8F908F";
-            break;
-    }
-    return imgcolor;
+function imageBgColor (color) {
+  let imgcolor = '#ffffff'
+  switch (color) {
+    case 'blue':
+      imgcolor = '#719EDA'
+      break
+    case 'red':
+      imgcolor = '#ED1C2A'
+      break
+    case 'grey':
+      imgcolor = '#8F908F'
+      break
+  }
+  return imgcolor
 }
 
 const cardProperties = computed(() => {
-    let carddata = cardmap[props.cardname];
-    carddata.cardname = props.cardname.replace("_", " "); //saves manually adding the card name minus _ to the map
-    carddata.colorcode = cardColorCode(carddata.color);
-    carddata.imagebgcolorcode = imageBgColor(carddata.color);
-    carddata.imageurl = new URL(`/cardimages/${carddata.image}.png`, `http://${getBackendUrl()}`);
-    return carddata;
+  const carddata = cardmap[props.cardname]
+  carddata.cardname = props.cardname.replace('_', ' ') // saves manually adding the card name minus _ to the map
+  carddata.colorcode = cardColorCode(carddata.color)
+  carddata.imagebgcolorcode = imageBgColor(carddata.color)
+  carddata.imageurl = new URL(`/cardimages/${carddata.image}.png`, `http://${getBackendUrl()}`)
+  return carddata
 })
 
 </script>

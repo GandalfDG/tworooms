@@ -1,37 +1,37 @@
 <script setup>
-import router from '../router';
+import router from '../router'
 import { reactive, ref, onMounted } from 'vue'
 import { useGameState } from '@/stores/gamestate'
 
 const gamestate = useGameState()
 
-const toggle_selection = ref("join")
-const waiting_for_server = ref(false)
+const toggleSelection = ref('join')
+const waitingForServer = ref(false)
 
 const forminput = reactive({
-    playername: "",
-    roomcode: ""
+  playername: '',
+  roomcode: ''
 })
 
-onMounted(()=>{
-    gamestate.$reset();
+onMounted(() => {
+  gamestate.$reset()
 })
 
-async function create_game() {
-    waiting_for_server.value = true
-    gamestate.ishost = true
-    gamestate.playername = forminput.playername
-    await gamestate.createRoom()
-    router.push("/lobby")
+async function createGame () {
+  waitingForServer.value = true
+  gamestate.ishost = true
+  gamestate.playername = forminput.playername
+  await gamestate.createRoom()
+  router.push('/lobby')
 }
 
-async function join_game() {
-    waiting_for_server.value = true
-    gamestate.ishost = false
-    gamestate.playername = forminput.playername
-    gamestate.roomcode = forminput.roomcode.toUpperCase()
-    await gamestate.joinRoom()
-    router.push("/lobby")
+async function joinGame () {
+  waitingForServer.value = true
+  gamestate.ishost = false
+  gamestate.playername = forminput.playername
+  gamestate.roomcode = forminput.roomcode.toUpperCase()
+  await gamestate.joinRoom()
+  router.push('/lobby')
 }
 </script>
 
@@ -44,10 +44,10 @@ async function join_game() {
     <div class="box">
         <div class="tabs is-large is-boxed is-centered">
             <ul>
-                <li v-bind:class="{ 'is-active': toggle_selection === 'join' }" @click="toggle_selection = 'join'">
+                <li v-bind:class="{ 'is-active': toggleSelection === 'join' }" @click="toggleSelection = 'join'">
                     <a>Join</a>
                 </li>
-                <li v-bind:class="{ 'is-active': toggle_selection === 'host' }" @click="toggle_selection = 'host'">
+                <li v-bind:class="{ 'is-active': toggleSelection === 'host' }" @click="toggleSelection = 'host'">
                     <a>Host</a>
                 </li>
             </ul>
@@ -60,18 +60,18 @@ async function join_game() {
                 </p>
             </div>
             <div class="field">
-                <label class="label" v-bind:class="{ 'has-text-grey-lighter': toggle_selection === 'host' }">Room
+                <label class="label" v-bind:class="{ 'has-text-grey-lighter': toggleSelection === 'host' }">Room
                     Code</label>
                 <p class="control">
                     <input class="input is-uppercase" type="text" placeholder="XXXX" v-model="forminput.roomcode"
-                        v-bind:disabled="toggle_selection !== 'join'">
+                        v-bind:disabled="toggleSelection !== 'join'">
                 </p>
             </div>
         </div>
         <div class="field">
             <p class="control">
-                <button class="button is-link is-large" v-bind:class="{ 'is-loading': waiting_for_server }"
-                    @click="toggle_selection === 'host' ? create_game() : join_game()">Let's Play!</button>
+                <button class="button is-link is-large" v-bind:class="{ 'is-loading': waitingForServer }"
+                    @click="toggleSelection === 'host' ? createGame() : joinGame()">Let's Play!</button>
             </p>
         </div>
     </div>

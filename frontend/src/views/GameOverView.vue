@@ -1,13 +1,13 @@
 <script setup>
-import { useGameState } from '../stores/gamestate';
-import Card from "@/components/GameCard.vue"
-import router from '../router';
+import { useGameState } from '../stores/gamestate'
+import Card from '@/components/GameCard.vue'
+import router from '../router'
 
-const gamestate = useGameState();
+const gamestate = useGameState()
 
-async function reset() {
-    await gamestate.resetGame();
-    await router.push("/");
+async function reset () {
+  await gamestate.resetGame()
+  await router.push('/')
 }
 
 </script>
