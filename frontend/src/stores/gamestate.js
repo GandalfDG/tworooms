@@ -114,7 +114,6 @@ export const useGameState = defineStore('gamestate', {
         message: 'resetgame',
         data: {}
       }))
-      this.socket.close()
     }
   }
 })
