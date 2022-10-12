@@ -65,7 +65,7 @@ const cardProperties = computed(() => {
                     <h1 class="cardtitle title has-text-left is-size-1">{{ cardProperties.cardname.toUpperCase() }}</h1>
                     <p class="has-text-left carddesc mt-1">{{cardProperties.summary}}</p>
                 </div>
-                <h3 class="carddesc has-text-left mx-2 mt-2" v-show="props.visibility === 'full'">{{
+                <h3 class="carddesc has-text-left ml-2 mr-1 mt-1" v-show="props.visibility === 'full'">{{
                     cardProperties.description }}
                 </h3>
             </div>
