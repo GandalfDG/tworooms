@@ -72,6 +72,7 @@ export function wsMessageListener (event) {
 
   if (msgdata.playerdata) {
     gamestate.playerdata = msgdata.playerdata
+    gamestate.start_timestamp = msgdata.gamedata.timestamp
     if (msgdata.message === 'startgame') {
       router.push('game')
       const cardset = msgdata.gamedata.cardset

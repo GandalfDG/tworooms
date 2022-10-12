@@ -1,6 +1,7 @@
 # Tworooms Online
 
-A web implementation of Two Rooms and a boom by [Tuesday Knight Games](https://www.tuesdayknightgames.com/tworoomsandaboom/)
+A web implementation of Two Rooms and a boom by [Tuesday Knight
+Games](https://www.tuesdayknightgames.com/tworoomsandaboom/)
 
 ## Development Container
 This project has been developed in VSCode using a Docker development container,
