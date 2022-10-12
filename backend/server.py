@@ -134,5 +134,17 @@ async def game_ws_handler(request: Request, ws: Websocket):
                 logger.info("next round")
                 await utils.send_game_data_to_players(game, "nextround")
 
+            elif msgobj["message"] == "resetgame":
+                logger.info("game over, resetting")
+                await utils.send_game_data_to_players(game, "resetgame")
+                
+                # purge the users and games dictionaries of the ending games
+                game_user_keys = [key for key, value in users.items() if value[0] == game.roomcode]
+                for key in game_user_keys:
+                    users.pop(key, None)
+
+                games.pop(game, None)
+
+
         except json.JSONDecodeError as er:
             logger.error(er)

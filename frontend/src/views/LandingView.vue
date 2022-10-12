@@ -1,6 +1,6 @@
 <script setup>
 import router from '../router';
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import { useGameState } from '@/stores/gamestate'
 
 const gamestate = useGameState()
@@ -11,6 +11,10 @@ const waiting_for_server = ref(false)
 const forminput = reactive({
     playername: "",
     roomcode: ""
+})
+
+onMounted(()=>{
+    gamestate.$reset();
 })
 
 async function create_game() {

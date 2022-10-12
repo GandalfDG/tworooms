@@ -30,6 +30,7 @@ function update_time() {
     time.seconds_remaining = props.duration - ((current_time - time.start_time) / 1000);
     if(gamestate.debug.timer_debug) {
         time.seconds_remaining = 0;
+        gamestate.debug.timer_debug = false;
     }
     if(time.seconds_remaining <= 0) {
         time.seconds_remaining = 0;

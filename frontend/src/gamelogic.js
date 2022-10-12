@@ -92,6 +92,9 @@ export function wsMessageListener(event) {
             gamestate.current_round++;
             gamestate.start_timestamp = msgdata["gamedata"]["timestamp"];
         }
+        else if (msgdata['message'] === 'resetgame') {
+            router.push('/');
+        }
         else {
             router.push('pregame');
             gamestate.num_rounds = msgdata["gamedata"]["num_rounds"];

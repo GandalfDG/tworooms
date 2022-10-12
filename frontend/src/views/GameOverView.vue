@@ -5,9 +5,9 @@ import router from '../router';
 
 const gamestate = useGameState();
 
-function reset() {
-    gamestate.resetGame();
-    router.push("/");
+async function reset() {
+    await gamestate.resetGame();
+    await router.push("/");
 }
 
 </script>
