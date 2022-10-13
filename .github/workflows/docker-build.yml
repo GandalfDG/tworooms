@@ -12,6 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: Checkout repository
+        
+      
+      - uses: ScribeMD/docker-cache@0.2.4
+        name: Docker Cache
+        with:
+          key: docker-${{ runner.os }}-${{ hashFiles(...) }}
 
       - uses: pmorelli92/github-container-registry-build-push@2.0.0
         name: Build and Publish latest service image
