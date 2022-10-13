@@ -57,9 +57,9 @@ const cardProperties = computed(() => {
             v-show="props.visibility === 'full' || props.visibility === 'color'">
             <div class="cardgrid">
                 <div class="imagebackground" :style="{ backgroundColor: cardProperties.imagebgcolorcode }">
-                    <img class="cardimage" v-show="props.visibility === 'full'" :src="cardProperties.imageurl" />
+                  <div class="cardimage" :style="{ backgroundImage: `url(${cardProperties.imageurl})` }" v-show="props.visibility === 'full'"></div>
                 </div>
-                <div class="rotated mt-3 mr-3" v-show="props.visibility === 'full'">
+                <div class="rotated mt-3 mr-2" v-show="props.visibility === 'full'">
                     <h1 class="cardtitle title has-text-left is-size-1">{{ cardProperties.cardname.toUpperCase() }}</h1>
                     <p class="has-text-left carddesc mt-1">{{cardProperties.summary}}</p>
                 </div>
@@ -95,8 +95,7 @@ const cardProperties = computed(() => {
 .cardimage {
     width: 100%;
     height: 100%;
-    object-position: left top;
-    object-fit: contain;
+    background-size: cover;
 }
 
 .imagebackground {
