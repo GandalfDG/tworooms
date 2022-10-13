@@ -8,7 +8,7 @@ const props = defineProps({
   cardname: String
 })
 
-function cardColorCode(color) {
+function cardColorCode (color) {
   let bgcolor = '#ffffff'
   switch (color) {
     case 'blue':
@@ -24,7 +24,7 @@ function cardColorCode(color) {
   return bgcolor
 }
 
-function imageBgColor(color) {
+function imageBgColor (color) {
   let imgcolor = '#ffffff'
   switch (color) {
     case 'blue':
