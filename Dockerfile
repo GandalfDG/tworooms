@@ -22,7 +22,7 @@ RUN npm i && npm run test:unit && npm run css-build && npm run build
 
 
 FROM python as serve
-RUN pip3 install sanic sanic-cors
+RUN pip3 install sanic sanic-cors==2.2.0
 
 COPY --from=build /frontend/dist /frontend/dist
 COPY --from=build /backend /backend

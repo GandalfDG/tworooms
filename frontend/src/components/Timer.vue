@@ -1,66 +1,73 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-import { reactive, computed, watch } from 'vue'
-import { START_LOCATION } from 'vue-router';
+import { reactive, computed, watch, onMounted } from 'vue'
+import { useGameState } from '../stores/gamestate'
 
-const update_rate_ms = 100;
+const updateRateMs = 100
+const gamestate = useGameState()
 
 const props = defineProps({
-    duration: Number,
-    paused: Boolean
-});
+  duration: Number,
+  paused: Boolean,
+  startTimestamp: Number
+})
 
-const emit = defineEmits(["timeElapsed"]);
+const emit = defineEmits(['timeElapsed'])
 
 const time = reactive({
-    start_time: 0, //new Date().getTime(),
-    seconds_remaining: 0,
-    running: false
-});
+  start_time: new Date(props.startTimestamp).getTime(), // new Date().getTime(),
+  seconds_remaining: props.duration,
+  running: true
+})
 
+onMounted(() => {
+  timerInterval = setInterval(() => { updateTime() }, updateRateMs)
+})
 
-function update_time() {
-    let current_time = new Date().getTime();
-    time.seconds_remaining = props.duration - ((current_time - time.start_time) / 1000);
-    if(time.seconds_remaining <= 0) {
-        time.seconds_remaining = 0;
-        time_elapsed();
-    }
+function updateTime () {
+  const currentTime = new Date().getTime()
+  time.seconds_remaining = props.duration - ((currentTime - time.start_time) / 1000)
+  if (gamestate.debug.timer_debug) {
+    time.seconds_remaining = 0
+    gamestate.debug.timer_debug = false
+  }
+  if (time.seconds_remaining <= 0) {
+    time.seconds_remaining = 0
+    timeElapsed()
+  }
 }
 
-function time_elapsed() {
-    // emit an event to notify the parent component of the time elapsing
-    emit("timeElapsed");
-    clearInterval(timer_interval);
-    console.log("timer elapsed");
+function timeElapsed () {
+  // emit an event to notify the parent component of the time elapsing
+  emit('timeElapsed')
+  clearInterval(timerInterval)
+  console.log('timer elapsed')
 }
 
 const timestring = computed(() => {
-    // format text nicely
-    let minutes = (Math.floor(time.seconds_remaining / 60)).toString()
-    let seconds = (Math.floor(time.seconds_remaining % 60)).toString()
+  // format text nicely
+  const minutes = (Math.floor(time.seconds_remaining / 60)).toString()
+  const seconds = (Math.floor(time.seconds_remaining % 60)).toString()
 
-    let padded_seconds = seconds.length < 2 ? "0" + seconds : seconds
-    return "".concat(minutes, ":", padded_seconds)
+  const paddedSeconds = seconds.length < 2 ? '0' + seconds : seconds
+  return ''.concat(minutes, ':', paddedSeconds)
 })
 
-
-var timer_interval
+let timerInterval
 
 // when we pause or unpause, set or clear an interval
 watch(() => props.paused, () => {
-    if (time.start_time === 0) {
-        time.start_time = new Date().getTime()
-    }
-    if (!props.paused) {
-        // set interval to tick
-        timer_interval = setInterval(()=>{update_time()}, update_rate_ms)
-    }
-    else {
-        // stop the interval
-        clearInterval(timer_interval)
-    }
+  if (time.start_time === 0) {
+    time.start_time = new Date().getTime()
+  }
+  if (!props.paused) {
+    // set interval to tick
+    timerInterval = setInterval(() => { updateTime() }, updateRateMs)
+  } else {
+    // stop the interval
+    clearInterval(timerInterval)
+  }
 })
-
 
 </script>
 

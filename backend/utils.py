@@ -45,14 +45,14 @@ async def notify_all_players(game: GameRoom, message: str):
     awaitables = [socket.send(message) for socket in sockets]
     await gather(*awaitables)
 
-async def send_game_data_to_players(game: GameRoom, message: str):
+async def send_game_data_to_players(game: GameRoom, message: str, timestamp=None):
     sockets = [player.socket for player in game.players.values() if player.socket]
     playerdata = [{
         "gamedata": {
             "cardset": game.cardset,
             "num_players": len(game.players),
             "num_rounds": game.num_rounds,
-            "timestamp": datetime.datetime.now(datetime.timezone.utc).timestamp() 
+            "timestamp": timestamp 
         },
         "playerdata": {
             "card": player.card,
