@@ -11,7 +11,7 @@ export function getBackendUrl () {
   return window.location.host
 }
 
-const websocketUrl = 'ws://' + getBackendUrl() + '/ws/game'
+const websocketUrl = 'wss://' + getBackendUrl() + '/ws/game'
 
 export const useGameState = defineStore('gamestate', {
   state: () => (
@@ -35,7 +35,7 @@ export const useGameState = defineStore('gamestate', {
       start_timestamp: 0,
       socket: null,
       ax: axios.create({
-        baseURL: 'http://' + getBackendUrl() + '/api',
+        baseURL: 'https://' + getBackendUrl() + '/api',
         timeout: 10000
         // withCredentials: true
       }),
