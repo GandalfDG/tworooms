@@ -23,7 +23,7 @@ import { computed } from 'vue';
 <template>
     <div class="is-flex is-flex-direction-row is-justify-content-space-around">
         <ul v-for="column in column_array">
-            <li v-for="item in column">{{item}}</li>
+            <li v-for="item in column"><slot :value="item"></slot></li>
         </ul>
     </div>
 </template>

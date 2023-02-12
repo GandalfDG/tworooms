@@ -7,6 +7,7 @@ import PreGameView from '../views/PreGameView.vue'
 import DebugView from '../views/DebugView.vue'
 import BetweenView from '../views/BetweenView.vue'
 import GameOverView from '../views/GameOverView.vue'
+import LeaderSelectView from '../views/LeaderSelectView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,7 +50,7 @@ const router = createRouter({
     {
       path: '/debug',
       name: 'debug',
-      component: DebugView
+      component: LeaderSelectView
     },
     {
       path: '/about',
