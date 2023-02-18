@@ -30,6 +30,7 @@ export const useGameState = defineStore('gamestate', {
 
       playerdata: {},
       roommates: [],
+      roomleader: '',
 
       num_rounds: 3,
       cardset: 'basic',

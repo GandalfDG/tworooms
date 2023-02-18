@@ -62,12 +62,20 @@ export function getRoundHostages (currentRound, numRounds, numPlayers) {
 
 export function wsMessageListener (event) {
   // big-ish case statement here for different messages
+  // TODO this is a big mess at the moment. Good place to refactor
   const gamestate = useGameState()
   console.log(event.data)
   const msgdata = JSON.parse(event.data)
 
   if (msgdata.playerlist) {
     gamestate.playerlist = msgdata.playerlist
+  }
+
+  if (msgdata.message) {
+    if (msgdata.message === 'leader_select') {
+      gamestate.roomleader = msgdata.leader_name
+      console.log('the room leader is' + gamestate.roomleader)
+    }
   }
 
   if (msgdata.playerdata) {
