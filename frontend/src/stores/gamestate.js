@@ -119,6 +119,15 @@ export const useGameState = defineStore('gamestate', {
         message: 'resetgame',
         data: {}
       }))
+    },
+
+    async sendLeaderSelectMessage(playername) {
+      this.socket.send(JSON.stringify({
+        message: 'leaderselect',
+        data: {
+          playername: playername
+        }
+      }))
     }
   }
 })
