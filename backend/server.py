@@ -159,14 +159,14 @@ async def game_ws_handler(request: Request, ws: Websocket):
                 games.pop(game, None)
 
             elif msgobj["message"] == "leaderselect":
-                playername = msgobj["message"]["data"]["playername"]
+                playername = msgobj["data"]["playername"]
                 status_changed = game.select_leader(playername)
                 if status_changed != -1:
                     leader_message = {
                         "message": "leader_select",
                         "leader_name": playername
                     }
-                    utils.notify_room_players(game, status_changed, json.dumps(leader_message))
+                    await utils.notify_room_players(game, status_changed, json.dumps(leader_message))
 
         except json.JSONDecodeError as er:
             logger.error(er)

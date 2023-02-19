@@ -75,6 +75,7 @@ export function wsMessageListener (event) {
     if (msgdata.message === 'leader_select') {
       gamestate.roomleader = msgdata.leader_name
       console.log('the room leader is' + gamestate.roomleader)
+      router.push('game')
     }
   }
 
@@ -82,7 +83,7 @@ export function wsMessageListener (event) {
     gamestate.playerdata = msgdata.playerdata
     gamestate.start_timestamp = msgdata.gamedata.timestamp
     if (msgdata.message === 'startgame') {
-      router.push('game')
+      router.push('leaderselect')
       const cardset = msgdata.gamedata.cardset
       const numPlayers = msgdata.gamedata.num_players
       gamestate.cardset = cardset

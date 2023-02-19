@@ -47,7 +47,7 @@ async def notify_all_players(game: GameRoom, message: str):
 
 async def notify_room_players(game: GameRoom, room: int, message: str):
     # for player object socket in game.rooms[room]
-    sockets = [game.players[playername].socket for playername in game.rooms[room]]
+    sockets = [player.socket for player in game.rooms[room]]
     awaitables = [socket.send(message) for socket in sockets]
     await gather(*awaitables)
 

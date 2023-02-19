@@ -16,7 +16,7 @@ class GameRoom():
         self.joinable: bool = True
         self.players: dict[str, Player] = {host_playername: Player(host_playername)}
         self.rooms: tuple[list[Player], list[Player]] = ([],[])
-        self.leaders: tuple[Player, Player] = (None, None)
+        self.leaders: list[Player, Player] = [None, None]
         self.cardset: str = "basic"
         self.num_rounds = 3
         self.current_round = 1
