@@ -21,30 +21,36 @@ const websocketUrl = getWebsocketProtocol() + '://' + getBackendUrl() + '/ws/gam
 export const useGameState = defineStore('gamestate', {
   state: () => (
     {
-      playername: '',
-      ishost: false,
+      // Overall Game Data
       roomcode: '',
       session: '',
-
       playerlist: [],
-
-      playerdata: {},
-      roommates: [],
-      roomleader: '',
-
       num_rounds: 3,
       cardset: 'basic',
-      card: {},
       deck: [],
-
       current_round: 1,
       start_timestamp: 0,
+
       socket: null,
       ax: axios.create({
         baseURL: getBackendProtocol() + '://' + getBackendUrl() + '/api',
         timeout: 10000
         // withCredentials: true
       }),
+
+
+      // Player Data
+      playername: '',
+      ishost: false,
+      
+      playerdata: {}, // card index, current room
+      card: {}, // card name, card data
+
+
+      // Room Data
+      roommates: [],
+      roomleader: '',
+
 
       debug: {
         timer_debug: false
