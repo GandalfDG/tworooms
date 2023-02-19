@@ -16,6 +16,7 @@ class GameRoom():
         self.joinable: bool = True
         self.players: dict[str, Player] = {host_playername: Player(host_playername)}
         self.rooms: tuple[list[Player], list[Player]] = ([],[])
+        self.leaders: list[Player, Player] = [None, None]
         self.cardset: str = "basic"
         self.num_rounds = 3
         self.current_round = 1
@@ -41,5 +42,17 @@ class GameRoom():
 
     def next_round(self):
         self.current_round += 1
+
+    def select_leader(self, playername) -> int:
+        """
+        if the room leader hasn't already been set, set it and return the room number
+        to indicate the change in game state, otherwise do nothing and return -1
+        """
+        leader_room = 0 if playername in self.rooms[0] else 1
+        if self.leaders[leader_room] is None:
+            self.leaders[leader_room] = playername
+            return leader_room
+        else:
+            return -1
 
     
