@@ -1,3 +1,4 @@
+from typing import Union
 from sanic import Websocket
 from random import shuffle
 
@@ -43,7 +44,7 @@ class GameRoom():
     def next_round(self):
         self.current_round += 1
 
-    def select_leader(self, playername) -> int:
+    def select_leader(self, playername) -> Union[None, int]:
         """
         if the room leader hasn't already been set, set it and return the room number
         to indicate the change in game state, otherwise do nothing and return -1
@@ -53,6 +54,6 @@ class GameRoom():
             self.leaders[leader_room] = playername
             return leader_room
         else:
-            return -1
+            return None
 
     

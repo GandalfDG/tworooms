@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+import datetime
 from typing import Any
 import json as JSON
 
@@ -6,14 +7,18 @@ from gamestate import GameRoom, Player
 
 @dataclass
 class WebsocketMessage():
-    type: str
-    data: dict[str, Any] = field(default_factory=lambda: {})
+
+    def __init__(self, type: str, data: dict = None, timestamp: datetime.datetime = None):
+        self.type = type
+        self.data = data
+        self.timestamp = timestamp
 
     @property
     def json(self):
         json = JSON.dumps({
             "message": self.type,
-            "data": self.data
+            "data": self.data,
+            "timestamp": self.timestamp
         })
         return json
     
