@@ -22,6 +22,12 @@ class GameRoom():
         self.num_rounds = 3
         self.current_round = 1
 
+    def get_roommates(self, playername: str):
+        playerobj = self.players[playername]
+        roommates = [roommate.playername for roommate in self.rooms[playerobj.start_room]
+            if roommate.playername != playerobj.playername]
+        return roommates
+
     def shuffle_players(self) -> tuple[list, list]:
         """
         Generate and shuffle a list of length num_players split between room 1 and 2
