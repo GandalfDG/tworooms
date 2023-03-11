@@ -65,26 +65,28 @@ export function wsMessageListener (event) {
   // TODO this is a big mess at the moment. Good place to refactor
   const gamestate = useGameState()
   console.log(event.data)
-  const msgdata = JSON.parse(event.data)
+  const message = JSON.parse(event.data)
+  const message_type = message.message
+  const message_data = message.data
 
-  switch (msgdata.message) {
+  switch (message_type) {
     
     // Player joined lobby, message to all other players
     case "player_joined":
-      gamestate.playerlist.push(msgdata.data.playername)
+      gamestate.playerlist.push(message_data.playername)
       break
     
     // Host has closed the lobby. All players are taken to the pregame screen
     case "lobby_cutoff":
-      gamestate.num_rounds = msgdata.gamedata.num_rounds
-      gamestate.cardset = msgdata.gamedata.cardset
+      gamestate.num_rounds = message_data.gamedata.num_rounds
+      gamestate.cardset = message_data.gamedata.cardset
       router.push('pregame')
       break
     
     // Any updates to player data. Happens after lobby cutoff and in future when rooms/cards change
     case "player_data":
-      gamestate.playerdata = msgdata.playerdata
-      gamestate.roommates = msgdata.roommates
+      gamestate.playerdata = message_data.playerdata
+      gamestate.roommates = message_data.roommates
       break
     
     case "start_round":
@@ -100,11 +102,11 @@ export function wsMessageListener (event) {
         data: cardmap[deck[cardIdx]]
       }
       gamestate.current_round = 1
-      gamestate.start_timestamp = msgdata.gamedata.timestamp
+      gamestate.start_timestamp = message_data.timestamp
       break
     
     case "leader_selected":
-      gamestate.roomleader = msgdata.leader_name
+      gamestate.roomleader = message_data.leader_name
       console.log('the room leader is' + gamestate.roomleader)
       break
 
@@ -112,50 +114,50 @@ export function wsMessageListener (event) {
       break
   }
 
-  if (msgdata.playerlist) {
-    gamestate.playerlist = msgdata.playerlist
-  }
+  // if (msgdata.playerlist) {
+  //   gamestate.playerlist = messag.playerlist
+  // }
 
-  if (msgdata.message) {
-    if (msgdata.message === 'leader_select') {
-      gamestate.roomleader = msgdata.leader_name
-      console.log('the room leader is' + gamestate.roomleader)
-      router.push('game')
-    }
-  }
+  // if (msgdata.message) {
+  //   if (msgdata.message === 'leader_select') {
+  //     gamestate.roomleader = msgdata.leader_name
+  //     console.log('the room leader is' + gamestate.roomleader)
+  //     router.push('game')
+  //   }
+  // }
 
-  if (msgdata.playerdata) {
-    gamestate.playerdata = msgdata.playerdata
-    gamestate.start_timestamp = msgdata.gamedata.timestamp
-    if (msgdata.message === 'startgame') {
-      router.push('leaderselect')
-      const cardset = msgdata.gamedata.cardset
-      const numPlayers = msgdata.gamedata.num_players
-      gamestate.cardset = cardset
-      const deck = inflateCardset(cardset, numPlayers)
-      const cardIdx = gamestate.playerdata.card
-      gamestate.deck = deck
-      gamestate.card = {
-        name: deck[cardIdx],
-        data: cardmap[deck[cardIdx]]
-      }
-      gamestate.current_round = 1
-      gamestate.start_timestamp = msgdata.gamedata.timestamp
-    } else if (msgdata.message === 'nextround') {
-      router.push('game')
-      gamestate.current_round++
-      gamestate.start_timestamp = msgdata.gamedata.timestamp
-    } else if (msgdata.message === 'resetgame') {
-      router.push('/')
-    } else { // lobby cutoff message
-      router.push('pregame')
-      gamestate.num_rounds = msgdata.gamedata.num_rounds
-    }
-  }
+  // if (msgdata.playerdata) {
+  //   gamestate.playerdata = msgdata.playerdata
+  //   gamestate.start_timestamp = msgdata.gamedata.timestamp
+  //   if (msgdata.message === 'startgame') {
+  //     router.push('leaderselect')
+  //     const cardset = msgdata.gamedata.cardset
+  //     const numPlayers = msgdata.gamedata.num_players
+  //     gamestate.cardset = cardset
+  //     const deck = inflateCardset(cardset, numPlayers)
+  //     const cardIdx = gamestate.playerdata.card
+  //     gamestate.deck = deck
+  //     gamestate.card = {
+  //       name: deck[cardIdx],
+  //       data: cardmap[deck[cardIdx]]
+  //     }
+  //     gamestate.current_round = 1
+  //     gamestate.start_timestamp = msgdata.gamedata.timestamp
+  //   } else if (msgdata.message === 'nextround') {
+  //     router.push('game')
+  //     gamestate.current_round++
+  //     gamestate.start_timestamp = msgdata.gamedata.timestamp
+  //   } else if (msgdata.message === 'resetgame') {
+  //     router.push('/')
+  //   } else { // lobby cutoff message
+  //     router.push('pregame')
+  //     gamestate.num_rounds = msgdata.gamedata.num_rounds
+  //   }
+  // }
 
-  if (msgdata.roommates) {
-    gamestate.roommates = msgdata.roommates
-  }
+  // if (msgdata.roommates) {
+  //   gamestate.roommates = msgdata.roommates
+  // }
 
   // emit an event so that we know the message came in
   window.dispatchEvent(wsEvent)
