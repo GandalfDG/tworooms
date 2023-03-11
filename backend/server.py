@@ -146,7 +146,7 @@ async def game_ws_handler(request: Request, ws: Websocket):
 
             elif msgobj["message"] == "startgame":
                 logger.warning("start game")
-                await utils.send_game_data_to_players(game, "startgame", timestamp)
+                await utils.message_all_players(game, WebsocketMessage("start_round", timestamp=timestamp))
 
             elif msgobj["message"] == "nextround":
                 logger.info("next round")
@@ -160,6 +160,8 @@ async def game_ws_handler(request: Request, ws: Websocket):
                         "leader_name": playername
                     }
                     await utils.message_room_players(game, leader_room, WebsocketMessage("leader_selected", leader_message, timestamp))
+
+
 
             elif msgobj["message"] == "resetgame":
                 logger.info("game over, resetting")
