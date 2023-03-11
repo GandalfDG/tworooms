@@ -33,18 +33,19 @@ class GameDataMessage(WebsocketMessage):
                 "timestamp": timestamp
             }
         }
-        
-        self.type = type
-        self.data = gamedata
+
+        super().__init__(type, gamedata, timestamp)
+    
 
 class PlayerDataMessage(WebsocketMessage):
-    def __init__(self, player: Player):
+    def __init__(self, game: GameRoom, player: Player, timestamp=None):
         playerdata = {
             "playerdata": {
                 "card": player.card,
                 "start_room": player.start_room
-            }
+            },
+            "roommates": game.get_roommates(player.playername)
         }
 
-        self.type = "player_data"
-        self.data = playerdata
+        super().__init__("player_data", playerdata, timestamp)
+

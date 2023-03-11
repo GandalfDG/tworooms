@@ -96,11 +96,11 @@ export const useGameState = defineStore('gamestate', {
       return connectPromise
     },
 
-    async sendLobbyCutoffMessage (cardset) {
+    async sendLobbyCutoffMessage () {
       this.socket.send(JSON.stringify({
         message: 'lobbycutoff',
         data: {
-          cardset,
+          cardset: this.cardset,
           rounds: this.num_rounds
         }
       }))

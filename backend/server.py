@@ -141,7 +141,7 @@ async def game_ws_handler(request: Request, ws: Websocket):
                 game.num_rounds = int(msgobj["data"]["rounds"])
                 game.cardset = msgobj["data"]["cardset"]
                 await utils.message_all_players(game, GameDataMessage(game, "lobby_cutoff", timestamp))
-                await utils.message_per_player(game, PlayerDataMessage)
+                await utils.message_per_player(game, PlayerDataMessage, "player_data")
                 
 
             elif msgobj["message"] == "startgame":

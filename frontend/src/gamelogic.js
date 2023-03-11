@@ -67,6 +67,51 @@ export function wsMessageListener (event) {
   console.log(event.data)
   const msgdata = JSON.parse(event.data)
 
+  switch (msgdata.message) {
+    
+    // Player joined lobby, message to all other players
+    case "player_joined":
+      gamestate.playerlist.push(msgdata.data.playername)
+      break
+    
+    // Host has closed the lobby. All players are taken to the pregame screen
+    case "lobby_cutoff":
+      gamestate.num_rounds = msgdata.gamedata.num_rounds
+      gamestate.cardset = msgdata.gamedata.cardset
+      router.push('pregame')
+      break
+    
+    // Any updates to player data. Happens after lobby cutoff and in future when rooms/cards change
+    case "player_data":
+      gamestate.playerdata = msgdata.playerdata
+      gamestate.roommates = msgdata.roommates
+      break
+    
+    case "start_round":
+      router.push('game')
+      const cardset = msgdata.gamedata.cardset
+      const numPlayers = msgdata.gamedata.num_players
+      gamestate.cardset = cardset
+      const deck = inflateCardset(cardset, numPlayers)
+      const cardIdx = gamestate.playerdata.card
+      gamestate.deck = deck
+      gamestate.card = {
+        name: deck[cardIdx],
+        data: cardmap[deck[cardIdx]]
+      }
+      gamestate.current_round = 1
+      gamestate.start_timestamp = msgdata.gamedata.timestamp
+      break
+    
+    case "leader_selected":
+      gamestate.roomleader = msgdata.leader_name
+      console.log('the room leader is' + gamestate.roomleader)
+      break
+
+    case "hostages_selected":
+      break
+  }
+
   if (msgdata.playerlist) {
     gamestate.playerlist = msgdata.playerlist
   }
@@ -102,7 +147,7 @@ export function wsMessageListener (event) {
       gamestate.start_timestamp = msgdata.gamedata.timestamp
     } else if (msgdata.message === 'resetgame') {
       router.push('/')
-    } else {
+    } else { // lobby cutoff message
       router.push('pregame')
       gamestate.num_rounds = msgdata.gamedata.num_rounds
     }

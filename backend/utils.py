@@ -49,19 +49,19 @@ async def message_all_players(game: GameRoom, message: WebsocketMessage):
     sockets = [player.socket for player in game.players.values()
                if player.socket]
     awaitables = [socket.send(message.json) for socket in sockets]
-    gather(*awaitables)
+    await gather(*awaitables)
 
 
 async def message_room_players(game: GameRoom, room: int, message: WebsocketMessage):
     # for player object socket in game.rooms[room]
     sockets = [player.socket for player in game.rooms[room]]
     awaitables = [socket.send(message.json) for socket in sockets]
-    gather(*awaitables)
+    await gather(*awaitables)
 
 
 async def message_single_player(game: GameRoom, playername: str, message:WebsocketMessage):
-    player_socket = [playerobj.socket for name, playerobj in game.players.items if name == playername][0]
-    player_socket.send(message.json)
+    player_socket = [playerobj.socket for name, playerobj in game.players.items() if name == playername][0]
+    await player_socket.send(message.json)
 
 #####################################
 # higher-level messaging functions
@@ -70,10 +70,10 @@ async def message_single_player(game: GameRoom, playername: str, message:Websock
 
 async def message_per_player(game: GameRoom, messageclass: Type[PlayerDataMessage], type: str):
     awaitables = []
-    for playername, player in game.players:
-        player_message = messageclass(player)
+    for playername, player in game.players.items():
+        player_message = messageclass(game, player)
         awaitables.append(message_single_player(game, playername, player_message))
-    gather(*awaitables)
+    await gather(*awaitables)
 
 
 async def send_game_data_to_players(game: GameRoom, message: str, timestamp=None):
@@ -96,3 +96,4 @@ async def send_game_data_to_players(game: GameRoom, message: str, timestamp=None
     awaitables = [socket.send(dumps(data)) for socket, data in zip(sockets, playerdata)]
 
     await gather(*awaitables)
+
