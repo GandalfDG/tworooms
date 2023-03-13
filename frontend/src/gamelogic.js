@@ -68,6 +68,7 @@ export function wsMessageListener (event) {
   const message = JSON.parse(event.data)
   const message_type = message.message
   const message_data = message.data
+  const message_timestamp = message.timestamp
 
   switch (message_type) {
     
@@ -79,6 +80,7 @@ export function wsMessageListener (event) {
     // Host has closed the lobby. All players are taken to the pregame screen
     case "lobby_cutoff":
       gamestate.num_rounds = message_data.gamedata.num_rounds
+      gamestate.numPlayers = message_data.gamedata.num_players
       gamestate.cardset = message_data.gamedata.cardset
       router.push('pregame')
       break
@@ -91,10 +93,7 @@ export function wsMessageListener (event) {
     
     case "start_round":
       router.push('game')
-      const cardset = msgdata.gamedata.cardset
-      const numPlayers = msgdata.gamedata.num_players
-      gamestate.cardset = cardset
-      const deck = inflateCardset(cardset, numPlayers)
+      const deck = inflateCardset(gamestate.cardset, gamestate.numPlayers)
       const cardIdx = gamestate.playerdata.card
       gamestate.deck = deck
       gamestate.card = {
@@ -102,7 +101,7 @@ export function wsMessageListener (event) {
         data: cardmap[deck[cardIdx]]
       }
       gamestate.current_round = 1
-      gamestate.start_timestamp = message_data.timestamp
+      gamestate.start_timestamp = message_timestamp
       break
     
     case "leader_selected":
