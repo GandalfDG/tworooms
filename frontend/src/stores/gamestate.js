@@ -3,42 +3,54 @@ import { wsMessageListener } from '../gamelogic'
 import axios from 'axios'
 
 export function getBackendUrl () {
-  const envVar = import.meta.env.VITE_BACKEND_HOST
-  if (envVar) {
-    console.log(envVar.length > 0 ? envVar : window.location.host)
-    return envVar.length > 0 ? envVar : window.location.host
-  }
-  return window.location.host
+  const backendUrl = import.meta.env.VITE_BACKEND_URL
+  return backendUrl
 }
 
-const websocketUrl = 'wss://' + getBackendUrl() + '/ws/game'
+export function getBackendProtocol() {
+  const backendProtocol = import.meta.env.VITE_PROTOCOL
+  return backendProtocol
+}
+
+export function getWebsocketProtocol() {
+  return getBackendProtocol() == 'http' ? 'ws' : 'wss'
+}
+
+const websocketUrl = getWebsocketProtocol() + '://' + getBackendUrl() + '/ws/game'
 
 export const useGameState = defineStore('gamestate', {
   state: () => (
     {
-      playername: '',
-      ishost: false,
+      // Overall Game Data
       roomcode: '',
       session: '',
-
       playerlist: [],
-
-      playerdata: {},
-      roommates: [],
-
       num_rounds: 3,
       cardset: 'basic',
-      card: {},
       deck: [],
-
       current_round: 1,
       start_timestamp: 0,
+
       socket: null,
       ax: axios.create({
-        baseURL: 'https://' + getBackendUrl() + '/api',
+        baseURL: getBackendProtocol() + '://' + getBackendUrl() + '/api',
         timeout: 10000
         // withCredentials: true
       }),
+
+
+      // Player Data
+      playername: '',
+      ishost: false,
+      
+      playerdata: {}, // card index, current room
+      card: {}, // card name, card data
+
+
+      // Room Data
+      roommates: [],
+      roomleader: '',
+
 
       debug: {
         timer_debug: false
@@ -84,11 +96,11 @@ export const useGameState = defineStore('gamestate', {
       return connectPromise
     },
 
-    async sendLobbyCutoffMessage (cardset) {
+    async sendLobbyCutoffMessage () {
       this.socket.send(JSON.stringify({
         message: 'lobbycutoff',
         data: {
-          cardset,
+          cardset: this.cardset,
           rounds: this.num_rounds
         }
       }))
@@ -113,6 +125,15 @@ export const useGameState = defineStore('gamestate', {
       this.socket.send(JSON.stringify({
         message: 'resetgame',
         data: {}
+      }))
+    },
+
+    async sendLeaderSelectMessage(playername) {
+      this.socket.send(JSON.stringify({
+        message: 'leaderselect',
+        data: {
+          playername: playername
+        }
       }))
     }
   }

@@ -10,6 +10,7 @@ import json
 import datetime
 
 from gamestate import *
+from messages import GameDataMessage, PlayerDataMessage, WebsocketMessage
 import utils
 
 from os import path
@@ -106,8 +107,9 @@ async def join_room_handler(request):
     users[identifier] = (roomcode, playername)
 
     response = jsonresponse(response_json)
-    await utils.notify_all_players(current_game, json.dumps({'playerlist': playerlist}))
-    logger.warning("notified players")
+
+    join_message = WebsocketMessage("player_joined", {"playername": playername})
+    await utils.message_all_players(current_game, join_message)
     return response
 
 
@@ -131,20 +133,35 @@ async def game_ws_handler(request: Request, ws: Websocket):
         try:
             timestamp = datetime.datetime.now(datetime.timezone.utc).timestamp() * 1000 # javascript expect milliseconds 
             msgobj = json.loads(data)
+            
             if msgobj["message"] == "lobbycutoff":
                 logger.warning("cutoff")
                 game.place_players()
+                utils.deal_player_cards(game.players.values())
                 game.num_rounds = int(msgobj["data"]["rounds"])
-                await utils.send_game_data_to_players(game, None)
+                game.cardset = msgobj["data"]["cardset"]
+                await utils.message_all_players(game, GameDataMessage(game, "lobby_cutoff", timestamp))
+                await utils.message_per_player(game, PlayerDataMessage, "player_data")
+                
 
             elif msgobj["message"] == "startgame":
                 logger.warning("start game")
-                utils.deal_player_cards(game.players.values())
-                await utils.send_game_data_to_players(game, "startgame", timestamp)
+                await utils.message_all_players(game, WebsocketMessage("start_round", timestamp=timestamp))
 
             elif msgobj["message"] == "nextround":
                 logger.info("next round")
-                await utils.send_game_data_to_players(game, "nextround", timestamp)
+                await utils.message_all_players(game, WebsocketMessage("next_round", timestamp=timestamp))
+
+            elif msgobj["message"] == "leaderselect":
+                playername = msgobj["data"]["playername"]
+                leader_room = game.select_leader(playername)
+                if leader_room:
+                    leader_message = {
+                        "leader_name": playername
+                    }
+                    await utils.message_room_players(game, leader_room, WebsocketMessage("leader_selected", leader_message, timestamp))
+
+
 
             elif msgobj["message"] == "resetgame":
                 logger.info("game over, resetting")
@@ -157,6 +174,8 @@ async def game_ws_handler(request: Request, ws: Websocket):
                     users.pop(key, None)
 
                 games.pop(game, None)
+
+           
 
         except json.JSONDecodeError as er:
             logger.error(er)

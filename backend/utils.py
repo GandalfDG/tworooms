@@ -1,9 +1,11 @@
+from typing import Type
 from uuid import uuid4 as uuid
 import random
 from asyncio import gather
 from json import dumps
 import datetime
 
+from messages import PlayerDataMessage, WebsocketMessage
 from gamestate import GameRoom
 
 CODE_LENGTH = 4
@@ -39,11 +41,40 @@ def set_user_cookie() -> str:
     # response.cookies['session']['samesite'] = 'strict'
     return identifier
 
+#############################################
+# low-level messaging to all, room, or player
+#############################################
 
-async def notify_all_players(game: GameRoom, message: str):
-    sockets = [player.socket for player in game.players.values() if player.socket]
-    awaitables = [socket.send(message) for socket in sockets]
+async def message_all_players(game: GameRoom, message: WebsocketMessage):
+    sockets = [player.socket for player in game.players.values()
+               if player.socket]
+    awaitables = [socket.send(message.json) for socket in sockets]
     await gather(*awaitables)
+
+
+async def message_room_players(game: GameRoom, room: int, message: WebsocketMessage):
+    # for player object socket in game.rooms[room]
+    sockets = [player.socket for player in game.rooms[room]]
+    awaitables = [socket.send(message.json) for socket in sockets]
+    await gather(*awaitables)
+
+
+async def message_single_player(game: GameRoom, playername: str, message:WebsocketMessage):
+    player_socket = [playerobj.socket for name, playerobj in game.players.items() if name == playername][0]
+    await player_socket.send(message.json)
+
+#####################################
+# higher-level messaging functions
+#####################################
+
+
+async def message_per_player(game: GameRoom, messageclass: Type[PlayerDataMessage], type: str):
+    awaitables = []
+    for playername, player in game.players.items():
+        player_message = messageclass(game, player)
+        awaitables.append(message_single_player(game, playername, player_message))
+    await gather(*awaitables)
+
 
 async def send_game_data_to_players(game: GameRoom, message: str, timestamp=None):
     sockets = [player.socket for player in game.players.values() if player.socket]
@@ -65,3 +96,4 @@ async def send_game_data_to_players(game: GameRoom, message: str, timestamp=None
     awaitables = [socket.send(dumps(data)) for socket, data in zip(sockets, playerdata)]
 
     await gather(*awaitables)
+

@@ -35,7 +35,7 @@ async function cutoffLobby() {
         <!-- Player List -->
         <h2 class="title is-4 is-underlined">Players</h2>
         <div class="is-flex-shrink-1 is-flex-grow-1" style="overflow:auto">
-            <ColumnList :list="gamestate.playerlist" :columns="2"></ColumnList>
+            <ColumnList :list="gamestate.playerlist" :columns="2" v-slot="text">{{ text.value }}</ColumnList>
             <div class="level mt-3">
                 <div class="level-item">
                     <p class="pr-3 has-text-grey-light has-text-weight-light">Waiting for players to join</p>

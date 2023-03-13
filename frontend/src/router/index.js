@@ -7,6 +7,7 @@ import PreGameView from '../views/PreGameView.vue'
 import DebugView from '../views/DebugView.vue'
 import BetweenView from '../views/BetweenView.vue'
 import GameOverView from '../views/GameOverView.vue'
+import LeaderSelectView from '../views/LeaderSelectView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -47,9 +48,9 @@ const router = createRouter({
       component: GameOverView
     },
     {
-      path: '/debug',
-      name: 'debug',
-      component: DebugView
+      path: '/leaderselect',
+      name: 'leaderselect',
+      component: LeaderSelectView
     },
     {
       path: '/about',
@@ -58,7 +59,12 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
-    }
+    },
+    {
+      path: '/debug',
+      name: 'debug',
+      component: LeaderSelectView
+    },
   ]
 })
 

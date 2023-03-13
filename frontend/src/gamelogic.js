@@ -62,23 +62,38 @@ export function getRoundHostages (currentRound, numRounds, numPlayers) {
 
 export function wsMessageListener (event) {
   // big-ish case statement here for different messages
+  // TODO this is a big mess at the moment. Good place to refactor
   const gamestate = useGameState()
   console.log(event.data)
-  const msgdata = JSON.parse(event.data)
+  const message = JSON.parse(event.data)
+  const message_type = message.message
+  const message_data = message.data
+  const message_timestamp = message.timestamp
 
-  if (msgdata.playerlist) {
-    gamestate.playerlist = msgdata.playerlist
-  }
-
-  if (msgdata.playerdata) {
-    gamestate.playerdata = msgdata.playerdata
-    gamestate.start_timestamp = msgdata.gamedata.timestamp
-    if (msgdata.message === 'startgame') {
+  switch (message_type) {
+    
+    // Player joined lobby, message to all other players
+    case "player_joined":
+      gamestate.playerlist.push(message_data.playername)
+      break
+    
+    // Host has closed the lobby. All players are taken to the pregame screen
+    case "lobby_cutoff":
+      gamestate.num_rounds = message_data.gamedata.num_rounds
+      gamestate.numPlayers = message_data.gamedata.num_players
+      gamestate.cardset = message_data.gamedata.cardset
+      router.push('pregame')
+      break
+    
+    // Any updates to player data. Happens after lobby cutoff and in future when rooms/cards change
+    case "player_data":
+      gamestate.playerdata = message_data.playerdata
+      gamestate.roommates = message_data.roommates
+      break
+    
+    case "start_round":
       router.push('game')
-      const cardset = msgdata.gamedata.cardset
-      const numPlayers = msgdata.gamedata.num_players
-      gamestate.cardset = cardset
-      const deck = inflateCardset(cardset, numPlayers)
+      const deck = inflateCardset(gamestate.cardset, gamestate.numPlayers)
       const cardIdx = gamestate.playerdata.card
       gamestate.deck = deck
       gamestate.card = {
@@ -86,24 +101,24 @@ export function wsMessageListener (event) {
         data: cardmap[deck[cardIdx]]
       }
       gamestate.current_round = 1
-      gamestate.start_timestamp = msgdata.gamedata.timestamp
-    } else if (msgdata.message === 'nextround') {
-      router.push('game')
+      gamestate.start_timestamp = message_timestamp
+      break
+    
+    case "next_round":
       gamestate.current_round++
-      gamestate.start_timestamp = msgdata.gamedata.timestamp
-    } else if (msgdata.message === 'resetgame') {
-      router.push('/')
-    } else {
-      router.push('pregame')
-      gamestate.num_rounds = msgdata.gamedata.num_rounds
-    }
+      gamestate.start_timestamp = message_timestamp
+      router.push('game')
+      break
+
+    case "leader_selected":
+      gamestate.roomleader = message_data.leader_name
+      console.log('the room leader is' + gamestate.roomleader)
+      break
+
+    case "hostages_selected":
+      break
   }
 
-  if (msgdata.roommates) {
-    gamestate.roommates = msgdata.roommates
-  }
-
-  // emit an event so that we know the message came in
   window.dispatchEvent(wsEvent)
 }
 
