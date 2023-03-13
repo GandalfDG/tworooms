@@ -21,7 +21,7 @@ import { computed } from 'vue';
 </script>
 
 <template>
-    <div class="columns">
+    <div class="columns is-mobile">
         <div class="column" v-for="column in column_array">
             <div v-for="item in column">
                 <slot :value="item"></slot>
