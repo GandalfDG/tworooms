@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import { getBackendUrl } from '../stores/gamestate'
+import { getBackendProtocol, getBackendUrl } from '../stores/gamestate'
 import cardmap from '@/cardmap'
 
 const props = defineProps({
@@ -45,7 +45,7 @@ const cardProperties = computed(() => {
   carddata.cardname = props.cardname.replace('_', ' ') // saves manually adding the card name minus _ to the map
   carddata.colorcode = cardColorCode(carddata.color)
   carddata.imagebgcolorcode = imageBgColor(carddata.color)
-  carddata.imageurl = new URL(`/cardimages/${carddata.image}.png`, `https://${getBackendUrl()}`)
+  carddata.imageurl = new URL(`/cardimages/${carddata.image}.png`, `${getBackendProtocol()}://${getBackendUrl()}`)
   return carddata
 })
 
