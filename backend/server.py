@@ -150,7 +150,7 @@ async def game_ws_handler(request: Request, ws: Websocket):
 
             elif msgobj["message"] == "nextround":
                 logger.info("next round")
-                await utils.message_all_players(game, WebsocketMessage("start_round", timestamp=timestamp))
+                await utils.message_all_players(game, WebsocketMessage("next_round", timestamp=timestamp))
 
             elif msgobj["message"] == "leaderselect":
                 playername = msgobj["data"]["playername"]

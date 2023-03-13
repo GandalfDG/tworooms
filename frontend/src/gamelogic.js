@@ -104,6 +104,12 @@ export function wsMessageListener (event) {
       gamestate.start_timestamp = message_timestamp
       break
     
+    case "next_round":
+      gamestate.current_round++
+      gamestate.start_timestamp = message_timestamp
+      router.push('game')
+      break
+
     case "leader_selected":
       gamestate.roomleader = message_data.leader_name
       console.log('the room leader is' + gamestate.roomleader)
@@ -113,52 +119,6 @@ export function wsMessageListener (event) {
       break
   }
 
-  // if (msgdata.playerlist) {
-  //   gamestate.playerlist = messag.playerlist
-  // }
-
-  // if (msgdata.message) {
-  //   if (msgdata.message === 'leader_select') {
-  //     gamestate.roomleader = msgdata.leader_name
-  //     console.log('the room leader is' + gamestate.roomleader)
-  //     router.push('game')
-  //   }
-  // }
-
-  // if (msgdata.playerdata) {
-  //   gamestate.playerdata = msgdata.playerdata
-  //   gamestate.start_timestamp = msgdata.gamedata.timestamp
-  //   if (msgdata.message === 'startgame') {
-  //     router.push('leaderselect')
-  //     const cardset = msgdata.gamedata.cardset
-  //     const numPlayers = msgdata.gamedata.num_players
-  //     gamestate.cardset = cardset
-  //     const deck = inflateCardset(cardset, numPlayers)
-  //     const cardIdx = gamestate.playerdata.card
-  //     gamestate.deck = deck
-  //     gamestate.card = {
-  //       name: deck[cardIdx],
-  //       data: cardmap[deck[cardIdx]]
-  //     }
-  //     gamestate.current_round = 1
-  //     gamestate.start_timestamp = msgdata.gamedata.timestamp
-  //   } else if (msgdata.message === 'nextround') {
-  //     router.push('game')
-  //     gamestate.current_round++
-  //     gamestate.start_timestamp = msgdata.gamedata.timestamp
-  //   } else if (msgdata.message === 'resetgame') {
-  //     router.push('/')
-  //   } else { // lobby cutoff message
-  //     router.push('pregame')
-  //     gamestate.num_rounds = msgdata.gamedata.num_rounds
-  //   }
-  // }
-
-  // if (msgdata.roommates) {
-  //   gamestate.roommates = msgdata.roommates
-  // }
-
-  // emit an event so that we know the message came in
   window.dispatchEvent(wsEvent)
 }
 
