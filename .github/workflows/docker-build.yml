@@ -23,7 +23,7 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v4.0.0
         with:
-          build-args: GIT_SHA=$GITHUB_SHA
+          build-args: GIT_SHA=${{ vars.GITHUB_SHA }}
           push: true
-          tags: ghcr.io/$GITHUB_REPOSITORY
+          tags: ghcr.io/${{ vars.GITHUB_REPOSITORY }}
       
