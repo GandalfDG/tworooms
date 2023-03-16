@@ -13,14 +13,15 @@
 </script>
 
 <template>
-    <div class="is-flex is-flex-direction-column" style="height:100vh">
-        <div class="block mt-5">
-            <h1 class="title is-3">Select the leader for your room</h1>
-        </div>
-        <ColumnList :list="gamestate.roommates" :columns="2">
-            <template v-slot="playername">
-                <button class="button is-fullwidth mb-2" :value="playername.value" @click="leaderSelect(playername.value)">{{ playername.value }}</button>
-            </template>
-        </ColumnList>   
+
+    <div class="block">
+        <h1 class="title is-3">Select the leader for your room</h1>
     </div>
+    <ColumnList :list="gamestate.roommates" :columns="2">
+        <template v-slot="playername">
+            <button class="button is-fullwidth mb-2" :value="playername.value" @click="leaderSelect(playername.value)">{{ playername.value }}</button>
+        </template>
+    </ColumnList>   
+    <button class="button is-link is-large">Submit</button>
+
 </template>
