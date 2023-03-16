@@ -11,6 +11,10 @@ FROM dev as build
 ARG GIT_SHA
 
 USER root
+COPY backend /backend
+COPY frontend /frontend
+
+USER root
 
 COPY --chown=node frontend/package.json frontend/package-lock.json /frontend/
 
