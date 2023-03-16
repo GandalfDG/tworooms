@@ -9,6 +9,8 @@ USER node
 
 FROM dev as build
 
+ARG GIT_SHA
+
 USER root
 COPY backend /backend
 COPY frontend /frontend
