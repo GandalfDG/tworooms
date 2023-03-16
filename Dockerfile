@@ -18,6 +18,8 @@ RUN chown -R node /frontend /backend
 USER node
 WORKDIR /frontend
 
+ENV VITE_GIT_SHA=$GIT_SHA
+
 RUN npm i && npm run test:unit && npm run css-build && npm run build
 
 
