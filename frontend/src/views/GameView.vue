@@ -47,7 +47,7 @@ function roundEnded () {
 
     <Modal :active="leaderSelectVisibility" @deactivate="leaderSelectVisibility=false">
       <div class="box">
-        <LeaderSelect></LeaderSelect>
+        <LeaderSelect @done="leaderSelectVisibility=false"></LeaderSelect>
       </div>
     </Modal>
 
