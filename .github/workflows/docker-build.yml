@@ -4,17 +4,26 @@ on:
   push:
     branches: [ "master", "dev" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "dev" ]
 
 jobs:
-  build-svc:
+  build-container:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        name: Checkout repository
-
-      - uses: pmorelli92/github-container-registry-build-push@2.0.0
-        name: Build and Publish latest service image
+      - name: Checkout
+        uses: actions/checkout@v3.4.0
+        
+      - name: Registry login
+        uses: docker/login-action@v2.1.0
         with:
-          github-push-secret: ${{secrets.GITHUB_TOKEN}}
-          docker-image-name: tworooms
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+        
+      - name: Build and Push
+        uses: docker/build-push-action@v4.0.0
+        with:
+          build-args: GIT_SHA=$GITHUB_SHA
+          push: true
+          tags: ghcr.io/$GITHUB_REPOSITORY
+      
