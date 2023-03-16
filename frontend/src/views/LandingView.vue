@@ -93,9 +93,7 @@ async function joinGame() {
         <button class="button" onclick="window.location='https://github.com/GandalfDG/tworooms'"><span>View on GitHub</span>
           <span class="icon"><i class="fab fa-github"></i></span></button>
       </div>
-      <div class="block">
-        <p class="is-size-7">git sha: {{ git_sha }}</p>
-      </div>
+      <p class="is-size-7 has-text-weight-light has-text-grey">git SHA: {{ git_sha.toUpperCase() }}</p>
     </footer>
   </div>
 </template>
