@@ -23,7 +23,8 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v4.0.0
         with:
+          context: .
           build-args: GIT_SHA=${{ github.sha }}
           push: true
-          tags: ghcr.io/tworooms
+          tags: ghcr.io/tworooms:${{ github.ref_name }}
       
