@@ -26,5 +26,5 @@ jobs:
           context: .
           build-args: GIT_SHA=${{ github.sha }}
           push: true
-          tags: ghcr.io/tworooms:${{ github.ref_name }}
+          tags: ghcr.io/tworooms:latest
       
