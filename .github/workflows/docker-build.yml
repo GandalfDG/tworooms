@@ -25,5 +25,5 @@ jobs:
         with:
           build-args: GIT_SHA=${{ github.sha }}
           push: true
-          tags: ghcr.io/${{ github.repository }}
+          tags: ghcr.io/tworooms
       
