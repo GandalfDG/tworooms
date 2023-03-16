@@ -1,7 +1,7 @@
 <script setup>
     import { useGameState } from '@/stores/gamestate'
     import router from '@/router'
-    import ColumnList from '../components/ColumnList.vue'
+    import ColumnList from './ColumnList.vue'
 
     const gamestate = useGameState()
 
