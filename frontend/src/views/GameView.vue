@@ -23,7 +23,7 @@ const visibility = ref('none')
 
 const leaderSelectVisibility = ref(false)
 
-function roundEnded () {
+function roundEnded() {
   if (gamestate.current_round === gamestate.num_rounds) {
     router.push('gameover')
   } else {
@@ -34,21 +34,22 @@ function roundEnded () {
 </script>
 
 <template>
-    <h2>The room leader must select {{hostages}} hostage{{hostages>1?'s':''}} in</h2>
-    <Timer :duration=roundDuration :paused=false :start-timestamp=gamestate.start_timestamp @time-elapsed="roundEnded()" />
-    <Card v-model:visibility="visibility" v-model:cardname="gamestate.card.name"/>
-    <div class="buttoncontainer">
-        <button @click="visibility='color'">Color Reveal</button>
-        <button @click="visibility='full'">Full Reveal</button>
-        <button @click="visibility='none'">Hide Card</button>
+  <h2>The room leader must select {{ hostages }} hostage{{ hostages > 1 ? 's' : '' }} in</h2>
+  <Timer :duration=roundDuration :paused=false :start-timestamp=gamestate.start_timestamp @time-elapsed="roundEnded()" />
+  <Card v-model:visibility="visibility" v-model:cardname="gamestate.card.name" />
+  <div class="buttoncontainer">
+    <button @click="visibility = 'color'">Color Reveal</button>
+    <button @click="visibility = 'full'">Full Reveal</button>
+    <button @click="visibility = 'none'">Hide Card</button>
+  </div>
+
+  <button class="button" @click="leaderSelectVisibility = true">select room leader</button>
+
+
+
+  <Modal :active="leaderSelectVisibility" @deactivate="leaderSelectVisibility = false">
+    <div class="box">
+      <LeaderSelect @done="leaderSelectVisibility = false"></LeaderSelect>
     </div>
-    
-    <button class="button" @click="leaderSelectVisibility=true">select room leader</button>
-
-    <Modal :active="leaderSelectVisibility" @deactivate="leaderSelectVisibility=false">
-      <div class="box">
-        <LeaderSelect @done="leaderSelectVisibility=false"></LeaderSelect>
-      </div>
-    </Modal>
-
+  </Modal>
 </template>
