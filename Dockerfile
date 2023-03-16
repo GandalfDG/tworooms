@@ -9,6 +9,8 @@ USER node
 
 FROM dev as build
 
+ARG GIT_SHA
+
 USER root
 COPY backend /backend
 COPY frontend /frontend
@@ -17,6 +19,8 @@ RUN chown -R node /frontend /backend
 
 USER node
 WORKDIR /frontend
+
+ENV VITE_GIT_SHA=$GIT_SHA
 
 RUN npm i && npm run test:unit && npm run css-build && npm run build
 

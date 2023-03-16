@@ -13,6 +13,8 @@ const forminput = reactive({
   roomcode: ''
 })
 
+const git_sha = String(import.meta.env.VITE_GIT_SHA).slice(0,10).toUpperCase()
+
 onMounted(() => {
   gamestate.$reset()
 })
@@ -91,6 +93,7 @@ async function joinGame() {
         <button class="button" onclick="window.location='https://github.com/GandalfDG/tworooms'"><span>View on GitHub</span>
           <span class="icon"><i class="fab fa-github"></i></span></button>
       </div>
+      <p class="is-size-7 has-text-weight-light has-text-grey">git SHA: {{ git_sha }}</p>
     </footer>
   </div>
 </template>
