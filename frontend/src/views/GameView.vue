@@ -2,6 +2,8 @@
 import { ref, computed } from 'vue'
 import Card from '@/components/GameCard.vue'
 import Timer from '@/components/Timer.vue'
+import Modal from '@/components/Modal.vue'
+import LeaderSelect from '@/components/LeaderSelect.vue'
 
 import { getRoundHostages, getRoundDuration } from '@/gamelogic'
 import { useGameState } from '@/stores/gamestate'
@@ -18,6 +20,8 @@ const roundDuration = computed(() => {
 })
 
 const visibility = ref('none')
+
+const leaderSelectVisibility = ref(false)
 
 function roundEnded () {
   if (gamestate.current_round === gamestate.num_rounds) {
@@ -38,4 +42,13 @@ function roundEnded () {
         <button @click="visibility='full'">Full Reveal</button>
         <button @click="visibility='none'">Hide Card</button>
     </div>
+    
+    <button class="button" @click="leaderSelectVisibility=true">select room leader</button>
+
+    <Modal :active="leaderSelectVisibility" @deactivate="leaderSelectVisibility=false">
+      <div class="box">
+        <LeaderSelect></LeaderSelect>
+      </div>
+    </Modal>
+
 </template>
