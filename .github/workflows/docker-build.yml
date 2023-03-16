@@ -16,11 +16,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ghcr.io/tworooms
         
       - name: Build and Push
         uses: docker/build-push-action@v4.0.0
         with:
           build-args: GIT_SHA=${{ github.sha }}
           push: true
-          tags: ghcr.io/tworooms:latest
+          tags: ${{ steps.meta.outputs.tags }}
       
