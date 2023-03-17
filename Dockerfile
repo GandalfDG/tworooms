@@ -12,18 +12,15 @@ ARG GIT_SHA
 
 USER root
 
-COPY frontend/package.json frontend/package-lock.json /frontend
-RUN chown -R node /frontend
+COPY --chown=node frontend/package.json frontend/package-lock.json /frontend/
 
 USER node
 WORKDIR /frontend
 RUN npm install
 
 USER root
-COPY backend /backend
-COPY frontend /frontend
-
-RUN chown -R node /frontend /backend
+COPY --chown=node backend /backend
+COPY --chown=node frontend/public frontend/src .env.production index.html wite.config.js /frontend/
 
 USER node
 WORKDIR /frontend
