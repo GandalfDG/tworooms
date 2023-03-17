@@ -29,7 +29,7 @@ WORKDIR /frontend
 
 ENV VITE_GIT_SHA=$GIT_SHA
 
-RUN npm run css-build && npm run build
+RUN npm run test:unit && npm run css-build && npm run build
 
 
 FROM python as serve
