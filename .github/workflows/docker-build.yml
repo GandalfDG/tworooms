@@ -33,7 +33,5 @@ jobs:
           build-args: GIT_SHA=${{ github.sha }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=${{ github.repository }}:buildcache
-          cache-to: type=registry,ref=${{ github.repository }}:buildcache,mode=max
-        
-      
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
