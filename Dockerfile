@@ -12,13 +12,13 @@ ARG GIT_SHA
 
 USER node
 
+WORKDIR /frontend
 COPY frontend/package.json frontend/package-lock.json /frontend
 RUN npm install
 
 COPY backend /backend
 COPY frontend /frontend
 
-WORKDIR /frontend
 
 ENV VITE_GIT_SHA=$GIT_SHA
 
