@@ -20,7 +20,9 @@ RUN npm install
 
 USER root
 COPY --chown=node backend /backend
-COPY --chown=node frontend/public frontend/src frontend/.env.production frontend/index.html frontend/vite.config.js /frontend/
+COPY --chown=node frontend/public /frontend/public/
+COPY --chown=node frontend/src /frontend/src/
+COPY --chown=node frontend/.env.production frontend/index.html frontend/vite.config.js /frontend/
 
 USER node
 WORKDIR /frontend
