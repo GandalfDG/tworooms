@@ -6,12 +6,15 @@ RUN pip3 install autopep8 sanic sanic-cors
 USER node
 
 
-
 FROM dev as build
 
 ARG GIT_SHA
 
 USER root
+
+COPY frontend/package.json frontend/package-lock.json /frontend
+RUN npm install
+
 COPY backend /backend
 COPY frontend /frontend
 
@@ -22,7 +25,7 @@ WORKDIR /frontend
 
 ENV VITE_GIT_SHA=$GIT_SHA
 
-RUN npm i && npm run test:unit && npm run css-build && npm run build
+RUN npm run test:unit && npm run css-build && npm run build
 
 
 FROM python as serve
