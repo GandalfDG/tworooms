@@ -14,7 +14,9 @@ USER root
 
 COPY frontend/package.json frontend/package-lock.json /frontend
 RUN chown -R node /frontend
+
 USER node
+WORKDIR /frontend
 RUN npm install
 
 USER root
