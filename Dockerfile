@@ -10,7 +10,7 @@ FROM dev as build
 
 ARG GIT_SHA
 
-USER root
+USER node
 
 COPY frontend/package.json frontend/package-lock.json /frontend
 RUN npm install
@@ -18,9 +18,6 @@ RUN npm install
 COPY backend /backend
 COPY frontend /frontend
 
-RUN chown -R node /frontend /backend
-
-USER node
 WORKDIR /frontend
 
 ENV VITE_GIT_SHA=$GIT_SHA
