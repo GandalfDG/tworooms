@@ -42,6 +42,7 @@ export const useGameState = defineStore('gamestate', {
       // Player Data
       playername: '',
       ishost: false,
+      isleader: false,
       
       playerdata: {}, // card index, current room
       card: {}, // card name, card data
