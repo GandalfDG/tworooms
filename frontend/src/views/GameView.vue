@@ -43,9 +43,18 @@ function roundEnded() {
     <button @click="visibility = 'none'">Hide Card</button>
   </div>
 
-  <button class="button" @click="leaderSelectVisibility = true">select room leader</button>
-
-
+  <div class="notification is-primary" @click="leaderSelectVisibility = true" v-if="!gamestate.roomleader">
+    <div class="level is-mobile">
+      <div class="level-item is-flex-shrink-1">Select a leader for the room! The first person selected will become the leader, so act fast!</div>
+      <div class="level-item">
+        <button class="button is-primary">
+          <span class="icon">
+            <i class="fas fa-chevron-right"></i>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <Modal :active="leaderSelectVisibility" @deactivate="leaderSelectVisibility = false">
     <div class="box">
