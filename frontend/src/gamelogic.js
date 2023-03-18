@@ -112,7 +112,10 @@ export function wsMessageListener (event) {
 
     case "leader_selected":
       gamestate.roomleader = message_data.leader_name
-      console.log('the room leader is' + gamestate.roomleader)
+      console.log('the room leader is ' + gamestate.roomleader)
+      if (gamestate.playername === gamestate.roomleader) {
+        gamestate.isleader = true
+      }
       break
 
     case "hostages_selected":
