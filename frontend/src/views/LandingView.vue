@@ -7,6 +7,7 @@ const gamestate = useGameState()
 
 const toggleSelection = ref('join')
 const waitingForServer = ref(false)
+const roomCodeFailed = ref(false)
 
 const forminput = reactive({
   playername: '',
@@ -28,12 +29,21 @@ async function createGame() {
 }
 
 async function joinGame() {
-  waitingForServer.value = true
-  gamestate.ishost = false
-  gamestate.playername = forminput.playername
-  gamestate.roomcode = forminput.roomcode.toUpperCase()
-  await gamestate.joinRoom()
-  router.push('/lobby')
+
+  try {
+    roomCodeFailed.value = false
+    waitingForServer.value = true
+    gamestate.ishost = false
+    gamestate.playername = forminput.playername
+    gamestate.roomcode = forminput.roomcode.toUpperCase()
+    await gamestate.joinRoom()
+    router.push('/lobby')
+  } catch(e) {
+    // show an error in the room code box
+    waitingForServer.value = false
+    forminput.roomcode = null
+    roomCodeFailed.value = true
+  }
 }
 </script>
 
@@ -65,14 +75,14 @@ async function joinGame() {
         <label class="label" v-bind:class="{ 'has-text-grey-lighter': toggleSelection === 'host' }">Room
           Code</label>
         <p class="control">
-          <input class="input is-uppercase" type="text" placeholder="XXXX" v-model="forminput.roomcode"
+          <input class="input is-uppercase" :class="{'is-danger': roomCodeFailed && toggleSelection === 'join'}" type="text" placeholder="XXXX" v-model="forminput.roomcode"
             v-bind:disabled="toggleSelection !== 'join'">
         </p>
       </div>
     </div>
     <div class="field">
       <p class="control">
-        <button class="button is-link is-large" v-bind:class="{ 'is-loading': waitingForServer }"
+        <button class="button is-link is-large" :class="{}" v-bind:class="{ 'is-loading': waitingForServer }"
           @click="toggleSelection === 'host' ? createGame() : joinGame()">Let's Play!</button>
       </p>
     </div>
