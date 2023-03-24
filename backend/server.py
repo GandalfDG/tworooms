@@ -1,7 +1,7 @@
 import asyncio
 from typing import Dict
 from sanic import Sanic, Request, Websocket, text
-from sanic.response import json as jsonresponse, file
+from sanic.response import json as jsonresponse, empty
 from sanic_cors import CORS
 from sanic.log import logger
 from uuid import uuid4 as uuid
@@ -94,22 +94,29 @@ async def join_room_handler(request):
     roomcode = request.json['roomcode']
     playername = request.json['playername']
 
-    current_game = games[roomcode]
-    current_game.players[playername] = Player(playername)
-    playerlist = [playername for playername in current_game.players.keys()]
-    response_json = {
-        "roomcode": roomcode,
-        "playerlist": [playername for playername in current_game.players.keys()]
-    }
+    current_game = games.get(roomcode)
+    if current_game is not None:
 
-    identifier = utils.set_user_cookie()
-    response_json["session"] = identifier
-    users[identifier] = (roomcode, playername)
+        current_game.players[playername] = Player(playername)
+        playerlist = [playername for playername in current_game.players.keys()]
+        response_json = {
+            "roomcode": roomcode,
+            "playerlist": [playername for playername in current_game.players.keys()]
+        }
 
-    response = jsonresponse(response_json)
+        identifier = utils.set_user_cookie()
+        response_json["session"] = identifier
+        users[identifier] = (roomcode, playername)
 
-    join_message = WebsocketMessage("player_joined", {"playername": playername})
-    await utils.message_all_players(current_game, join_message)
+        response = jsonresponse(response_json)
+
+        join_message = WebsocketMessage("player_joined", {"playername": playername})
+        await utils.message_all_players(current_game, join_message)
+        
+    else:
+        # no game exists with that roomcode
+        response = empty(status=404)
+
     return response
 
 
