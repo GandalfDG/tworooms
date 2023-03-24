@@ -71,14 +71,18 @@ export const useGameState = defineStore('gamestate', {
     },
 
     async joinRoom () {
-      const response = await this.ax.post('join/', {
-        playername: this.playername,
-        roomcode: this.roomcode
-      })
-      this.roomcode = response.data.roomcode
-      this.playerlist = response.data.playerlist
-      this.session = response.data.session
-      this.connectWebsocket()
+      try {
+        const response = await this.ax.post('join/', {
+          playername: this.playername,
+          roomcode: this.roomcode
+        })
+        this.playerlist = response.data.playerlist
+        this.session = response.data.session
+        this.connectWebsocket()
+      } catch (e) {
+        console.log(e)
+        throw(e)
+      }
     },
 
     async connectWebsocket () {
