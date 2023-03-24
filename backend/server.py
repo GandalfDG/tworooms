@@ -1,7 +1,7 @@
 import asyncio
 from typing import Dict
 from sanic import Sanic, Request, Websocket, text
-from sanic.response import json as jsonresponse, empty
+from sanic.response import json as jsonresponse, empty, file
 from sanic_cors import CORS
 from sanic.log import logger
 from uuid import uuid4 as uuid
